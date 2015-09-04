@@ -1,0 +1,340 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This element is used to parse and display a markdown formatted text.
+
+@element xp-markdown
+@description A custom element able to parse and display a markdown formatted text
+@keywords web app, html5, expandjs, web-components
+@group contents
+@homepage http://expandjs.com/elements/xp-markdown
+@repository https://github.com/ExpandJS/xp-markdown
+
+@behavior xp-adapter-behavior /bower_components/xp-adapter-behavior/xp-adapter-behavior.html
+
+@dependency prism PrismJS/prism#^1.0.0
+@dependency markdown-it Markdown-it/markdown-it#^4.0.0
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency xp-adapter-behavior ExpandJS/xp-adapter-behavior#0.9.8
+-->
+
+<script src="../prism/prism.js"></script>
+<script src="../markdown-it/dist/markdown-it.min.js"></script>
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../xp-adapter-behavior/xp-adapter-behavior.html">
+<link rel="stylesheet" href="../prism/themes/prism.css">
+
+<dom-module id="xp-markdown">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                overflow: visible;
+            }
+
+            :host([empty-source]) {
+                display: none !important;
+            }
+
+            :host #xpMarkdownWrapper ::content p > code {
+                background: hsla(24, 20%, 95%, 1);
+                padding: 0 4px;
+            }
+
+            :host #xpMarkdownWrapper ::content pre {
+                background: hsla(24, 20%, 95%, 1);
+                box-sizing: border-box;
+                font-size: 14px;
+                font-weight: 400;
+                letter-spacing: 0.01em;
+                line-height: 20px;
+                overflow-x: scroll;
+                overflow-y: auto;
+                padding: 16px 24px;
+            }
+        </style>
+
+        <div id="xpMarkdownWrapper"></div>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'xp-markdown',
+
+            // BEHAVIORS
+            behaviors: [
+                Polymer.XPAdapterBehavior
+            ],
+
+            /*********************************************************************/
+
+            /**
+             * Set the adaptee.
+             *
+             * @method _adapt
+             * @returns {Object}
+             * @private
+             */
+            _adapt: function () {
+
+                // Vars
+                var self = this;
+
+                // Adapting
+                self._setAdaptee(markdownit({
+                    breaks: self.breaks,
+                    highlight: self._highlight.bind(self),
+                    html: self.html,
+                    linkify: self.linkify,
+                    quotes: self.quotes,
+                    typographer: self.typographer,
+                    xhtmlOut: self.xhtmlOut
+                }));
+
+                // Anchors plugin
+                self.adaptee.core.ruler.push('heading_anchors', function (state) {
+                    for (var i = 0; i < state.tokens.length - 1; i += 1) {
+                        if (state.tokens[i].type === 'heading_open' && state.tokens[i+1].type === 'inline' && state.tokens[i+1].content) {
+                            var anchorName = state.tokens[i+1].content.replace(/ /g, '');
+                            state.tokens[i].attrPush(['id', anchorName]);
+                            var anchorToken = new state.Token('html_inline', '', 0);
+                            anchorToken.content = '<a href="#" name="' + anchorName + '"></a>';
+                            state.tokens[i+1].children.unshift(anchorToken);
+                            i += 2;
+                        }
+                    }
+                });
+
+                return self.adaptee;
+            },
+
+            /**
+             * Returns the corresponding language definition.
+             *
+             * @method _detectLang
+             * @param {string} code
+             * @param {string} [lang]
+             * @returns {Object}
+             * @private
+             */
+            _detectLang: function (code, lang) {
+                if (!lang) { return code.match(/^\s*</) ? Prism.languages.markup : Prism.languages.javascript; }
+                if (lang === 'js' || lang.substr(0, 2) === 'es') { return Prism.languages.javascript; }
+                if (lang === 'css') { return Prism.languages.css; }
+                if (lang === 'c') { return Prism.languages.clike; }
+                return Prism.languages.markup;
+            },
+
+            /**
+             * Highlights the markdown's code.
+             *
+             * @method _highlight
+             * @param {string} code
+             * @param {string} [lang]
+             * @returns {string}
+             * @private
+             */
+            _highlight: function (code, lang) {
+                return Prism.highlight(code, this._detectLang(code, lang));
+            },
+
+            /**
+             * Renders the markdown's code.
+             *
+             * @method _render
+             * @returns {Element}
+             * @private
+             */
+            _render: function () {
+                var self = this;
+                self._setSource(self.adaptee.render(self.code || Polymer.dom(self).innerHTML));
+                return self;
+            },
+
+            /**
+             * Refreshes the element.
+             *
+             * @method _refresh
+             * @returns {Element}
+             * @private
+             */
+            _refresh: function() {
+                var self = this;
+                self._adapt();
+                self._render();
+                return self;
+            },
+
+            /*********************************************************************/
+
+            // OBSERVERS
+            observers: [
+                '_refresh(breaks, code, html, linkify, quotes, typographer, xhtmlOut)'
+            ],
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * If set to true, converts `\n` into `<br>`.
+                 *
+                 * @attribute breaks
+                 * @type boolean
+                 * @default false
+                 */
+                breaks: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The markdown's code to render.
+                 *
+                 * @attribute parsed
+                 * @type string
+                 */
+                code: {
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * If set to true, the element is hidden.
+                 *
+                 * @attribute empty-source
+                 * @type boolean
+                 * @notifies
+                 * @readonly
+                 */
+                emptySource: {
+                    computed: '_computeEmptySource(source)',
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: Boolean
+                },
+
+                /**
+                 * If set to true, enables html tags in source.
+                 *
+                 * @attribute html
+                 * @type boolean
+                 * @default false
+                 */
+                html: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, converts URL-like text into links.
+                 *
+                 * @attribute linkify
+                 * @type boolean
+                 * @default false
+                 */
+                linkify: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * Double plus single quotes replacement pairs, when typographer is enabled.
+                 *
+                 * @attribute quotes
+                 * @type string
+                 * @default "\u201c\u201d\u2018\u2019"
+                 */
+                quotes: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: '\u201c\u201d\u2018\u2019'
+                },
+
+                /**
+                 * The html rendered from markdown's code.
+                 *
+                 * @attribute source
+                 * @type string
+                 * @notifies
+                 * @readonly
+                 */
+                source: {
+                    notify: true,
+                    observer: '_sourceChanged',
+                    readOnly: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * If set to true, enables some language-neutral replacement plus quotes beautification.
+                 *
+                 * @attribute typographer
+                 * @type boolean
+                 * @default false
+                 */
+                typographer: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, uses `/` to close single tags like `<br>`.
+                 *
+                 * @attribute xhtml-out
+                 * @type boolean
+                 * @default false
+                 */
+                xhtmlOut: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                }
+            },
+
+            /*********************************************************************/
+
+            // COMPUTER
+            _computeEmptySource: function (source) {
+                return !source;
+            },
+
+            /*********************************************************************/
+
+            // OBSERVER
+            _sourceChanged: function (post) {
+                this.$.xpMarkdownWrapper.innerHTML = post;
+            },
+
+            /*********************************************************************/
+
+            // LISTENER
+            attached: function () {
+                this.mutated();
+            },
+
+            // LISTENER
+            mutated: function () {
+                XP.onMutation(this._refresh(), this.mutated.bind(this), {characterData: true, childList: true, subtree: true});
+            }
+        });
+    </script>
+
+</dom-module>

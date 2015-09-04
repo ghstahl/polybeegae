@@ -1,0 +1,36 @@
+{
+  "name": "xp-schema",
+  "license": "BSD-3-Clause",
+  "version": "0.9.8",
+  "main": "xp-schema.html",
+  "description": "This class is used to provide scheming functionality, including sanitization and validation",
+  "homepage": "http://expandjs.com/classes/xp-schema",
+  "authors": [
+    "Giuliano Rullo <g.rullo@expandjs.com>",
+    "Maurizio Stefàno <m.stefano@expandjs.com>",
+    "Robert Manolea <r.manolea@expandjs.com>"
+  ],
+  "keywords": [
+    "nodejs",
+    "web app",
+    "javascript",
+    "expandjs",
+    "web-components"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "expandjs": "ExpandJS/expandjs#0.9.8",
+    "xp-emitter": "ExpandJS/xp-emitter#0.9.8"
+  },
+  "_release": "0.9.8",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.9.8",
+    "commit": "7cb28ecf899ffb61db58714b5e530bb05ee9415f"
+  },
+  "_source": "git://github.com/ExpandJS/xp-schema.git",
+  "_target": "0.9.8",
+  "_originalSource": "ExpandJS/xp-schema"
+}

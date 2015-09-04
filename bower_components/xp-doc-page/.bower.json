@@ -1,0 +1,38 @@
+{
+  "name": "xp-doc-page",
+  "license": "BSD-3-Clause",
+  "version": "0.9.8",
+  "main": "xp-doc-page.html",
+  "description": "A custom element used to create a documentation page",
+  "homepage": "http://expandjs.com/elements/xp-doc-page",
+  "authors": [
+    "Giuliano Rullo <g.rullo@expandjs.com>",
+    "Maurizio Stefàno <m.stefano@expandjs.com>",
+    "Robert Manolea <r.manolea@expandjs.com>"
+  ],
+  "keywords": [
+    "documentation",
+    "web app",
+    "html5",
+    "expandjs",
+    "web-components"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "expandjs": "ExpandJS/expandjs#0.9.8",
+    "xp-markdown": "ExpandJS/xp-markdown#0.9.8",
+    "polymer": "Polymer/polymer#^1.1.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0"
+  },
+  "_release": "0.9.8",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.9.8",
+    "commit": "c956f4e9f152ae7fb00158d6bf941959de4061c1"
+  },
+  "_source": "git://github.com/ExpandJS/xp-doc-page.git",
+  "_target": "0.9.8",
+  "_originalSource": "ExpandJS/xp-doc-page"
+}

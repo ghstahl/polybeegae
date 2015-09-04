@@ -1,0 +1,592 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+An element used to display a [Material Design progress bar](http://www.google.com/design/spec/components/progress-activity.html#progress-activity-types-of-indicators).
+
+By default, `<mat-progress>` behaves like a standard progress bar, where you have to specify a
+`value` within the range created by `min` and `max` to display the completion percentage.
+
+```html
+<mat-progress min="0" value="50" max="200" showed></mat-progress>
+```
+
+For those cases in which the duration of the process is not known, different modes
+can be applied on `<mat-progress>` to give the right kind of feedback to the user.
+
+```html
+<mat-progress mode="indeterminate" showed></mat-progress>
+<mat-progress mode="query" showed></mat-progress>
+```
+
+For data streaming (audio/video), there's a `buffer` mode which allows you to show
+two progress values at once, for example the playback progress and the download progress.
+
+```html
+<mat-progress mode="buffer" value="33" buffer-value="66" showed></mat-progress>
+```
+
+---
+
+## Styling
+
+To change the colors of the progress bar you can either use CSS or a friendlier approach,
+using `color` for the primary color and `buffer-color` for the secondary color.
+
+All the styling API is done using [Material Design palette](http://www.google.com/design/spec/style/color.html#color-color-palette).
+
+```html
+<mat-progress color="red" buffer-color="red-100" value="50" showed>
+```
+
+@element mat-progress
+@description A custom element used to display a Material Design progress bar
+@keywords material design, material progress bar, web app, html5, expandjs, web-components
+@group accessibility
+@homepage http://expandjs.com/elements/mat-progress
+@repository https://github.com/ExpandJS/mat-progress
+@demo http://expandjs.com/demo/mat-progress
+
+@behavior mat-palette /bower_components/mat-palette/mat-palette.html
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency iron-flex-layout PolymerElements/iron-flex-layout#^1.0.0
+@dependency mat-ripple ExpandJS/mat-ripple#0.9.8
+
+@devDependency mat-demo ExpandJS/mat-demo#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../mat-palette/mat-palette.html">
+
+<dom-module name="mat-progress">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                height: 4px;
+                overflow: hidden;
+                pointer-events: none;
+                position: relative;
+                -webkit-transform-origin: left;
+                transform-origin: left;
+                -webkit-transform: scale(1, 0);
+                transform: scale(1, 0);
+                -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                width: 100%;
+            }
+
+            :host([showed]) {
+                transform: scale(1);
+            }
+
+            :host .bar {
+                @apply(--layout-fit);
+                display: block;
+                -webkit-transform-origin: left;
+                transform-origin: left;
+            }
+
+            :host #matProgressBuffer {
+                background: hsla(207, 89%, 86%, 1);
+                -webkit-transform: scale(1, 1);
+                transform: scale(1, 1);
+            }
+
+            :host #matProgressAux,
+            :host #matProgressPrimary {
+                background: hsla(207, 90%, 54%, 1);
+            }
+
+            :host #matProgressAux,
+            :host #matProgressStream {
+                display: none;
+            }
+
+            :host #matProgressStream {
+                color: hsla(207, 89%, 86%, 1);
+            }
+
+            /* BUFFER MODE */
+
+            :host([mode="buffer"]) .bar {
+                -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            :host([mode="buffer"]) #matProgressStream {
+                display: block;
+            }
+
+            :host([mode="buffer"]) #matProgressStream::before {
+                -webkit-animation: buffer-stream 6s linear 0s infinite;
+                animation: buffer-stream 6s linear 0s infinite;
+                background-size: 10px 10px !important;
+                background: radial-gradient(currentColor 0%, currentColor 16%, hsla(0, 0%, 0%, 0) 42%) 0 -23px;
+                content: "";
+                display: block;
+                height: 4px;
+                margin-top: 0;
+                position: absolute;
+                width: 100%;
+            }
+
+            @-webkit-keyframes buffer-stream {
+                0%   { background-position: 0 -23px;      }
+                100% { background-position: -230px -23px; }
+            }
+
+            @keyframes buffer-stream {
+                0%   { background-position: 0 -23px;      }
+                100% { background-position: -230px -23px; }
+            }
+
+            /* INDETERMINATE MODE */
+
+            :host([mode="indeterminate"]) .bar {
+                -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            :host([mode="indeterminate"]) #matProgressAux {
+                animation: indeterminate-aux 2s linear 0s infinite;
+                display: block;
+            }
+
+            :host([mode="indeterminate"]) #matProgressPrimary {
+                animation: indeterminate-primary 2s linear 0s infinite;
+            }
+
+            @-webkit-keyframes indeterminate-aux {
+                0%   { -webkit-transform: translateX(0%) scale(0, 1);     }
+                50%  { -webkit-transform: translateX(0%) scale(0, 1);     }
+                75%  { -webkit-transform: translateX(0%) scale(0.6, 1);   }
+                100% { -webkit-transform: translateX(100%) scale(0.2, 1); }
+            }
+
+            @keyframes indeterminate-aux {
+                0%   { transform: translateX(0%) scale(0, 1);     }
+                50%  { transform: translateX(0%) scale(0, 1);     }
+                75%  { transform: translateX(0%) scale(0.6, 1);   }
+                100% { transform: translateX(100%) scale(0.2, 1); }
+            }
+
+            @-webkit-keyframes indeterminate-primary {
+                0%   { -webkit-transform: translateX(0%) scale(0, 1);     }
+                20%  { -webkit-transform: translateX(0%) scale(0.5, 1);   }
+                33%  { -webkit-transform: translateX(20%) scale(0.7, 1);  }
+                66%  { -webkit-transform: translateX(100%) scale(0.7, 1); }
+                100% { -webkit-transform: translateX(100%) scale(0.7, 1); }
+            }
+
+            @keyframes indeterminate-primary {
+                0%   { transform: translateX(0%) scale(0, 1);     }
+                20%  { transform: translateX(0%) scale(0.5, 1);   }
+                33%  { transform: translateX(20%) scale(0.7, 1);  }
+                66%  { transform: translateX(100%) scale(0.7, 1); }
+                100% { transform: translateX(100%) scale(0.7, 1); }
+            }
+
+            /* QUERY MODE */
+
+            :host([mode="query"]) .bar {
+                -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            :host([mode="query"]) #matProgressAux {
+                -webkit-animation: query-aux 2s linear 0s infinite;
+                animation: query-aux 2s linear 0s infinite;
+                display: block;
+                -webkit-transform-origin: right;
+                transform-origin: right;
+            }
+
+            :host([mode="query"]) #matProgressPrimary {
+                -webkit-animation: query-primary 2s linear 0s infinite;
+                animation: query-primary 2s linear 0s infinite;
+                -webkit-transform-origin: right;
+                transform-origin: right;
+            }
+
+            @-webkit-keyframes query-aux {
+                0%   { -webkit-transform: translateX(0%) scale(0, 1);      }
+                50%  { -webkit-transform: translateX(0%) scale(0, 1);      }
+                75%  { -webkit-transform: translateX(0%) scale(0.6, 1);    }
+                100% { -webkit-transform: translateX(-100%) scale(0.2, 1); }
+            }
+
+            @keyframes query-aux {
+                0%   { transform: translateX(0%) scale(0, 1);      }
+                50%  { transform: translateX(0%) scale(0, 1);      }
+                75%  { transform: translateX(0%) scale(0.6, 1);    }
+                100% { transform: translateX(-100%) scale(0.2, 1); }
+            }
+
+            @-webkit-keyframes query-primary {
+                0%   { -webkit-transform: translateX(0%) scale(0, 1);      }
+                20%  { -webkit-transform: translateX(0%) scale(0.5, 1);    }
+                33%  { -webkit-transform: translateX(-20%) scale(0.7, 1);  }
+                66%  { -webkit-transform: translateX(-100%) scale(0.7, 1); }
+                100% { -webkit-transform: translateX(-100%) scale(0.7, 1); }
+            }
+
+            @keyframes query-primary {
+                0%   { transform: translateX(0%) scale(0, 1);      }
+                20%  { transform: translateX(0%) scale(0.5, 1);    }
+                33%  { transform: translateX(-20%) scale(0.7, 1);  }
+                66%  { transform: translateX(-100%) scale(0.7, 1); }
+                100% { transform: translateX(-100%) scale(0.7, 1); }
+            }
+        </style>
+
+        <div class="bar" id="matProgressStream"></div>
+        <div class="bar" id="matProgressBuffer"></div>
+        <div class="bar" id="matProgressAux"></div>
+        <div class="bar" id="matProgressPrimary"></div>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'mat-progress',
+
+            // BEHAVIORS
+            behaviors: [
+                Polymer.MatPalette
+            ],
+
+            /*********************************************************************/
+
+            /**
+             * Fired when the buffering state changes.
+             *
+             * @event mat-progress-buffer
+             * @param {Element} firer
+             * @param {boolean} isBuffering
+             * @bubbles
+             */
+
+            /**
+             * Fired when the progress state changes.
+             *
+             * @event mat-progress-state
+             * @param {Element} firer
+             * @param {string} state
+             * @bubbles
+             */
+
+            /*********************************************************************/
+
+            /**
+             * Hides the spinner.
+             *
+             * @method hide
+             * @returns {Element}
+             */
+            hide: function () {
+                var self = this;
+                self.showed = false;
+                return self;
+            },
+
+            /**
+             * Shows the spinner.
+             *
+             * @method show
+             * @returns {Element}
+             */
+            show: function () {
+                var self = this;
+                self.showed = true;
+                return self;
+            },
+
+            /**
+             * Toggles the spinner.
+             *
+             * @method toggle
+             * @returns {Element}
+             */
+            toggle: function () {
+                return this[this.showed ? 'hide' : 'show']();
+            },
+
+            /*********************************************************************/
+
+            /**
+             * Refreshes the element.
+             *
+             * @method _refresh
+             * @returns {Element}
+             * @private
+             */
+            _refresh: function() {
+
+                // Vars
+                var self = this;
+
+                // Styling
+                XP.setStyle(self.$.matProgressPrimary, 'transform', 'scale(' + (self.ratio || 0) + ', 1)');
+                XP.setStyle(self.$.matProgressBuffer, 'transform', 'scale(' + (self.mode === 'buffer' ? self.bufferRatio || 0 : 1) + ', 1)');
+
+                return self;
+            },
+
+            /*********************************************************************/
+
+            // OBSERVERS
+            observers: [
+                '_refresh(bufferValue, max, min, mode, value)'
+            ],
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * The progress buffer color.
+                 *
+                 * @attribute buffer-color
+                 * @type string
+                 */
+                 bufferColor: {
+                    observer: '_colorChanged',
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The progress buffer ratio.
+                 *
+                 * @attribute buffer-ratio
+                 * @type number
+                 * @notifies
+                 * @readonly
+                 */
+                bufferRatio: {
+                    computed: '_computeRatio(bufferValue, min, max)',
+                    notify: true,
+                    type: Number
+                },
+
+                /**
+                 * The progress buffer value.
+                 *
+                 * @attribute buffer-value
+                 * @type number
+                 */
+                bufferValue: {
+                    type: Number,
+                    value: null
+                },
+
+                /**
+                 * If set to true, the progress if buffering.
+                 *
+                 * @attribute buffering
+                 * @type boolean
+                 * @default false
+                 * @notifies
+                 * @readonly
+                 */
+                buffering: {
+                    computed: '_computeBuffering(bufferValue, min, max)',
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: Boolean
+                },
+
+                /**
+                 * The progress color.
+                 *
+                 * @attribute color
+                 * @type string
+                 */
+                color: {
+                    observer: '_colorChanged',
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The progress maximum value.
+                 *
+                 * @attribute max
+                 * @type number
+                 * @default 100
+                 */
+                max: {
+                    reflectToAttribute: true,
+                    type: Number,
+                    value: 100
+                },
+
+                /**
+                 * The progress minimum value.
+                 *
+                 * @attribute min
+                 * @type number
+                 * @default 0
+                 */
+                min: {
+                    reflectToAttribute: true,
+                    type: Number,
+                    value: 0
+                },
+
+                /**
+                 * The progress mode.
+                 *
+                 * @attribute mode
+                 * @type "buffer" | "determinate" | "indeterminate" | "query"
+                 * @default "determinate"
+                 */
+                mode: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: 'determinate'
+                },
+
+                /**
+                 * The progress ratio.
+                 *
+                 * @attribute ratio
+                 * @type number
+                 * @notifies
+                 * @readonly
+                 */
+                ratio: {
+                    computed: '_computeRatio(value, min, max)',
+                    notify: true,
+                    type: Number
+                },
+
+                /**
+                 * If set to true, the progress is visible.
+                 *
+                 * @attribute active
+                 * @type boolean
+                 * @default false
+                 */
+                showed: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The progress state.
+                 *
+                 * @attribute state
+                 * @type "finished" | "idle" | "loading"
+                 * @default "idle"
+                 * @notifies
+                 * @readonly
+                 */
+                state: {
+                    computed: '_computeState(value, min, max)',
+                    notify: true,
+                    observer: '_stateChanged',
+                    reflectToAttribute: true,
+                    type: String,
+                    value: 'idle'
+                },
+
+                /**
+                 * The progress value.
+                 *
+                 * @attribute value
+                 * @type number
+                 */
+                value: {
+                    type: Number,
+                    value: null
+                }
+            },
+
+            /**
+             * The list of modes.
+             *
+             * @property modes
+             * @type Array
+             * @default ["buffer", "determinate", "indeterminate", "query"]
+             * @readonly
+             */
+            modes: ['buffer', 'determinate', 'indeterminate', 'query'],
+
+            /**
+             * The list of states.
+             *
+             * @property states
+             * @type Array
+             * @default ["finished", "idle", "loading"]
+             * @readonly
+             */
+            states: ['finished', 'idle', 'loading'],
+
+            /*********************************************************************/
+
+            // COMPUTER
+            _computeBuffering: function (bufferValue, min, max) {
+                try { return XP.ratio(bufferValue, min, max) < 1; } catch (exc) { return false; }
+            },
+
+            // COMPUTER
+            _computeRatio: function (value, min, max) {
+                try { return XP.ratio(value, min, max); } catch (exc) { return null; }
+            },
+
+            // COMPUTER
+            _computeState: function (value, min, max) {
+                if (XP.isVoid(value) || XP.isVoid(min) || XP.isVoid(max)) { return 'idle'; }
+                return value >= max ? 'finished' : 'loading';
+            },
+
+            /*********************************************************************/
+
+            // OBSERVER
+            _bufferingChanged: function () {
+
+                // Firing
+                this.fire('mat-progress-buffer', {firer: this, isBuffering: this.buffering});
+            },
+
+            // OBSERVER
+            _colorChanged: function () {
+
+                // Vars
+                var self = this;
+
+                // Styling
+                XP.setStyle(self.$.matProgressPrimary, 'background', self._getColor(self.color));
+                XP.setStyle(self.$.matProgressBuffer, 'background', self._getColor(self.bufferColor));
+                XP.setStyle(self.$.matProgressAux, 'background', self._getColor(self.color));
+                XP.setStyle(self.$.matProgressStream, 'color', self._getColor(self.bufferColor));
+
+                return self;
+            },
+
+            // OBSERVER
+            _stateChanged: function () {
+
+                // Firing
+                this.fire('mat-progress-state', {firer: this, state: this.state});
+            }
+        });
+    </script>
+</dom-module>

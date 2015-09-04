@@ -1,0 +1,200 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This element is used to know which device the user is using.
+The `device` and `mobile` attributes are also set on the frame's html tag.
+
+@element xp-device
+@description A custom element able to recognize the user's device
+@keywords web app, html5, expandjs, web-components
+@group functionality
+@homepage http://expandjs.com/elements/xp-device
+@repository https://github.com/ExpandJS/xp-device
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency xp-script ExpandJS/xp-script#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../xp-script/xp-script.html">
+
+<dom-module id="xp-device">
+
+    <template>
+
+        <style>
+            :host {
+                display: none !important;
+            }
+        </style>
+
+        <xp-script id="xpDeviceScript" on-xp-script-load="_handleScript" on-xp-script-state="_handleState"></xp-script>
+
+    </template>
+
+    <script>
+        (function () {
+
+            // Vars
+            var scriptState = 'idle';
+
+            // Defining
+            Polymer({
+
+                // ELEMENT
+                is: 'xp-device',
+
+                /*********************************************************************/
+
+                /**
+                 * Fired when the device has been detected.
+                 *
+                 * @event xp-device-detect
+                 * @param {Element} firer
+                 * @param {string} type
+                 * @param {boolean} mobile
+                 * @bubbles
+                 */
+
+                /*********************************************************************/
+
+                // PROPERTIES
+                properties: {
+
+                    /**
+                     * If set to true, the user's device is a mobile one.
+                     *
+                     * @attribute mobile
+                     * @type boolean
+                     * @default false
+                     * @notifies
+                     * @readonly
+                     */
+                    mobile: {
+                        notify: true,
+                        readOnly: true,
+                        reflectToAttribute: true,
+                        type: Boolean,
+                        value: false
+                    },
+
+                    /**
+                     * The user's device's form factor.
+                     *
+                     * @attribute type
+                     * @type "app" | "desktop" | "feature-phone" | "other-mobile" | "other-non-mobile" | "robot" | "smart-tv" | "smartphone" | "tablet"
+                     * @notifies
+                     * @readonly
+                     */
+                    type: {
+                        notify: true,
+                        observer: '_typeChanged',
+                        readOnly: true,
+                        reflectToAttribute: true,
+                        type: String,
+                        value: null
+                    }
+                },
+
+                /**
+                 * The list of instances.
+                 *
+                 * @property instances
+                 * @type Array
+                 * @default []
+                 * @readonly
+                 */
+                instances: [],
+
+                /**
+                 * Used internally to avoid multiple detections.
+                 *
+                 * @property script
+                 * @type Object
+                 * @default {state: "idle"}
+                 * @readonly
+                 */
+                script: {state: 'idle'},
+
+                /*********************************************************************/
+
+                // OBSERVER
+                _typeChanged: function (post) {
+                    XP.setAttributes(XP.getElement('html'), {device: post, mobile: this.mobile});
+                },
+
+                /*********************************************************************/
+
+                // LISTENER
+                ready: function () {
+
+                    // Vars
+                    var self   = this,
+                        item   = window.localStorage ? localStorage.getItem('device') : null,
+                        device = item && JSON.parse(item);
+
+                    // Pushing
+                    self.push('instances', self);
+
+                    // Requesting
+                    if (!device && scriptState === 'idle') { self.$.xpDeviceScript.src = 'https://wurfl.io/wurfl.js'; }
+
+                    // Checking
+                    if (!device) { return; }
+
+                    // Setting
+                    self._setMobile(device.mobile);
+                    self._setType(device.type);
+                },
+
+                /*********************************************************************/
+
+                // HANDLER
+                _handleScript: function () {
+
+                    // Vars
+                    var self = this;
+
+                    // Setting
+                    self._setMobile(WURFL.is_mobile);
+                    self._setType(WURFL.form_factor);
+
+                    // Storing
+                    if (window.localStorage) { localStorage.setItem('device', JSON.stringify({mobile: self.mobile, type: self.type})); }
+                },
+
+                // HANDLER
+                _handleState: function (event) {
+
+                    // Caching
+                    scriptState = event.detail.state;
+
+                    // Vars
+                    var self   = this,
+                        item   = event.detail.state === 'loaded' && window.localStorage ? localStorage.getItem('device') : null,
+                        device = item && JSON.parse(item);
+
+                    // Checking
+                    if (!device) { return; }
+
+                    // Setting
+                    self.instances.forEach(function (instance) {
+                        instance._setMobile(device.mobile);
+                        instance._setType(device.type);
+                    });
+                }
+            });
+        }());
+    </script>
+
+</dom-module>
+
+<xp-device></xp-device>

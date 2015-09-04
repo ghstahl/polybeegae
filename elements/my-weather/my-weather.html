@@ -1,0 +1,92 @@
+<dom-module id="my-weather">
+    <style>
+        :host {
+            display: block;
+        }
+    </style>
+    <template>
+        <iron-ajax id="weatherAjax" params="{{weatherParams}}" on-response="handleResponse" handle-as="json" last-response="{{ajaxResponse}}"></iron-ajax>
+
+        <ul>
+            <template is="dom-repeat" items="{{items}}">
+                <li><span class="paper-font-body1">{{item}}</span>
+                </li>
+            </template>
+        </ul>
+
+        <h2 class="paper-font-display2">
+                City:<span>{{location}}</span>
+                </h2>
+
+        <b><span>{{ajaxResponse.city.country}}</span></b>
+        <template is="dom-repeat" items="{{ajaxResponse.list}}">
+            <div>Clouds: <span>{{item.clouds}}</span>
+            </div>
+            <div>Rain: <span>{{item.rain}}</span>
+            </div>
+        </template>
+        <content-loader id="hiContent"></content-loader>
+        <content-md-loader id="mdContent"></content-md-loader>
+    </template>
+
+    <script>
+        (function () {
+            Polymer({
+                is: 'my-weather',
+                properties: {
+                    items: {
+                        type: Array,
+                        notify: true,
+                    },
+                    ajaxResponse: {},
+                    url: {
+
+                        type: String
+                    },
+                    location: {
+                        type: String,
+                        value: null,
+                        observer: '_locationChanged'
+                    },
+                    weatherParams: {}
+                },
+                _locationChanged: function (newValue, oldValue) {
+                    if (newValue != null) {
+                        console.log("_locationChanged:" + newValue);
+                        this.weatherParams = {
+                            q: this.location,
+                            cnt: "5"
+                        };
+                        this.$.weatherAjax.params = this.weatherParams;
+                        this.$.weatherAjax.auto = true;
+                        
+                        this.$.hiContent.filePath = "/static/"+this.location+"/";
+                        this.$.mdContent.filePath = "/static/"+this.location+"/index.md";
+                    }
+                },
+                ready: function () {
+                    this.url = "http://api.openweathermap.org/data/2.5/forecast/daily";
+                    this.$.weatherAjax.url = this.url;
+
+
+                    //this.$.weatherAjax.generateRequest();
+
+                    this.items = [
+                    'Thunder Web App boilerplate',
+                    'Iron Elements and Paper Elements',
+                    'End-to-end Build Tooling (including Vulcanize)',
+                    'Unit testing with Web Component Tester',
+                    'Routing with Page.js',
+                    'Offline support with the Platinum Service Worker Elements'
+                  ];
+                    console.log("READY");
+                    console.log(this.location);
+                },
+                handleResponse: function (request) {
+                    console.log("response recieved");
+                }
+            });
+        })();
+    </script>
+
+</dom-module>

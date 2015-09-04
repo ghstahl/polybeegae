@@ -1,0 +1,289 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+An element used to display a [Material Design raised button](http://www.google.com/design/spec/components/buttons.html#buttons-flat-raised-buttons).
+
+```html
+<mat-raised-button label="Click me!"></mat-raised-button>
+```
+
+It can be used as a trigger for other actions...
+
+```html
+<mat-raised-button label="Show dialog" target="myDialog" toggles-target></mat-raised-button>
+<mat-dialog id="myDialog"></mat-dialog>
+```
+
+...or it can behave as a classic anchor tag.
+
+```html
+<mat-raised-button label="GitHub" href="https://github.com/ExpandJS" target="_blank"></mat-raised-button>
+```
+
+---
+
+## Styling
+
+The button's background color can be changed accordingly to the
+[Material Design palette](http://www.google.com/design/spec/style/color.html#color-color-palette).
+
+```html
+<mat-raised-button background="red" label="Red button"></mat-raised-button>
+```
+
+@element mat-raised-button
+@description A custom element used to display a Material Design raised button
+@keywords material design, material raised button, web app, html5, expandjs, web-components
+@group contents
+@homepage http://expandjs.com/elements/mat-raised-button
+@repository https://github.com/ExpandJS/mat-raised-button
+@demo http://expandjs.com/demo/mat-raised-button
+
+@behavior xp-anchor-behavior /bower_components/xp-anchor-behavior/xp-anchor-behavior.html
+@behavior xp-pressed-behavior /bower_components/xp-pressed-behavior/xp-pressed-behavior.html
+@behavior xp-referral-behavior /bower_components/xp-referral-behavior/xp-referral-behavior.html
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency mat-icon ExpandJS/mat-icon#0.9.8
+@dependency mat-paper ExpandJS/mat-paper#0.9.8
+@dependency mat-ripple ExpandJS/mat-ripple#0.9.8
+@dependency xp-anchor-behavior ExpandJS/xp-anchor-behavior#0.9.8
+@dependency xp-pressed-behavior ExpandJS/xp-pressed-behavior#0.9.8
+@dependency xp-referral-behavior ExpandJS/xp-referral-behavior#0.9.8
+
+@devDependency mat-demo ExpandJS/mat-demo#0.9.8
+@devDependency mat-icons ExpandJS/mat-icons#0.9.8
+@devDependency mat-tooltip ExpandJS/mat-tooltip#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../mat-icon/mat-icon.html">
+<link rel="import" href="../mat-paper/mat-paper.html">
+<link rel="import" href="../mat-ripple/mat-ripple.html">
+<link rel="import" href="../xp-anchor-behavior/xp-anchor-behavior.html">
+<link rel="import" href="../xp-pressed-behavior/xp-pressed-behavior.html">
+<link rel="import" href="../xp-referral-behavior/xp-referral-behavior.html">
+
+<dom-module id="mat-raised-button">
+
+    <template>
+
+        <style include="xp-pressed-styles"></style>
+
+        <style>
+            :host {
+                @apply(--mat-font-button);
+                border-radius: 2px;
+                height: 36px;
+                margin: 6px 0;
+                text-align: center;
+            }
+
+            :host([empty]) {
+                display: none !important;
+            }
+
+            :host([empty-label]) {
+                width: 36px;
+            }
+
+            :host #matRaisedButtonWrapper {
+                border-radius: inherit;
+                height: 100%;
+                overflow: visible;
+            }
+
+            :host #matRaisedButtonAnchor {
+                display: block;
+                height: 100%;
+                outline: 0;
+                overflow: hidden;
+                text-decoration: none;
+            }
+
+            :host #matRaisedButtonAnchor:after {
+                bottom: -6px;
+                content: "";
+                left: -4px;
+                position: absolute;
+                right: -4px;
+                top: -6px;
+            }
+
+            :host #matRaisedButtonAnchor[href]:hover {
+                text-decoration: underline;
+            }
+
+            :host #matRaisedButtonMain {
+                padding: 8px 12px;
+                position: relative;
+            }
+
+            :host #matRaisedButtonIcon {
+                left: 12px;
+                margin-top: -2px;
+                position: absolute;
+            }
+
+            :host([empty-label]) #matRaisedButtonIcon {
+                left: auto;
+                margin: -8px -6px;
+                position: relative;
+            }
+
+            :host #matRaisedButtonIcon:not([empty]) + #matRaisedButtonLabel {
+                margin-left: 36px;
+            }
+        </style>
+
+        <mat-paper id="matRaisedButtonWrapper" background="[[background]]" disabled="[[disabled]]" z="2" pressable>
+            <a id="matRaisedButtonAnchor" tabindex="-1">
+                <div id="matRaisedButtonMain">
+                    <mat-icon id="matRaisedButtonIcon" disabled="[[disabled]]" name="[[icon]]" src="[[iconSrc]]"></mat-icon>
+                    <mat-ink id="matRaisedButtonLabel" disabled="[[disabled]]">{{label}}</mat-ink>
+                </div>
+            </a>
+            <mat-ripple context="[[self]]" id="matRaisedButtonRipple"></mat-ripple>
+        </mat-paper>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'mat-raised-button',
+
+            // BEHAVIORS
+            behaviors: [
+                Polymer.XPAnchorBehavior,
+                Polymer.XPPressedBehavior,
+                Polymer.XPReferralBehavior
+            ],
+
+            /*********************************************************************/
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * The paper's background color.
+                 *
+                 * @attribute background
+                 * @type string
+                 */
+                background: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The element's data.
+                 *
+                 * @attribute data
+                 * @type *
+                 * @notifies
+                 */
+                data: {
+                    notify: true,
+                    value: null
+                },
+
+                /**
+                 * If set to true, the element is hidden.
+                 *
+                 * @attribute empty
+                 * @type boolean
+                 * @notifies
+                 * @readonly
+                 */
+                empty: {
+                    computed: '_computeEmpty(icon, iconSrc, label)',
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: Boolean
+                },
+
+                /**
+                 * If set to true, the label is hidden.
+                 *
+                 * @attribute empty-label
+                 * @type boolean
+                 * @notifies
+                 * @readonly
+                 */
+                emptyLabel: {
+                    computed: '_computeEmptyLabel(label)',
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: Boolean
+                },
+
+                /**
+                 * The button's icon.
+                 *
+                 * @attribute icon
+                 * @type string
+                 */
+                icon: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The button's icon's src.
+                 *
+                 * @attribute icon-src
+                 * @type string
+                 */
+                iconSrc: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The button's label.
+                 *
+                 * @attribute label
+                 * @type string
+                 */
+                label: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                }
+            },
+
+            /*********************************************************************/
+
+            // COMPUTER
+            _computeEmpty: function (icon, iconSrc, label) {
+                return !icon && !iconSrc && !label;
+            },
+
+            // COMPUTER
+            _computeEmptyLabel: function (label) {
+                return !label;
+            },
+
+            /*********************************************************************/
+
+            // LISTENER
+            ready: function () {
+                this._setAnchor(this.$.matRaisedButtonAnchor);
+            }
+        });
+    </script>
+
+</dom-module>

@@ -1,0 +1,54 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This stylesheet is used to stylize an toast element.
+
+@stylesheet xp-toast-styles
+@description A stylesheet used to stylize an toast element
+@keywords web app, html5, expandjs, web-components
+@group stylesheets
+@homepage http://expandjs.com/elements/xp-toast-styles
+@repository https://github.com/ExpandJS/xp-toast-behavior
+
+@dependency polymer Polymer/polymer#^1.1.0
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="xp-toast-styles">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                overflow: visible;
+                position: fixed;
+                text-align: left;
+                -webkit-transition: -webkit-transform 0.5s, visibility 0.5s;
+                transition: transform 0.5s, visibility 0.5s;
+                visibility: hidden;
+                will-change: -webkit-transform, transform;
+                z-index: 9999;
+            }
+
+            :host([showed]) {
+                -webkit-transform: translate(0, 0);
+                transform: translate(0, 0);
+                visibility: visible;
+            }
+
+            :host(:not([showed])) {
+                pointer-events: none !important;
+            }
+        </style>
+
+    </template>
+
+</dom-module>

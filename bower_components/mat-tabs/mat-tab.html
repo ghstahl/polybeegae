@@ -1,0 +1,606 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+An element used to display a single [Material Design tab](http://www.google.com/design/spec/components/tabs.html).
+
+It must be used in conjunction with [mat-tabs](http://expandjs.com/elements/mat-tabs).
+
+```html
+<mat-tabs>
+    <mat-tab label="Music"></mat-tab>
+    <mat-tab label="Movies"></mat-tab>
+    <mat-tab label="Books"></mat-tab>
+</mat-tabs>
+```
+
+A tab can have an `icon` instead of a `label`.
+
+```html
+<mat-tabs>
+    <mat-tab icon="communication:call"></mat-tab>
+    <mat-tab icon="action:favorite"></mat-tab>
+    <mat-tab icon="maps:person-pin"></mat-tab>
+</mat-tabs>
+```
+
+It can also contain data and be aware if it has changed, by setting `data` and `memento` on the tab.
+The `data` will be automatically checked against the `memento`, which represents a specific state of `data`.
+Whenever they are different, `modified` will be set on the tab.
+
+```html
+<mat-tabs>
+    <mat-tab id="file123" label="My File"></mat-tab>
+    ...
+</mat-tabs>
+
+<script>
+    var tab = XP.getElementById('file123');
+
+    tab.data    = {name: "file123", text: "Hello world!"};
+    tab.memento = {name: "file123", text: "Hello"};
+</script>
+```
+
+Tabs can also be `closable` and combined with [mat-pages](http://expandjs.com/elements/mat-pages)
+to create a generic tab view. The attribute is automatically set on dynamically opened tabs.
+
+```html
+<mat-tabs selected="{{selected}}">
+    <mat-tab icon="communication:call" closable></mat-tab>
+    <mat-tab icon="action:favorite" closable></mat-tab>
+    <mat-tab icon="maps:person-pin" closable></mat-tab>
+</mat-tabs>
+
+<mat-pages selected="{{selected}}">
+    <mat-page content="app-calls"></mat-page>
+    <mat-page content="app-favorites"></mat-page>
+    <mat-page content="app-nearby"></mat-page>
+</mat-pages>
+```
+
+The `closer` can do different actions: instead of closing the tab, it could open a menu with more options.
+
+```html
+<mat-tabs>
+    <mat-tab label="myFile"
+             closer-icon="navigation:arrow-drop-down-circle"
+             closer-target="tabMenu"
+             closable>
+     </mat-tab>
+    ...
+</mat-tabs>
+
+<mat-menu id="tabMenu">
+    <mat-option label="Close"></mat-option>
+    <mat-option label="Save"></mat-option>
+    <mat-option label="Info"></mat-option>
+</mat-menu>
+```
+
+
+@element mat-tab
+@description A custom element used to display a single Material Design tab
+@keywords material design, material tab, web app, html5, expandjs, web-components
+@group navigation
+@homepage http://expandjs.com/elements/mat-tab
+@repository https://github.com/ExpandJS/mat-tab
+@demo http://expandjs.com/demo/mat-tabs
+
+@behavior xp-pressed-behavior /bower_components/xp-pressed-behavior/xp-pressed-behavior.html
+@behavior xp-referral-behavior /bower_components/xp-referral-behavior/xp-referral-behavior.html
+@behavior xp-slave-behavior /bower_components/xp-slave-behavior/xp-slave-behavior.html
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency mat-icon ExpandJS/mat-icon#0.9.8
+@dependency mat-icon-button ExpandJS/mat-icon-button#0.9.8
+@dependency mat-icons ExpandJS/mat-icons#0.9.8
+@dependency mat-ink ExpandJS/mat-ink#0.9.8
+@dependency mat-ripple ExpandJS/mat-ripple#0.9.8
+@dependency xp-observer ExpandJS/xp-observer#0.9.8
+@dependency xp-pressed-behavior ExpandJS/xp-pressed-behavior#0.9.8
+@dependency xp-referral-behavior ExpandJS/xp-referral-behavior#0.9.8
+@dependency xp-slave-behavior ExpandJS/xp-slave-behavior#0.9.8
+
+@devDependency mat-demo ExpandJS/mat-demo#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../mat-icon/mat-icon.html">
+<link rel="import" href="../mat-icon-button/mat-icon-button.html">
+<link rel="import" href="../mat-icons/navigation-icons.html">
+<link rel="import" href="../mat-ink/mat-ink.html">
+<link rel="import" href="../mat-ripple/mat-ripple.html">
+<link rel="import" href="../xp-observer/xp-observer.html">
+<link rel="import" href="../xp-pressed-behavior/xp-pressed-behavior.html">
+<link rel="import" href="../xp-referral-behavior/xp-referral-behavior.html">
+<link rel="import" href="../xp-slave-behavior/xp-slave-behavior.html">
+
+<dom-module id="mat-tab">
+
+    <template>
+
+        <style include="xp-pressed-styles"></style>
+
+        <style>
+            :host {
+                @apply(--mat-font-button);
+                display: block;
+                height: 48px;
+                line-height: 50px !important; /* override */
+                min-width: 160px;
+                opacity: 0.6;
+                position: relative;
+                text-align: center;
+            }
+
+            :host([active]) {
+                opacity: 1;
+            }
+
+            :host([closable]) {
+                min-width: 184px;
+            }
+
+            :host #matTabWrapper,
+            :host #matTabMain {
+                height: 100%;
+            }
+
+            :host #matTabMain {
+                padding: 0 24px;
+                position: relative;
+            }
+
+            :host #matTabCloser {
+                height: 20px;
+                margin: 0;
+                position: absolute;
+                right: 14px;
+                top: 14px;
+                width: 20px;
+            }
+
+            :host #matTabCloser::shadow #matIconButtonIcon,
+            :host #matTabCloser::shadow #matIconButtonActiveIcon {
+                height: 18px;
+                width: 18px;
+            }
+
+            :host #matTabCloser ~ #matTabLabel {
+                margin-right: 24px;
+            }
+
+            :host #matTabIcon {
+                margin: 12px 0;
+            }
+
+            :host #matTabLabel {
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            :host([empty-label]) #matTabLabel {
+                display: none !important;
+            }
+
+            /* MOBILE */
+
+            @media (max-width: 959px) {
+
+                :host #matTabMain {
+                    padding: 0 12px;
+                }
+            }
+        </style>
+
+        <div id="matTabWrapper">
+            <div id="matTabMain">
+                <template is="dom-if" if="[[_isClosable(closable, label)]]"><mat-icon-button id="matTabCloser" active="{{modified}}" active-icon="[[_computeCloserActiveIcon(closerActiveIcon, closerTarget)]]" active-icon-src="[[closerActiveIconSrc]]" data="[[data]]" disabled="[[closerDisabled]]" icon="[[_computeCloserIcon(closerIcon)]]" icon-src="[[closerIconSrc]]" target="[[_computeCloserTarget(closerTarget, modified)]]" toggles-target on-xp-activate="_handleClose" on-down="_handleStop" on-click="_handleStop" on-up="_handleStop"></mat-icon-button></template>
+                <template is="dom-if" if="[[_hasIcon(icon, iconSrc, label)]]"><mat-icon id="matTabIcon" name="[[icon]]" src="[[iconSrc]]"></mat-icon></template>
+                <div id="matTabLabel">{{label}}</div>
+            </div>
+            <mat-ripple context="[[self]]" id="matTabRipple"></mat-ripple>
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'mat-tab',
+
+            // BEHAVIORS
+            behaviors: [
+                Polymer.XPPressedBehavior,
+                Polymer.XPReferralBehavior,
+                Polymer.XPSlaveBehavior
+            ],
+
+            /*********************************************************************/
+
+            /**
+             * Fired when tab's data changes.
+             *
+             * @event mat-tab-change
+             * @param {Element} firer
+             * @param {Object} data
+             * @param {Object} memento
+             * @param {boolean} isModified
+             * @bubbles
+             */
+
+            /**
+             * Fired when tab is about to close.
+             *
+             * @event mat-tab-close
+             * @param {Element} firer
+             * @param {boolean} isActive
+             * @param {boolean} isModified
+             * @bubbles
+             */
+
+            /*********************************************************************/
+
+            /**
+             * Compares the tab's data and memento.
+             *
+             * @method _compare
+             * @returns {Element}
+             * @private
+             */
+            _compare: function () {
+                var self = this;
+                self._setModified(!!self.dataObserver && !!self.mementoObserver && !XP.isEquivalent(self.data, self.memento));
+                return self;
+            },
+
+            /**
+             * Returns the masters map.
+             *
+             * @method _setupMasters
+             * @returns {Object}
+             * @private
+             */
+            _setupMasters: function () {
+                return {selector: 'mat-tabs'};
+            },
+
+            /*********************************************************************/
+
+            // OBSERVERS
+            observers: [
+                '_compare(dataObserver, mementoObserver)'
+            ],
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * If set to true, the tab can be closed.
+                 *
+                 * @attribute closable
+                 * @type boolean
+                 * @default false
+                 */
+                closable: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The tab's closer's active icon, used when modified is true.
+                 *
+                 * @attribute closer-active-icon
+                 * @type string
+                 */
+                closerActiveIcon: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The tab's closer's active icon's src, used when modified is true.
+                 *
+                 * @attribute closer-active-icon-src
+                 * @type string
+                 */
+                closerActiveIconSrc: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * If set to true, the tab's closer is disabled.
+                 *
+                 * @attribute closer-disabled
+                 * @type boolean
+                 * @default false
+                 */
+                closerDisabled: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The tab's closer's icon
+                 *
+                 * @attribute closer-icon
+                 * @type string
+                 */
+                closerIcon: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The tab's closer's icon's src
+                 *
+                 * @attribute closer-icon-src
+                 * @type string
+                 */
+                closerIconSrc: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The tab's closer's target.
+                 *
+                 * @attribute closer-target
+                 * @type Element | string
+                 * @notifies
+                 */
+                closerTarget: {
+                    notify: true,
+                    value: null
+                },
+
+                /**
+                 * The name of the page's element to be injected.
+                 *
+                 * @attribute content
+                 * @type string
+                 * @notifies
+                 */
+                content: {
+                    notify: true,
+                    observer: '_contentChanged',
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The element's data
+                 *
+                 * @attribute data
+                 * @type *
+                 * @notifies
+                 */
+                data: {
+                    notify: true,
+                    observer: '_dataChanged',
+                    value: null
+                },
+
+                /**
+                 * If set to true, the tab is hidden.
+                 *
+                 * @attribute empty
+                 * @type boolean
+                 * @default false
+                 * @notifies
+                 * @readonly
+                 */
+                empty: {
+                    computed: '_computeEmpty(icon, iconSrc, label)',
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: Boolean
+                },
+
+                /**
+                 * The tab's icon.
+                 *
+                 * @attribute icon
+                 * @type string
+                 */
+                icon: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The tab's icon's src.
+                 *
+                 * @attribute icon-src
+                 * @type string
+                 */
+                iconSrc: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The tab's label.
+                 *
+                 * @attribute label
+                 * @type string
+                 */
+                label: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The tab's memento, used to know when tab's data changes.
+                 *
+                 * @attribute memento
+                 * @type *
+                 * @notifies
+                 */
+                memento: {
+                    notify: true,
+                    observer: '_mementoChanged',
+                    value: null
+                },
+
+                /**
+                 * If set to true, the tab's data and memento are not equivalent.
+                 *
+                 * @attribute modified
+                 * @type boolean
+                 * @default false
+                 * @notifies
+                 * @readonly
+                 */
+                modified: {
+                    notify: true,
+                    observer: '_modifiedChanged',
+                    readOnly: true,
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The page associated with the tab.
+                 *
+                 * @attribute page
+                 * @type Element
+                 * @notifies
+                 */
+                page: {
+                    notify: true,
+                    value: null
+                },
+
+                /**
+                 * The master selector.
+                 *
+                 * @attribute selector
+                 * @type Element
+                 * @notifies
+                 * @readonly
+                 */
+                selector: {
+                    notify: true,
+                    readOnly: true,
+                    value: null
+                }
+            },
+
+            /*********************************************************************/
+
+            // COMPUTER
+            _computeCloserActiveIcon: function (closerActiveIcon, closerTarget) {
+                return closerActiveIcon || (closerTarget && 'navigation:arrow-drop-down-circle') || null;
+            },
+
+            // COMPUTER
+            _computeCloserIcon: function (closerIcon) {
+                return closerIcon || 'navigation:cancel';
+            },
+
+            // COMPUTER
+            _computeCloserTarget: function (closerTarget, modified) {
+                return (modified && closerTarget) || null;
+            },
+
+            // COMPUTER
+            _computeEmpty: function (icon, iconSrc, label) {
+                return !icon && !iconSrc && !label;
+            },
+
+            // COMPUTER
+            _hasIcon: function (icon, iconSrc, label) {
+                return (!!icon || !!iconSrc) && !label;
+            },
+
+            // COMPUTER
+            _isClosable: function (closable, label) {
+                return closable && !!label;
+            },
+
+            /*********************************************************************/
+
+            // OBSERVER
+            _contentChanged: function (post) {
+                if (this.page) { this.page.content = post; }
+            },
+
+            // OBSERVER
+            _dataChanged: function (post, pre) {
+
+                // Vars
+                var self = this;
+
+                // Checking
+                if (arguments.length < 2) { return; }
+
+                // Setting
+                if (self.page && self.page.data === pre) { self.page.data = post; }
+
+                // Disconnecting
+                if (self.dataObserver) { self.dataObserver.disconnect(); }
+
+                // Observing
+                self.dataObserver = XP.isObject(post) ? new XPObserver(post, self._compare.bind(self), true) : null;
+            },
+
+            // OBSERVER
+            _mementoChanged: function (post) {
+
+                // Vars
+                var self = this;
+
+                // Checking
+                if (arguments.length < 2) { return; }
+
+                // Disconnecting
+                if (self.mementoObserver) { self.mementoObserver.disconnect(); }
+
+                // Observing
+                self.mementoObserver = XP.isObject(post) ? new XPObserver(post, self._compare.bind(self), true) : null;
+            },
+
+            // OBSERVER
+            _modifiedChanged: function (post) {
+                this.fire('mat-tab-change', {firer: this, data: this.data, memento: this.memento, isModified: post});
+            },
+
+            /*********************************************************************/
+
+            // HANDLER
+            _handleClose: function (event) {
+                var self = this, target = event.detail.firer.findTarget();
+                if (!target) { self.fire('mat-tab-close', {firer: self, isActive: self.active, isModified: self.modified}); }
+                event.stopPropagation();
+            },
+
+            // HANDLER
+            _handleStop: function (event) {
+                event.stopPropagation();
+            }
+        });
+    </script>
+
+</dom-module>

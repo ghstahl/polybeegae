@@ -1,0 +1,42 @@
+{
+  "name": "mat-snackbar",
+  "license": "BSD-3-Clause",
+  "version": "0.9.8",
+  "main": "mat-snackbar.html",
+  "description": "A custom element used to display a Material Design snackbar",
+  "homepage": "http://expandjs.com/elements/mat-snackbar",
+  "authors": [
+    "Giuliano Rullo <g.rullo@expandjs.com>",
+    "Maurizio Stefàno <m.stefano@expandjs.com>",
+    "Robert Manolea <r.manolea@expandjs.com>"
+  ],
+  "keywords": [
+    "material design",
+    "material snackbar",
+    "web app",
+    "html5",
+    "expandjs",
+    "web-components"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "expandjs": "ExpandJS/expandjs#0.9.8",
+    "mat-typography": "ExpandJS/mat-typography#0.9.8",
+    "xp-toast-behavior": "ExpandJS/xp-toast-behavior#0.9.8",
+    "polymer": "Polymer/polymer#^1.1.0"
+  },
+  "devDependencies": {
+    "mat-demo": "ExpandJS/mat-demo#0.9.8"
+  },
+  "_release": "0.9.8",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.9.8",
+    "commit": "4e8423f731778f5e03af4c27177bb175507da650"
+  },
+  "_source": "git://github.com/ExpandJS/mat-snackbar.git",
+  "_target": "0.9.8",
+  "_originalSource": "ExpandJS/mat-snackbar"
+}

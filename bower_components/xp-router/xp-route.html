@@ -1,0 +1,116 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This element is used to declare a client route.
+
+It must be used in conjunction with xp-router.
+
+@element xp-route
+@description A custom element used to declare a client side route
+@keywords web app, html5, expandjs, web-components
+@group navigation
+@homepage http://expandjs.com/elements/xp-route
+@repository https://github.com/ExpandJS/xp-route
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+
+<script>
+    Polymer({
+
+        // ELEMENT
+        is: 'xp-route',
+
+        /*********************************************************************/
+
+        // PROPERTIES
+        properties: {
+
+            /**
+             * If set to true, the route is currently active.
+             *
+             * @attribute active
+             * @type boolean
+             * @default false
+             * @notifies
+             */
+            active: {
+                notify: true,
+                reflectToAttribute: true,
+                type: Boolean,
+                value: false
+            },
+
+            /**
+             * The route's data.
+             *
+             * @attribute data
+             * @type *
+             * @notifies
+             */
+            data: {
+                notify: true,
+                value: null
+            },
+
+            /**
+             * The route's name.
+             *
+             * @attribute name
+             * @type string
+             */
+            name: {
+                reflectToAttribute: true,
+                type: String,
+                value: null
+            },
+
+            /**
+             * The path that must be matched against the URL hash to activate the route.
+             *
+             * @attribute path
+             * @type string
+             */
+            path: {
+                reflectToAttribute: true,
+                type: String,
+                value: null
+            },
+
+            /**
+             * The path to be redirected at when the route becomes active.
+             *
+             * @attribute redirect
+             * @type string
+             */
+            redirect: {
+                reflectToAttribute: true,
+                type: String,
+                value: null
+            },
+
+            /**
+             * If set to true, the route's path is parsed as regex.
+             *
+             * @attribute regex
+             * @type boolean
+             * @default false
+             */
+            regex: {
+                reflectToAttribute: true,
+                type: Boolean,
+                value: false
+            }
+        }
+    });
+</script>

@@ -1,0 +1,528 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This element is used to display a documentation page.
+
+@element xp-doc-page
+@description A custom element used to create a documentation page
+@keywords documentation, web app, html5, expandjs, web-components
+@group contents
+@homepage http://expandjs.com/elements/xp-doc-page
+@repository https://github.com/ExpandJS/xp-doc-page
+@repository
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency iron-flex-layout PolymerElements/iron-flex-layout#^1.0.0
+@dependency xp-markdown ExpandJS/xp-markdown#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../xp-markdown/xp-markdown.html">
+
+<dom-module id="xp-doc-page">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                font-size: 16px;
+                font-weight: 400;
+                letter-spacing: 0.01em;
+                line-height: 24px;
+                overflow: visible;
+                text-overflow: clip;
+                text-rendering: optimizeLegibility;
+                white-space: normal;
+            }
+
+            /* RESET */
+
+            :host a {
+                text-decoration: none;
+            }
+
+            :host button {
+                background: transparent;
+                border: none;
+                color: inherit;
+                cursor: pointer;
+                font: inherit;
+                outline: 0;
+            }
+
+            :host a[href]:hover,
+            :host button:hover {
+                text-decoration: underline;
+            }
+
+            :host h1, :host h2,
+            :host ol, :host ul {
+                margin: 0;
+            }
+
+            :host hr {
+                background: hsla(0, 0%, 0%, 0.12);
+                border: none;
+                height: 1px;
+                margin: 16px 0 15px 0;
+            }
+
+            /* FONT */
+
+            :host .font-caption {
+                font-size: 12px;
+                font-weight: 400;
+                letter-spacing: 0.02em;
+                line-height: 14px;
+                text-overflow: ellipsis;
+                text-rendering: optimizeLegibility;
+                white-space: nowrap;
+            }
+
+            :host .font-button {
+                font-size: 14px;
+                font-weight: 500;
+                letter-spacing: 0.01em;
+                line-height: 20px;
+                text-overflow: ellipsis;
+                text-rendering: optimizeLegibility;
+                text-transform: uppercase;
+                white-space: nowrap;
+            }
+
+            :host .font-subhead {
+                font-size: 16px;
+                font-weight: 400;
+                letter-spacing: 0.01em;
+                line-height: 24px;
+                text-overflow: clip;
+                text-rendering: optimizeLegibility;
+                white-space: normal;
+            }
+
+            :host .font-title {
+                font-size: 20px;
+                font-weight: 500;
+                letter-spacing: 0.005em;
+                line-height: 24px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-rendering: optimizeLegibility;
+                white-space: nowrap;
+            }
+
+            :host .font-display2 {
+                font-size: 44px;
+                font-weight: 400;
+                letter-spacing: 0;
+                line-height: 48px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-rendering: optimizeLegibility;
+                white-space: nowrap;
+            }
+
+            /* HEADER */
+
+            :host header .demo,
+            :host header .repository {
+                float: right;
+                margin-left: 16px;
+            }
+
+            :host header .demo > *,
+            :host header .repository > * {
+                display: block;
+            }
+
+            :host header .type {
+                float: left;
+                opacity: 0.30;
+                text-transform: capitalize;
+            }
+
+            /* SECTION */
+
+            :host section {
+                margin-top: 16px;
+            }
+
+            :host section .extends,
+            :host section .adapts,
+            :host section .behaviors {
+                @apply(--layout-horizontal);
+                @apply(--layout-wrap);
+            }
+
+            :host section .title {
+                @apply(--layout-horizontal);
+                @apply(--layout-center);
+                @apply(--layout-justified);
+                margin-bottom: 16px;
+                text-transform: capitalize;
+            }
+
+            :host section .summary::shadow #xpMarkdownWrapper > *:last-child {
+                margin-bottom: 0;
+            }
+
+            :host section[data-private] .features-private::after {
+                content: "Hide private";
+            }
+
+            :host section:not([data-private]) .features-private::after {
+                content: "Show private";
+            }
+
+            :host section .feature {
+                @apply(--layout-vertical);
+            }
+
+            :host section:not([data-private]) .feature[data-private] {
+                display: none !important;
+            }
+
+            :host section .feature-name,
+            :host section .param-name {
+                font-weight: 600;
+                margin-right: 6px;
+                opacity: 0.80;
+            }
+
+            :host section .feature-type,
+            :host section .param-type,
+            :host section .returns-type {
+                margin-right: 6px;
+                opacity: 0.50;
+            }
+
+            :host section .feature-type:not(:last-of-type)::after {
+                content: ",";
+                margin: 0;
+            }
+
+            :host section .feature-tag {
+                @apply(--layout-self-start);
+                background: hsla(0, 0%, 13%, 0.80);
+                border-radius: 2px;
+                box-sizing: border-box;
+                color: hsla(0, 0%, 100%, 1);
+                margin-right: 6px;
+                padding: 4px 8px;
+            }
+
+            :host section .feature-default,
+            :host section .param-name.optional,
+            :host section .subtitle {
+                font-style: italic;
+            }
+
+            :host section .feature-summary::shadow ol,
+            :host section .feature-summary::shadow p,
+            :host section .feature-summary::shadow ul {
+                margin: 0;
+            }
+
+            :host section .param-name.optional:after {
+                content: ']';
+            }
+
+            :host section .param-name.optional:before {
+                content: '[';
+            }
+        </style>
+
+        <!-- HEADER -->
+        <template is="dom-if" if="[[data]]" restamp>
+            <header class="header">
+                <h1 class="font-display2 name">{{data.name}}</h1>
+                <h2 class="font-title type">{{data.type}}</h2>
+                <template is="dom-if" if="[[data.repository]]" restamp><a class="font-title repository" href$="[[data.repository]]" target="_blank" title="GitHub"><xp-icon src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAyNCIgaGVpZ2h0PSI5OTkiIHZpZXdCb3g9IjAgMCAxMDI0IDk5OSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBpZD0iaWNvbi1naXRodWIiIGZpbGw9IiMwMDAwMDAiPiAgICAgICAgPHBhdGggZD0iTTUxMiwwIEMyMjkuMjUsMCAwLDIyOS4yNSAwLDUxMiBDMCw3MzguMjUgMTQ2LjY4OCw5MzAuMTI1IDM1MC4xNTYsOTk3LjgxMiBDMzc1Ljc1LDEwMDIuNSAzODUuMDk0LDk4Ni42ODcgMzg1LjA5NCw5NzMuMTg3IEMzODUuMDk0LDk2MC45OTkgMzg0LjYyNSw5MjAuNjI1IDM4NC4zNzUsODc3Ljg3NSBDMjQyLDkwOC44MTIgMjExLjkwNiw4MTcuNSAyMTEuOTA2LDgxNy41IEMxODguNTk0LDc1OC4zNzUgMTU1LjA2Miw3NDIuNjI1IDE1NS4wNjIsNzQyLjYyNSBDMTA4LjUzMSw3MTAuODc1IDE1OC41OTIsNzExLjUgMTU4LjU5Miw3MTEuNSBDMjA5Ljk5OCw3MTUuMDYyIDIzNy4wNjIsNzY0LjI1IDIzNy4wNjIsNzY0LjI1IEMyODIuNzUsODQyLjUgMzU2LjkzNyw4MTkuODc1IDM4Ni4wNjIsODA2Ljc1IEMzOTAuNzE2LDc3My43NSA0MDMuOTY2LDc1MS4xMjUgNDE4LjU2Miw3MzguMzc1IEMzMDQuOTA2LDcyNS40MzggMTg1LjM0NCw2ODEuNSAxODUuMzQ0LDQ4NS4zMTIgQzE4NS4zNDQsNDI5LjM3NCAyMDUuMzEzLDM4My43NSAyMzgsMzQ3LjkwNiBDMjMyLjc4MSwzMzQuOTA2IDIxNS4xNTYsMjgyLjgxMiAyNDMuMDYyLDIxMi4zNDQgQzI0My4wNjIsMjEyLjM0NCAyODYsMTk4LjU5NCAzODMuODc0LDI2NC44NDQgQzQyNC42ODYsMjUzLjQzOCA0NjguNDY4LDI0Ny44MTMgNTExLjk5OSwyNDcuNjI1IEM1NTUuNDk5LDI0Ny44MTMgNTk5LjMxMSwyNTMuNSA2NDAuMTg3LDI2NC45MDYgQzczNy44NzUsMTk4LjU5NCA3ODAuODc1LDIxMi40MDYgNzgwLjg3NSwyMTIuNDA2IEM4MDguODc1LDI4Mi45MzcgNzkxLjI1LDMzNC45NjggNzg2LDM0Ny45MDYgQzgxOC44MTIsMzgzLjc1IDgzOC42MjUsNDI5LjM3NSA4MzguNjI1LDQ4NS4zMTIgQzgzOC42MjUsNjgyIDcxOC44NzUsNzI1LjMxMiA2MDQuODEzLDczOCBDNjIzLjI1MSw3NTMuODc1IDYzOS41NjMsNzg1IDYzOS41NjMsODMyLjc1IEM2MzkuNTYzLDkwMS4xODggNjM4Ljg3NSw5NTYuMzc1IDYzOC44NzUsOTczLjI1IEM2MzguODc1LDk4Ni44NzUgNjQ4LjE4NywxMDAyLjgxMiA2NzQuMTI1LDk5Ny44MTIgQzg3Ny40MzgsOTMwIDEwMjQsNzM4LjEyNSAxMDI0LDUxMiBDMTAyNCwyMjkuMjUgNzk0Ljc1LDAgNTEyLDAgTDUxMiwwIFoiPjwvcGF0aD4gICAgPC9nPjwvc3ZnPg=="></xp-icon></a></template>
+                <template is="dom-if" if="[[data.demo]]" restamp><a class="font-title demo" href$="[[data.demo]]" title="Demo" on-click="_handleClick"><xp-icon src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgNC41QzcgNC41IDIuNzMgNy42MSAxIDEyYzEuNzMgNC4zOSA2IDcuNSAxMSA3LjVzOS4yNy0zLjExIDExLTcuNWMtMS43My00LjM5LTYtNy41LTExLTcuNXpNMTIgMTdjLTIuNzYgMC01LTIuMjQtNS01czIuMjQtNSA1LTUgNSAyLjI0IDUgNS0yLjI0IDUtNSA1em0wLThjLTEuNjYgMC0zIDEuMzQtMyAzczEuMzQgMyAzIDMgMy0xLjM0IDMtMy0xLjM0LTMtMy0zeiIvPjwvc3ZnPg=="></xp-icon></a></template>
+                <div style="clear:both"></div>
+            </header>
+        </template>
+
+        <!-- DESCRIPTION -->
+        <template is="dom-if" if="[[data]]" restamp>
+            <section class="description">
+                <h3 class="font-subhead title">Description</h3><hr/>
+                <template is="dom-if" if="[[data.extends]]" restamp><div class="extends"><span class="feature-name">Extends:</span><span class="feature-type">{{data.extends.name}}</span></div></template>
+                <template is="dom-if" if="[[data.adapts]]" restamp><div class="adapts"><span class="feature-name">Adapts:</span><span class="feature-type">{{data.adapts.name}}</span></div></template>
+                <template is="dom-if" if="[[data.behaviors.length]]" restamp><div class="behaviors"><span class="feature-name">Behaviors:</span><template is="dom-repeat" items="[[data.behaviors]]" as="behavior"><span class="feature-type">{{behavior.name}}</span></template></div></template>
+                <template is="dom-if" if="[[_hasInheritance(data)]]" restamp><hr/></template>
+                <template is="dom-if" if="[[data.summary]]" restamp><xp-markdown class="summary" code="[[data.summary]]"></xp-markdown></template>
+            </section>
+        </template>
+
+        <!-- PARAMS -->
+        <template is="dom-if" if="[[data.params.length]]" restamp>
+            <section class="params">
+                <h3 class="font-subhead title">Arguments</h3><hr/>
+                <ol class="list params">
+                    <template is="dom-repeat" items="[[data.params]]" as="param">
+                        <li class="feature-param">
+                            <div class="param-info">
+                                <span class$="[[_computeParamClass(param)]]">{{_computeParamName(param)}}</span>
+                                <span class="param-type">{{param.type}}</span>
+                            </div>
+                            <div class="param-summary">{{param.summary}}</div>
+                            <template is="dom-if" if="[[param.params.length]]" restamp>
+                                <ul class="list param-params">
+                                    <template is="dom-repeat" items="[[param.params]]" as="subParam">
+                                        <div class="param-param">
+                                            <div class="param-info">
+                                                <span class$="[[_computeSubParamClass(param, subParam)]]">{{_computeSubParamName(param, subParam)}}</span>
+                                                <span class="param-type">{{subParam.type}}</span>
+                                            </div>
+                                            <div class="param-summary">{{subParam.summary}}</div>
+                                        </div>
+                                    </template>
+                                </ul>
+                            </template>
+                        </li>
+                    </template>
+                </ol>
+            </section>
+        </template>
+
+        <!-- RETURNS -->
+        <template is="dom-if" if="[[data.returns]]" restamp>
+            <section class="returns">
+                <h3 class="font-subhead title">Returns</h3><hr/>
+                <div class="returns-info">
+                    <span class="returns-type">{{data.returns.type}}</span>
+                </div>
+                <div class="returns-summary">{{data.returns.summary}}</div>
+            </section>
+        </template>
+
+        <!-- FEATURES -->
+        <template is="dom-repeat" items="[[features]]" as="feature">
+            <template is="dom-if" if="[[_hasFeature(data, feature)]]" restamp>
+                <section class="features" data-type$="[[feature]]">
+                    <h3 class="font-subhead title">
+                        <span class="features-title">{{_computeFeatureTitle(feature)}}</span>
+                        <template is="dom-if" if="[[_hasPrivate(data, feature)]]" restamp><button class="font-button features-private" on-click="_handlePrivate"></button></template>
+                    </h3>
+                    <template is="dom-repeat" items="[[_computeFeatures(data, feature)]]" as="feat">
+                        <div class="feature" data-private$="[[feat.private]]"><hr/>
+                            <div class="feature-primary">
+                                <span class="feature-name">{{_computeFeatureName(data, feat, feature)}}</span>
+                                <template is="dom-if" if="[[feat.type]]" restamp><span class="feature-type">{{feat.type}}</span></template>
+                                <template is="dom-if" if="[[feat.private]]" restamp><span class="font-caption feature-tag">private</span></template>
+                                <template is="dom-if" if="[[feat.abstract]]" restamp><span class="font-caption feature-tag">abstract</span></template>
+                                <template is="dom-if" if="[[feat.bubbles]]" restamp><span class="font-caption feature-tag">bubbles</span></template>
+                                <template is="dom-if" if="[[feat.cancelable]]" restamp><span class="font-caption feature-tag">cancelable</span></template>
+                                <template is="dom-if" if="[[feat.notifies]]" restamp><span class="font-caption feature-tag">notifies</span></template>
+                                <template is="dom-if" if="[[feat.readonly]]" restamp><span class="font-caption feature-tag">readonly</span></template>
+                                <template is="dom-if" if="[[feat.static]]" restamp><span class="font-caption feature-tag">static</span></template>
+                            </div>
+                            <div class="feature-secondary">
+                                <template is="dom-if" if="[[feat.default]]" restamp>
+                                    <div class="feature-default">
+                                        <span>Default: </span>
+                                        <span>{{feat.default}}</span>
+                                    </div>
+                                </template>
+                                <template is="dom-if" if="[[feat.summary]]" restamp>
+                                    <xp-markdown class="feature-summary" code="[[feat.summary]]"></xp-markdown>
+                                </template>
+                                <template is="dom-if" if="[[feat.params.length]]" restamp>
+                                    <div class="subtitle">Arguments</div>
+                                    <ol class="list feature-params">
+                                        <template is="dom-repeat" items="[[feat.params]]" as="param">
+                                            <li class="feature-param">
+                                                <div class="param-info">
+                                                    <span class$="[[_computeParamClass(param)]]">{{_computeParamName(param)}}</span>
+                                                    <span class="param-type">{{param.type}}</span>
+                                                </div>
+                                                <div class="param-summary">{{param.summary}}</div>
+                                                <template is="dom-if" if="[[param.params.length]]" restamp>
+                                                    <ul class="list param-params">
+                                                        <template is="dom-repeat" items="[[param.params]]" as="subParam">
+                                                            <li class="param-param">
+                                                                <div class="param-info">
+                                                                    <span class$="[[_computeSubParamClass(param, subParam)]]">{{_computeSubParamName(param, subParam)}}</span>
+                                                                    <span class="param-type">{{subParam.type}}</span>
+                                                                </div>
+                                                                <div class="param-summary">{{subParam.summary}}</div>
+                                                            </li>
+                                                        </template>
+                                                    </ul>
+                                                </template>
+                                            </li>
+                                        </template>
+                                    </ol>
+                                </template>
+                                <template is="dom-if" if="[[feat.returns]]" restamp>
+                                    <div class="subtitle">Returns</div>
+                                    <div class="returns-info">
+                                        <span class="returns-type">{{feat.returns.type}}</span>
+                                    </div>
+                                    <div class="returns-summary">{{feat.returns.summary}}</div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </section>
+            </template>
+        </template>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'xp-doc-page',
+
+            /*********************************************************************/
+
+            /**
+             * Fired when a doc link is clicked.
+             *
+             * @event xp-redirect
+             * @param {Element} firer
+             * @param {string} href
+             * @bubbles
+             * @cancelable
+             */
+
+            /*********************************************************************/
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * The element's data.
+                 *
+                 * @attribute data
+                 * @type Object
+                 * @notifies
+                 */
+                data: {
+                    notify: true,
+                    type: Object,
+                    value: null
+                },
+
+                /**
+                 * If set to true, the data are not ready yet.
+                 *
+                 * @attribute empty-data
+                 * @type boolean
+                 * @notifies
+                 * @readonly
+                 */
+                emptyData: {
+                    computed: '_computeEmptyData(data)',
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: Boolean
+                },
+
+                /**
+                 * The list of features.
+                 *
+                 * @attribute features
+                 * @type Array
+                 * @default ["constructs", "attributes", "properties", "methods", "events"]
+                 * @notifies
+                 * @readonly
+                 */
+                features: {
+                    notify: true,
+                    readOnly: true,
+                    type: Array,
+                    value: function () { return ['constructs', 'attributes', 'properties', 'methods', 'events']; }
+                }
+            },
+
+            /*********************************************************************/
+
+            // COMPUTER
+            _computeEmptyData: function (data) {
+                return !data;
+            },
+
+            // COMPUTER
+            _computeFeatureName: function (data, feat, feature) {
+                return feature === 'constructs' ? (data && 'new ' + data.name) || '' : (feat && feat.name) || '';
+            },
+
+            // COMPUTER
+            _computeFeatureTitle: function (feature) {
+                return feature === 'constructs' ? 'Constructor' : feature || '';
+            },
+
+            // COMPUTER
+            _computeParamClass: function (param) {
+                return 'param-name' + (param && (param.optional || param.default) ? ' optional' : '');
+            },
+
+            // COMPUTER
+            _computeParamName: function (param) {
+                return param ? (param.name || '') + (param.default ? ' = ' + param.default : '') : '';
+            },
+
+            // COMPUTER
+            _computeFeatures: function (data, feature) {
+                return (data && (feature === 'constructs' ? [data[feature]] : data[feature])) || [];
+            },
+
+            // COMPUTER
+            _computeSubParamClass: function (param, subParam) {
+                return 'param-name' + (subParam && (subParam.optional || subParam.default) ? ' optional' : '');
+            },
+
+            // COMPUTER
+            _computeSubParamName: function (param, subParam) {
+                return param && subParam ? (param.name ? param.name + '.' : '') + (subParam.name || '') + (subParam.default ? ' = ' + subParam.default : '') : '';
+            },
+
+            // COMPUTER
+            _hasFeature: function (data, feature) {
+                return !!data && !!data[feature] && (feature === 'constructs' || !!data[feature].length);
+            },
+
+            // COMPUTER
+            _hasInheritance: function (data) {
+                return !!data && (!!data.extends || (!!data.behaviors && !!data.behaviors.length));
+            },
+
+            // COMPUTER
+            _hasMore: function (index, length) {
+                return index < length - 1;
+            },
+
+            // COMPUTER
+            _hasPrivate: function (data, feature) {
+                return !!data && !!data[feature] && !!XP.find(data[feature], function (feat) { return feat.private; });
+            },
+
+            /*********************************************************************/
+
+            // HANDLER
+            _handleClick: function (event) {
+                if (!event.button && this.fire('xp-redirect', {firer: this, href: event.currentTarget.href}, {cancelable: true}).defaultPrevented) { event.preventDefault(); }
+            },
+
+            // HANDLER
+            _handlePrivate: function (event) {
+                XP.toggleAttribute(XP.findParentElement(event.target, 'section'), 'data-private');
+            }
+        });
+    </script>
+
+</dom-module>

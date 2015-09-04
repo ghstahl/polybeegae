@@ -1,0 +1,593 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This element is used to perform XHR requests.
+
+@element xp-request
+@description This element is used to perform XHR requests
+@keywords nodejs, web app, javascript, expandjs, web-components
+@group functionality
+@homepage http://expandjs.com/elements/xp-request
+@repository https://github.com/ExpandJS/xp-request
+
+@behavior xp-adapter-behavior /bower_components/xp-adapter-behavior/xp-adapter-behavior.html
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency xp-adapter-behavior ExpandJS/xp-adapter-behavior#0.9.8
+@dependency xp-emitter ExpandJS/xp-emitter#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../xp-emitter/xp-emitter.html">
+<link rel="import" href="../xp-adapter-behavior/xp-adapter-behavior.html">
+<script src="dist/xp-request.js"></script>
+
+<script>
+    Polymer({
+
+        // ELEMENT
+        is: 'xp-request',
+
+        // BEHAVIORS
+        behaviors: [
+            Polymer.XPAdapterBehavior
+        ],
+
+        /*********************************************************************/
+
+        /**
+         * Fired when a chunk of data is received.
+         *
+         * @event xp-request-chunk
+         * @param {Element} firer
+         * @param {Buffer | string} chunk
+         * @bubbles
+         */
+
+        /**
+         * Fired when the entire data is received.
+         *
+         * @event xp-request-data
+         * @param {Element} firer
+         * @param {Buffer | string} data
+         * @bubbles
+         */
+
+        /**
+         * Fired when an error is received.
+         *
+         * @event xp-request-error
+         * @param {Element} firer
+         * @param {string} error
+         * @bubbles
+         */
+
+        /**
+         * Fired when a response is received.
+         *
+         * @event xp-request-response
+         * @param {Element} firer
+         * @param {Object} response
+         * @bubbles
+         */
+
+        /**
+         * Fired when the request state changes.
+         *
+         * @event xp-request-state
+         * @param {Element} firer
+         * @param {string} state
+         * @bubbles
+         */
+
+        /**
+         * Fired when the request is about to be submitted.
+         *
+         * @event xp-request-submit
+         * @param {Element} firer
+         * @param {Buffer | string} data
+         * @bubbles
+         * @cancelable
+         */
+
+        /*********************************************************************/
+
+        /**
+         * Aborts the request.
+         *
+         * @method abort
+         * @returns {Element}
+         */
+        abort: function () {
+
+            // Vars
+            var self = this;
+
+            // Aborting
+            if (self.adaptee) { self.adaptee.abort(); }
+
+            return self;
+        },
+
+        /**
+         * Submits the request, using data for the query string or the request body.
+         *
+         * @method submit
+         * @param {Buffer | Object | string} [data]
+         * @returns {Element}
+         */
+        submit: function (data) {
+
+            // Vars
+            var self = this;
+
+            // Adapting
+            if (!self._adapt(data)) { return self; }
+
+            // Firing
+            if (self.fire('xp-request-submit', {firer: self, data: data}, {cancelable: true}).defaultPrevented) { return self; }
+
+            // Submitting
+            self.adaptee.submit(data);
+
+            return self;
+        },
+
+        /*********************************************************************/
+
+        /**
+         * Set the adaptee.
+         *
+         * @method _adapt
+         * @param {Buffer | Object | string} [data]
+         * @returns {Element}
+         * @private
+         */
+        _adapt: function (data) {
+
+            // Asserting
+            XP.assertArgument(XP.isVoid(data) || XP.isObject(data) || XP.isString(data), 1, 'Buffer, Object or string');
+
+            // Vars
+            var self      = this,
+                adaptable = self.path || self.port || self.url,
+                query     = adaptable && XP.upperCase(self.method) === 'GET' && (XP.isString(data) ? data : XP.toQueryString(data));
+
+            // Adapting
+            self._setAdaptee(adaptable ? new XPRequest({
+                contentType: self.contentType,
+                dataType: self.dataType,
+                encoding: self.encoding,
+                headers: self.headers,
+                keepAlive: self.keepAlive,
+                method: self.method,
+                path: self.path + (query ? '?' + query : ''),
+                port: self.port,
+                url: self.url + (query ? '?' + query : '')
+            }) : null);
+
+            // Listening
+            if (self.adaptee) {
+                self.adaptee.on('chunk', self._handleChunkBound);
+                self.adaptee.on('data', self._handleDataBound);
+                self.adaptee.on('error', self._handleErrorBound);
+                self.adaptee.on('response', self._handleResponseBound);
+                self.adaptee.on('state', self._handleStateBound);
+            }
+
+            return self.adaptee;
+        },
+
+        /**
+         * Checks if `adaptee` is expired.
+         *
+         * @method _isExpired
+         * @param {Object} adaptee
+         * @returns {boolean}
+         * @private
+         */
+        _isExpired: function (adaptee) {
+            XP.assertArgument(XP.isObject(adaptee), 1, 'Object');
+            return this.responded ? adaptee.tsSubmit < this.responded.tsSubmit : false;
+        },
+
+        /**
+         * Checks if `adaptee` is the current adaptee.
+         *
+         * @method _isCurrent
+         * @param {Object} adaptee
+         * @returns {boolean}
+         * @private
+         */
+        _isCurrent: function (adaptee) {
+            XP.assertArgument(XP.isObject(adaptee), 1, 'Object');
+            return adaptee === this.adaptee;
+        },
+
+        /**
+         * Refreshes the element.
+         *
+         * @method _refresh
+         * @returns {Element}
+         * @private
+         */
+        _refresh: function () {
+
+            // Vars
+            var self = this;
+
+            // Checking
+            if (!self.auto) { return self; }
+
+            // Setting
+            self._setData(null);
+            self._setError(null);
+
+            // Submitting
+            self._jobSubmit();
+
+            return self;
+        },
+
+        /*********************************************************************/
+
+        // OBSERVERS
+        observers: [
+            '_refresh(contentType, dataType, headers, method, path, port, url)'
+        ],
+
+        // PROPERTIES
+        properties: {
+
+            /**
+             * If set to true, the request is automatically sent.
+             *
+             * @attribute auto
+             * @type boolean
+             * @default false
+             */
+            auto: {
+                reflectToAttribute: true,
+                type: Boolean,
+                value: false
+            },
+
+            /**
+             * A shortcut for the "Content-Type" header.
+             *
+             * @attribute content-type
+             * @type String
+             */
+            contentType: {
+                reflectToAttribute: true,
+                type: String,
+                value: null
+            },
+
+            /**
+             * The request received data.
+             *
+             * @attribute data
+             * @type Buffer | string
+             * @notifies
+             * @readonly
+             */
+            data: {
+                notify: true,
+                readOnly: true,
+                value: null
+            },
+
+            /**
+             * The type of data expected back from the server.
+             *
+             * @attribute data-type
+             * @type string
+             */
+            dataType: {
+                reflectToAttribute: true,
+                type: String,
+                value: null
+            },
+
+            /**
+             * The debounce ms between each request.
+             *
+             * @attribute debounce
+             * @type number
+             */
+            debounce: {
+                observer: '_debounceChanged',
+                reflectToAttribute: true,
+                type: Number,
+                value: null
+            },
+
+            /**
+             * If set to true, the data are not ready yet.
+             *
+             * @attribute empty-data
+             * @type boolean
+             * @notifies
+             * @readonly
+             */
+            emptyData: {
+                computed: '_computeEmptyData(data)',
+                notify: true,
+                reflectToAttribute: true,
+                type: Boolean
+            },
+
+            /**
+             * The response encoding.
+             *
+             * @attribute encoding
+             * @type string
+             * @default "utf-8"
+             */
+            encoding: {
+                reflectToAttribute: true,
+                type: String,
+                value: 'utf-8'
+            },
+
+            /**
+             * The request error message.
+             *
+             * @attribute error
+             * @type string
+             * @notifies
+             * @readonly
+             */
+            error: {
+                notify: true,
+                readOnly: true,
+                type: String,
+                value: null
+            },
+
+            /**
+             * An object containing request headers.
+             *
+             * @attribute headers
+             * @type Object
+             */
+            headers: {
+                type: Object,
+                value: function () { return {}; }
+            },
+
+            /**
+             * How often to submit TCP KeepAlive packets over sockets being kept alive.
+             *
+             * @attribute keep-alive
+             * @type number
+             * @default 0
+             */
+            keepAlive: {
+                reflectToAttribute: true,
+                type: Number,
+                value: 0
+            },
+
+            /**
+             * A string specifying the HTTP request method.
+             *
+             * @attribute method
+             * @type string
+             * @default "GET"
+             */
+            method: {
+                reflectToAttribute: true,
+                type: String,
+                value: 'GET'
+            },
+
+            /**
+             * The request path, useful for relative requests.
+             *
+             * @attribute path
+             * @type string
+             */
+            path: {
+                reflectToAttribute: true,
+                type: String,
+                value: null
+            },
+
+            /**
+             * The request port, useful for relative requests.
+             *
+             * @attribute port
+             * @type number
+             */
+            port: {
+                reflectToAttribute: true,
+                type: Number,
+                value: null
+            },
+
+            /**
+             * The responded adaptee.
+             *
+             * @attribute responded
+             * @type Object
+             * @notifies
+             * @readonly
+             */
+            responded: {
+                notify: true,
+                readOnly: true,
+                type: Object,
+                value: null
+            },
+
+            /**
+             * The request received response.
+             *
+             * @attribute response
+             * @type Object
+             * @notifies
+             * @readonly
+             */
+            response: {
+                notify: true,
+                readOnly: true,
+                type: Object,
+                value: null
+            },
+
+            /**
+             * The request state.
+             *
+             * @attribute state
+             * @type string
+             * @default "idle"
+             * @notifies
+             * @readonly
+             */
+            state: {
+                notify: true,
+                readOnly: true,
+                reflectToAttribute: true,
+                type: String,
+                value: 'idle'
+            },
+
+            /**
+             * The request url.
+             *
+             * @attribute url
+             * @type string
+             */
+            url: {
+                type: String,
+                value: null
+            }
+        },
+
+        /*********************************************************************/
+
+        // COMPUTER
+        _computeEmptyData: function (data) {
+            return !data;
+        },
+
+        /*********************************************************************/
+
+        // OBSERVER
+        _debounceChanged: function (post) {
+            this._jobSubmit = XP.debounce(this.submit.bind(this), post || 0);
+        },
+
+        /*********************************************************************/
+
+        // LISTENER
+        created: function () {
+
+            // Vars
+            var self = this;
+
+            // Binding
+            self._handleChunkBound    = self._handleChunk.bind(self);
+            self._handleDataBound     = self._handleData.bind(self);
+            self._handleErrorBound    = self._handleError.bind(self);
+            self._handleResponseBound = self._handleResponse.bind(self);
+            self._handleStateBound    = self._handleState.bind(self);
+        },
+
+        /*********************************************************************/
+
+        // HANDLER
+        _handleChunk: function (chunk, adaptee) {
+
+            // Vars
+            var self = this;
+
+            // Checking
+            if (!self._isCurrent(adaptee)) { return; }
+
+            // Setting
+            self._setData(null);
+            self._setError(null);
+
+            // Firing
+            self.fire('xp-request-chunk', {firer: self, chunk: chunk});
+        },
+
+        // HANDLER
+        _handleData: function (data, adaptee) {
+
+            // Vars
+            var self = this;
+
+            // Checking
+            if (self._isExpired(adaptee)) { return; }
+
+            // Setting
+            self._setData(data);
+            self._setError(null);
+
+            // Firing
+            self.fire('xp-request-data', {firer: self, data: data});
+        },
+
+        // HANDLER
+        _handleError: function (error, adaptee) {
+
+            // Vars
+            var self = this;
+
+            // Checking
+            if (self._isExpired(adaptee)) { return; }
+
+            // Setting
+            self._setData(null);
+            self._setError(error);
+
+            // Firing
+            self.fire('xp-request-error', {firer: self, error: error});
+        },
+
+        // HANDLER
+        _handleResponse: function (response, adaptee) {
+
+            // Vars
+            var self = this;
+
+            // Checking
+            if (self._isExpired(adaptee)) { return; }
+
+            // Setting
+            self._setResponded(adaptee);
+            self._setResponse(response);
+
+            // Firing
+            self.fire('xp-request-response', {firer: self});
+        },
+
+        // HANDLER
+        _handleState: function (state, adaptee) {
+
+            // Vars
+            var self = this;
+
+            // Checking
+            if (!self._isCurrent(adaptee)) { return; }
+
+            // Setting
+            self._setState(state);
+
+            // Firing
+            self.fire('xp-request-state', {firer: self, state: state});
+        }
+    });
+</script>

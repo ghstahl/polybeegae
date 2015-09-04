@@ -1,0 +1,156 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This element is used to display a list of items.
+If can be used in conjunction with xp-sublist.
+
+@element xp-list
+@description A custom element used to create a list of items
+@keywords web app, html5, expandjs, web-components
+@group navigation
+@homepage http://expandjs.com/elements/xp-list
+@repository https://github.com/ExpandJS/xp-list
+
+@behavior xp-master-behavior /bower_components/xp-master-behavior/xp-master-behavior.html
+@behavior xp-multi-select-behavior /bower_components/xp-multi-select-behavior/xp-multi-select-behavior.html
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency xp-master-behavior ExpandJS/xp-master-behavior#0.9.8
+@dependency xp-multi-select-behavior ExpandJS/xp-multi-select-behavior#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../xp-master-behavior/xp-master-behavior.html">
+<link rel="import" href="../xp-multi-select-behavior/xp-multi-select-behavior.html">
+
+<dom-module id="xp-list">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                overflow: visible;
+            }
+        </style>
+
+        <content id="content"></content>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'xp-list',
+
+            // BEHAVIORS
+            behaviors: [
+                Polymer.XPMasterBehavior,
+                Polymer.XPMultiSelectBehavior
+            ],
+
+            /*********************************************************************/
+
+            /**
+             * Returns the slaves map.
+             *
+             * @method _setupSlaves
+             * @returns {Object}
+             * @private
+             */
+            _setupSlaves: function () {
+                return {sublists: 'xp-sublist'};
+            },
+
+            /*********************************************************************/
+
+            // LISTENERS
+            listeners: {
+                'click': '_handleClick',
+                'selection-changed': '_handleSelection'
+            },
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * If set to true, a sublist expansion wont collapse the siblings.
+                 *
+                 * @attribute auto-collapse-disabled
+                 * @type boolean
+                 * @default false
+                 */
+                autoCollapseDisabled: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the selectable items are searched deep.
+                 *
+                 * @attribute deep
+                 * @type boolean
+                 * @default true
+                 */
+                deep: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: true
+                },
+
+                /**
+                 * The slave sublists.
+                 *
+                 * @attribute sublists
+                 * @type Array
+                 * @notifies
+                 * @readonly
+                 */
+                sublists: {
+                    notify: true,
+                    readOnly: true,
+                    type: Array,
+                    value: function () { return []; }
+                }
+            },
+
+            /*********************************************************************/
+
+            // HANDLER
+            _handleClick: function (event) {
+
+                // Checking
+                if (event.button) { return; }
+
+                // Vars
+                var self = this,
+                    item = self.findItem(event.target) || self.findItem(XP.findParentElement(Polymer.dom(event.target), self.itemSelector, self));
+
+                // Switching
+                if (item && self[self.isSelected(item, true) ? 'isUnselectable' : 'isSelectable'](item, true)) { self.switch(item, false, true); }
+            },
+
+            // HANDLER
+            _handleSelection: function () {
+
+                // Vars
+                var self      = this,
+                    superlist = self.selection && !self.multi && XP.findParentElement(Polymer.dom(self.selection), 'xp-sublist[collapsible]', self);
+
+                // Expanding
+                if (superlist) { superlist.expand(); }
+            }
+        });
+    </script>
+
+</dom-module>

@@ -1,0 +1,26 @@
+{
+  "name": "xp-label",
+  "license": "BSD-3-Clause",
+  "version": "0.9.8",
+  "main": "xp-label.html",
+  "description": "A custom element used to add shadow traverse capabilities on an HTML label",
+  "homepage": "http://expandjs.com/elements/xp-label",
+  "authors": [
+    "Giuliano Rullo <g.rullo@expandjs.com>",
+    "Maurizio Stefàno <m.stefano@expandjs.com>",
+    "Robert Manolea <r.manolea@expandjs.com>"
+  ],
+  "keywords": [
+    "web app",
+    "html5",
+    "expandjs",
+    "web-components"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "expandjs": "ExpandJS/expandjs#0.9.8",
+    "polymer": "Polymer/polymer#^1.1.0"
+  }
+}

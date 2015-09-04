@@ -1,0 +1,36 @@
+{
+  "name": "xp-multi-select-behavior",
+  "license": "BSD-3-Clause",
+  "version": "0.9.8",
+  "main": "xp-multi-select-behavior.html",
+  "description": "A behavior used to add multi selection capabilities on the context element",
+  "homepage": "http://expandjs.com/elements/xp-multi-select-behavior",
+  "authors": [
+    "Giuliano Rullo <g.rullo@expandjs.com>",
+    "Maurizio Stefàno <m.stefano@expandjs.com>",
+    "Robert Manolea <r.manolea@expandjs.com>"
+  ],
+  "keywords": [
+    "web app",
+    "html5",
+    "expandjs",
+    "web-components"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "expandjs": "ExpandJS/expandjs#0.9.8",
+    "xp-selected-behavior": "ExpandJS/xp-selected-behavior#0.9.8",
+    "polymer": "Polymer/polymer#^1.1.0"
+  },
+  "_release": "0.9.8",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.9.8",
+    "commit": "bc0b8b407048447a39477f552e0ba457668205d9"
+  },
+  "_source": "git://github.com/ExpandJS/xp-multi-select-behavior.git",
+  "_target": "0.9.8",
+  "_originalSource": "ExpandJS/xp-multi-select-behavior"
+}

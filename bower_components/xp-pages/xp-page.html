@@ -1,0 +1,245 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This element is used to display a page.
+
+It should be used in conjunction with xp-pages.
+
+@element xp-page
+@description A custom element used to display a page
+@keywords web app, html5, expandjs, web-components
+@group navigation
+@homepage http://expandjs.com/elements/xp-page
+@repository https://github.com/ExpandJS/xp-page
+
+@behavior xp-slave-behavior /bower_components/xp-slave-behavior/xp-slave-behavior.html
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency xp-slave-behavior ExpandJS/xp-slave-behavior#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../xp-slave-behavior/xp-slave-behavior.html">
+
+<dom-module id="xp-page">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                overflow: visible;
+                position: relative;
+            }
+        </style>
+
+        <content id="content"></content>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'xp-page',
+
+            // BEHAVIORS
+            behaviors: [
+                Polymer.XPSlaveBehavior
+            ],
+
+            /*********************************************************************/
+
+            /**
+             * Refreshes the element.
+             *
+             * @method _refresh
+             * @returns {Element}
+             * @private
+             */
+            _refresh: function () {
+
+                // Vars
+                var self       = this,
+                    removable  = self.injected && (!self.content || self.content.toUpperCase() !== self.injected.tagName || (self.lazy && !self.active)),
+                    injectable = self.content && (removable || !self.injected) && (self.active || !self.lazy);
+
+                // Injecting
+                if (removable) { Polymer.dom(self.root).removeChild(self.injected); }
+                if (injectable) { self._setInjected(Polymer.dom(self.root).appendChild(XP.createElement(self.content, {properties: {data: self.data}}))); }
+
+                return self;
+            },
+
+            /**
+             * Returns the masters map.
+             *
+             * @method _setupMasters
+             * @returns {Object}
+             * @private
+             */
+            _setupMasters: function () {
+                return {selector: 'xp-pages'};
+            },
+
+            /*********************************************************************/
+
+            // LISTENERS
+            listeners: {
+                'xp-slave': '_handleSlave'
+            },
+
+            // OBSERVERS
+            observers: [
+                '_refresh(active, content, lazy)'
+            ],
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * If set to true, the page is active.
+                 *
+                 * @attribute active
+                 * @type boolean
+                 * @default false
+                 * @notifies
+                 */
+                active: {
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the page can be closed.
+                 *
+                 * @attribute closable
+                 * @type boolean
+                 * @default false
+                 * @notifies
+                 */
+                closable: {
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The `tagName` of the page's element to be injected.
+                 *
+                 * @attribute content
+                 * @type string
+                 * @notifies
+                 */
+                content: {
+                    notifies: true,
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The element's data
+                 *
+                 * @attribute data
+                 * @type *
+                 * @notifies
+                 */
+                data: {
+                    notify: true,
+                    observer: '_dataChanged',
+                    value: null
+                },
+
+                /**
+                 * The page's injected element.
+                 *
+                 * @attribute injected
+                 * @type Element
+                 * @notifies
+                 * @readonly
+                 */
+                injected: {
+                    notify: true,
+                    observer: '_injectedChanged',
+                    readOnly: true,
+                    value: null
+                },
+
+                /**
+                 * If set to true, the page's content will load on active.
+                 *
+                 * @attribute lazy
+                 * @type boolean
+                 * @default false
+                 */
+                lazy: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The master selector.
+                 *
+                 * @attribute selector
+                 * @type Element
+                 * @notifies
+                 */
+                selector: {
+                    notify: true,
+                    readOnly: true,
+                    value: null
+                }
+            },
+
+            /*********************************************************************/
+
+            // OBSERVER
+            _dataChanged: function () {
+                if (this.injected) { this.injected.data = this.data; }
+            },
+
+            // OBSERVER
+            _injectedChanged: function (post, pre) {
+
+                // Vars
+                var self = this;
+
+                // Checking
+                if (arguments.length < 2) { return; }
+
+                // Setting
+                if (post) { post.data = self.data; }
+
+                // Listening
+                if (pre) { self.unlisten(pre, 'data-changed', '_handleData'); }
+                if (post) { self.listen(post, 'data-changed', '_handleData'); }
+            },
+
+            /*********************************************************************/
+
+            // HANDLER
+            _handleData: function () {
+                if (this.injected) { this.data = this.injected.data; }
+            },
+
+            // HANDLER
+            _handleSlave: function (event) {
+                if (event.detail.firer !== this && event.detail.selector === 'xp-pages' && XP.matches(event.detail.firer, 'xp-page')) { event.stopPropagation(); }
+            }
+        });
+    </script>
+
+</dom-module>

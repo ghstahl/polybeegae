@@ -1,0 +1,149 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This element is used to display a fixed or flexible grid to design your application on.
+
+@element xp-grid
+@description A custom element used to display a fixed or flexible grid to design your application on
+@keywords web app, html5, expandjs, web-components
+@group development
+@homepage http://expandjs.com/elements/xp-grid
+@repository https://github.com/ExpandJS/xp-grid
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="xp-grid">
+
+    <template>
+
+        <style>
+            :host {
+                @apply(--layout-fit);
+                display: block;
+                opacity: 0.25;
+                overflow: visible;
+                pointer-events: none;
+                z-index: 9999;
+            }
+
+            :host #xpGridWrapper {
+                height: 100%;
+                margin: auto;
+            }
+
+            :host #xpGridWrapper [column] {
+                background: hsla(0, 100%, 100%, 0.75);
+                height: 100%;
+                float: left;
+            }
+
+            :host:not([type="graph-paper"]) #xpGridWrapper {
+                background: hsla(0, 100%, 50%, 0.75);
+            }
+
+            :host[type="bootstrap-12"] #xpGridWrapper [column] {
+                margin: 0 15px;
+                width: calc(8.333% - 30px);
+            }
+
+            :host[type="fixed-12"] #xpGridWrapper,
+            :host[type="fixed-16"] #xpGridWrapper {
+                width: 960px;
+            }
+
+            :host[type="fixed-12"] #xpGridWrapper [column] {
+                margin: 0 10px;
+                width: 60px;
+            }
+
+            :host[type="fixed-16"] #xpGridWrapper [column] {
+                margin: 0 10px;
+                width: 40px;
+            }
+
+            :host[type="fluid-12"] #xpGridWrapper [column] {
+                margin: 0 0.83%;
+                width: calc(8.333333333% - 1.66%);
+            }
+
+            :host[type="fluid-16"] #xpGridWrapper [column] {
+                margin: 0 0.625%;
+                width: calc(6.25% - 1.250%);
+            }
+
+            :host[type="graph-paper"] #xpGridWrapper {
+                background: url('grid.png') repeat;
+            }
+        </style>
+
+        <div id="xpGridWrapper"></div>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'xp-grid',
+
+            /*********************************************************************/
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * The grid's type.
+                 *
+                 * `"bootstrap-12"` creates a bootstrap like grid with 12 columns;
+                 *
+                 * `"fixed-12"` creates a 960px grid with 12 columns;
+                 *
+                 * `"fixed-16"` creates a 960px grid with 16 columns;
+                 *
+                 * `"fluid-12"` creates a full screen grid with 12 columns;
+                 *
+                 * `"fluid-16"` creates a full screen grid with 16 columns;
+                 *
+                 * `"graph-paper"` creates a full screen grid with divided in 4 and 8px squares;
+                 *
+                 * @attribute type
+                 * @type "bootstrap-12" | "fixed-12" | "fixed-16" | "fluid-12" | "fluid-16" | "graph-paper"
+                 * @default "graph-paper"
+                 */
+                type: {
+                    observer: '_typeChanged',
+                    reflectToAttribute: true,
+                    type: String,
+                    value: 'graph-paper'
+                }
+            },
+
+            /*********************************************************************/
+
+            // OBSERVER
+            _typeChanged: function() {
+
+                // Vars
+                var self    = this,
+                    columns = XP.flush(Polymer.dom(self.$.xpGridWrapper)),
+                    length  = XP.toNumber(self.type.slice(-2));
+
+                // Appending
+                do { columns.appendChild(XP.createElement('div', {attributes: {column: true}})); } while (length -= 1);
+            }
+        });
+    </script>
+
+</dom-module>

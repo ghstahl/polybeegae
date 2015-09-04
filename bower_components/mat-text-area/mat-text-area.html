@@ -1,0 +1,485 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+An element used to display a [Material Design multi-line text field](http://www.google.com/design/spec/components/text-fields.html#text-fields-multi-line-text-field).
+
+```html
+<mat-text-area label="First name"></mat-text-area>
+```
+
+It comes with a bundle of useful helpers, such as `label`, `description`, `character counter`
+and also provides all the validators from a native `<textarea>`.
+
+By default the label will act as a placeholder, however if you want it to be persistent, you can do
+it by setting `floating-label`. This way, it will place itself above the input when a value is present.
+
+```html
+<mat-text-area label="Location" floating-label></mat-text-area>
+```
+
+A short `description` can also be set underneath the input, to explain in a human readable way the
+validation process.
+
+```html
+<mat-text-area label="PIN Code" description="4-digit number"></mat-text-area>
+```
+
+If an error occurs, by default it will be shown underneath the input, however if the `description` is set,
+it will be highlighted with red instead of showing the error message.
+
+The character counter will be automatically created when `max-length` is set.
+
+```html
+<mat-text-area label="Message" max-length="140" full-width></mat-text-area>
+```
+
+To access the actual value, you have two attributes:
+
+- **value** is the current value as string
+- **model** does the same, however it adds some additional behaviors
+
+If the initial value was `null`, when the input is empty, the `model` returns to `null`
+instead of an empty string.
+
+This is useful for binding data that has not yet been initialized, needs to be created on
+the fly or comes from external sources.
+
+Generally, we recommend to use the `model` for data binding and `value` to set the default.
+
+```html
+<mat-text-area label="My input" model="{{myInput}}" value="..."></mat-text-area>
+```
+
+@element mat-text-area
+@description A custom element used to display a Material Design auto growing text-field
+@keywords material design, material text area, material input, web app, html5, expandjs, web-components
+@group inputs
+@homepage http://expandjs.com/elements/mat-text-area
+@repository https://github.com/ExpandJS/mat-text-area
+@demo http://expandjs.com/demo/mat-text-area
+
+@behavior xp-input-behavior /bower_components/xp-input-behavior/xp-input-behavior.html
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency mat-input-decorator ExpandJS/mat-input-decorator#0.9.8
+@dependency xp-input-behavior ExpandJS/xp-input-behavior#0.9.8
+
+@devDependency mat-demo ExpandJS/mat-demo#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../mat-input-decorator/mat-input-decorator.html">
+<link rel="import" href="../xp-input-behavior/xp-input-behavior.html">
+
+<dom-module id="mat-text-area">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                overflow: visible;
+                text-align: left;
+            }
+
+            :host([inline]) {
+                display: inline-block;
+                width: 182px;
+            }
+
+            :host([full-width]) {
+                display: block;
+                margin: 0;
+                padding: 0 16px;
+                width: auto !important;
+            }
+
+            /* TABLET */
+
+            @media (min-width: 960px) {
+
+                :host([full-width]) {
+                    margin: 0;
+                    padding: 0 24px;
+                }
+            }
+        </style>
+
+        <mat-input-decorator id="matTextAreaDecorator" chars="[[chars]]" description="[[description]]"
+                             disabled="[[disabled]]" empty="[[empty]]" error="[[error]]" floated="{{floated}}"
+                             floating-label="[[floatingLabel]]" focused="[[focused]]" full-width="[[fullWidth]]"
+                             helper-disabled="[[helperDisabled]]" input="[[adaptee]]" invalid="[[invalid]]"
+                             invalid-message="[[invalidMessage]]" label="[[label]]" max-length="[[maxLength]]"
+                             max-rows="[[maxRows]]" min-rows="[[minRows]]" mirrored value="[[value]]">
+            <content id="content" select="textarea"></content>
+        </mat-input-decorator>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'mat-text-area',
+
+            // BEHAVIORS
+            behaviors: [
+                Polymer.XPInputBehavior
+            ],
+
+            /*********************************************************************/
+
+            /**
+             * Blurs the input.
+             *
+             * @method blur
+             * @returns {Element}
+             */
+            blur: function () {
+                var self = this;
+                self.adaptee.focus();
+                return self;
+            },
+
+            /**
+             * Focuses the input.
+             *
+             * @method focus
+             * @returns {Element}
+             */
+            focus: function () {
+                var self = this;
+                self.adaptee.focus();
+                return self;
+            },
+
+            /**
+             * Selects the input.
+             *
+             * @method select
+             * @returns {Element}
+             */
+            select: function () {
+                var self = this;
+                self.adaptee.select();
+                return self;
+            },
+
+            /**
+             * Updates element's validation state.
+             *
+             * @method updateValidation
+             * @param {boolean | string} [invalidMessage = ""]
+             * @returns {Element}
+             */
+            updateValidation: function (invalidMessage) {
+
+                // Asserting
+                XP.assertArgument(XP.isVoid(invalidMessage) || XP.isFalse(invalidMessage) || XP.isString(invalidMessage), 1, 'string');
+
+                // Vars
+                var self = this;
+
+                // Customizing
+                if (invalidMessage !== undefined) { self.adaptee.setCustomValidity(invalidMessage || ''); }
+
+                // Setting
+                self._setInvalidMessage(self.adaptee.validationMessage || null);
+                self._setInvalid(self.adaptee.validity.valid === false);
+
+                // Handling
+                self._handleInput();
+
+                return self;
+            },
+
+            /*********************************************************************/
+
+            /**
+             * Set the adaptee.
+             *
+             * @method _adapt
+             * @returns {Element}
+             * @private
+             */
+            _adapt: function () {
+                var self = this;
+                self._setAdaptee(XP.appendChild(Polymer.dom(self), XP.createElement('textarea', {attributes: {value: self.value}})));
+                self.listen(self.adaptee, 'input', '_handleInput');
+                return self;
+            },
+
+            /**
+             * Reflects adapted input's `value` onto the element.
+             *
+             * @method _commitFrom
+             * @returns {Element}
+             * @private
+             */
+            _commitFrom: function () {
+                var self = this;
+                self.value = self.adaptee.value;
+                return self;
+            },
+
+            /**
+             * Reflects element's `value` onto the adapted input.
+             *
+             * @method _commitTo
+             * @returns {Element}
+             * @private
+             */
+            _commitTo: function () {
+                var self = this;
+                if (self.value !== self.adaptee.value) { self.adaptee.value = self.value; }
+                return self;
+            },
+
+            /**
+             * Reflects element's `tabIndex` onto the adapted input.
+             *
+             * @method _index
+             * @param {number} value
+             * @returns {Element}
+             * @private
+             */
+            _index: function (value) {
+                var self = this;
+                self.adaptee.tabIndex = value;
+                return self;
+            },
+
+            /**
+             * Sanitizes adapted input's `value`.
+             *
+             * @method _sanitize
+             * @returns {Element}
+             * @private
+             */
+            _sanitize: function () {
+                var self = this;
+                self.value = self.deburr ? XP.deburr(self.adaptee.value) : self.value;
+                return self;
+            },
+
+            /**
+             * Updates adapted input's attributes.
+             *
+             * @method _update
+             * @returns {Element}
+             * @private
+             */
+            _update: function () {
+                var self = this;
+                XP.setAttribute(self.adaptee, 'disabled', self.disabled);
+                XP.setAttribute(self.adaptee, 'minLength', self.minLength);
+                XP.setAttribute(self.adaptee, 'name', self.name);
+                XP.setAttribute(self.adaptee, 'readonly', self.readonly);
+                XP.setAttribute(self.adaptee, 'required', self.required);
+                return self;
+            },
+
+            /*********************************************************************/
+
+            // OBSERVERS
+            observers: [
+                '_refresh(deburr, minLength, readonly, required)'
+            ],
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * If set to true, the diacritics will be replaced with standard latin characters.
+                 *
+                 * @attribute deburr
+                 * @type boolean
+                 * @default false
+                 */
+                deburr: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The input's description.
+                 *
+                 * @attribute description
+                 * @type string
+                 */
+                description: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * If set to true, the input's label is floated.
+                 *
+                 * @attribute floated
+                 * @type boolean
+                 * @notifies
+                 * @readonly
+                 */
+                floated: {
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: Boolean
+                },
+
+                /**
+                 * If set to true, the input's label will float above the input.
+                 *
+                 * @attribute floating-label
+                 * @type boolean
+                 * @default false
+                 */
+                floatingLabel: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the input is full width.
+                 *
+                 * @attribute full-width
+                 * @type boolean
+                 * @default false
+                 */
+                fullWidth: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the helper is hidden.
+                 *
+                 * @attribute helper-disabled
+                 * @type boolean
+                 * @default false
+                 */
+                helperDisabled: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the input is inline.
+                 *
+                 * @attribute inline
+                 * @type boolean
+                 * @default false
+                 */
+                inline: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The input's max characters number.
+                 *
+                 * @attribute max-length
+                 * @type number
+                 */
+                maxLength: {
+                    reflectToAttribute: true,
+                    type: Number,
+                    value: null
+                },
+
+                /**
+                 * The input's max rows number, `0` for unlimited rows.
+                 *
+                 * @attribute max-rows
+                 * @type number
+                 */
+                maxRows: {
+                    reflectToAttribute: true,
+                    type: Number,
+                    value: null
+                },
+
+                /**
+                 * The input's min characters number.
+                 *
+                 * @attribute min-length
+                 * @type number
+                 */
+                minLength: {
+                    reflectToAttribute: true,
+                    type: Number,
+                    value: null
+                },
+
+                /**
+                 * The input's min rows number.
+                 *
+                 * @attribute min-rows
+                 * @type number
+                 */
+                minRows: {
+                    reflectToAttribute: true,
+                    type: Number,
+                    value: null
+                },
+
+                /**
+                 * If set to true, the input is readonly.
+                 *
+                 * @attribute readonly
+                 * @type boolean
+                 * @default false
+                 */
+                readonly: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the input is required.
+                 *
+                 * @attribute required
+                 * @type boolean
+                 * @default false
+                 */
+                required: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                }
+            },
+
+            /*********************************************************************/
+
+            // HANDLER
+            _handleInput: function () {
+
+                // Vars
+                var self = this;
+
+                // Sanitizing
+                if (self.deburr) { self._sanitize(); }
+
+                // Setting
+                self._setChars(self.adaptee.value.length);
+                self._setEmpty(self.adaptee.value.length === 0);
+                self._setInvalid(!!self.invalidMessage || (self.maxLength > 0 && self.chars > self.maxLength));
+            }
+        });
+    </script>
+
+</dom-module>

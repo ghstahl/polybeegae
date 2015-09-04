@@ -1,0 +1,959 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+An element used to display a [Material Design list item](http://www.google.com/design/spec/components/lists.html#lists-content).
+
+You can pass content to an item to make it fit your needs.
+
+```html
+<mat-item label="My label"></mat-item>
+<mat-item label="My label" description="My description"></mat-item>
+<mat-item label="My label" description="My description">My content</mat-item>
+```
+
+Additionally, it can have
+[icons](https://expandjs.com/elements/mat-icon),
+[buttons](https://expandjs.com/elements/mat-icon-button),
+[avatars](https://expandjs.com/elements/mat-avatar) or
+[checkboxes](https://expandjs.com/elements/mat-checkbox).
+
+These are split into two categories:
+ - __primary-*__ will be part of the item and all the interactions are done through the item itself
+ - __secondary-*__ will create a whole new touch target, on the right side of the item
+
+The following item will have an avatar on the left side (primary)...
+
+```html
+<mat-item label="My directory" primary-icon="file:folder" primary-type="avatar">
+```
+
+...this other one instead, will have also a checkbox on to the right side (secondary).
+
+```html
+<mat-item label="Michelle" primary-src="/contacts/michelle.png" primary-type="avatar" secondary-type="checkbox">
+```
+
+The item can be used to do a lot of things, such as linking to external resources, opening additional overlays,
+doing custom actions via listeners etc. Also, the combination of `primary` and `secondary`, plus the custom content,
+creates endless possibilities.
+
+```html
+<mat-item
+    label="Michelle"
+    description="Lorem ipsum dolor sit amet..."
+    primary-src="/contacts/michelle.png"
+    primary-type="avatar"
+    secondary-icon="navigation:more-vert"
+    secondary-target="contactMenu"
+    secondary-toggles-target
+    target="contactInfo"
+    toggles-target></mat-item>
+
+<mat-dialog id="contactInfo" full-screen>...</mat-dialog>
+<mat-menu id="contactMenu">...</mat-menu>
+```
+
+@element mat-item
+@description A custom element used to display a Material Design item
+@keywords material design, material item, material list item, web app, html5, expandjs, web-components
+@group contents
+@homepage http://expandjs.com/elements/mat-item
+@repository https://github.com/ExpandJS/mat-item
+@demo http://expandjs.com/demo/mat-item
+
+@behavior xp-anchor-behavior /bower_components/xp-anchor-behavior/xp-anchor-behavior.html
+@behavior xp-pressed-behavior /bower_components/xp-pressed-behavior/xp-pressed-behavior.html
+@behavior xp-referral-behavior /bower_components/xp-referral-behavior/xp-referral-behavior.html
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency iron-flex-layout PolymerElements/iron-flex-layout#^1.0.0
+@dependency mat-avatar ExpandJS/mat-avatar#0.9.8
+@dependency mat-checkbox ExpandJS/mat-checkbox#0.9.8
+@dependency mat-divider ExpandJS/mat-divider#0.9.8
+@dependency mat-icon-button ExpandJS/mat-icon-button#0.9.8
+@dependency mat-icons ExpandJS/mat-icons#0.9.8
+@dependency mat-ink ExpandJS/mat-ink#0.9.8
+@dependency mat-ripple ExpandJS/mat-ripple#0.9.8
+@dependency xp-anchor-behavior ExpandJS/xp-anchor-behavior#0.9.8
+@dependency xp-pressed-behavior ExpandJS/xp-pressed-behavior#0.9.8
+@dependency xp-referral-behavior ExpandJS/xp-referral-behavior#0.9.8
+
+@devDependency mat-demo ExpandJS/mat-demo#0.9.8
+@devDependency mat-icons ExpandJS/mat-icons#0.9.8
+@devDependency mat-list ExpandJS/mat-list#0.9.8
+@devDependency mat-menu ExpandJS/mat-menu#0.9.8
+@devDependency mat-option ExpandJS/mat-option#0.9.8
+@devDependency mat-paper ExpandJS/mat-paper#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../mat-avatar/mat-avatar.html">
+<link rel="import" href="../mat-checkbox/mat-checkbox.html">
+<link rel="import" href="../mat-divider/mat-divider.html">
+<link rel="import" href="../mat-icon-button/mat-icon-button.html">
+<link rel="import" href="../mat-icons/navigation-icons.html">
+<link rel="import" href="../mat-ink/mat-ink.html">
+<link rel="import" href="../mat-ripple/mat-ripple.html">
+<link rel="import" href="../xp-anchor-behavior/xp-anchor-behavior.html">
+<link rel="import" href="../xp-pressed-behavior/xp-pressed-behavior.html">
+<link rel="import" href="../xp-referral-behavior/xp-referral-behavior.html">
+
+<dom-module id="mat-item">
+
+    <template>
+
+        <style include="xp-pressed-styles"></style>
+
+        <style>
+            :host {
+                display: block;
+                min-height: 48px;
+                text-align: left;
+            }
+
+            :host [action] {
+                display: block;
+                margin: 4px 8px;
+            }
+
+            :host mat-avatar[action] {
+                margin: 8px 16px;
+            }
+
+            :host [primary][action] {
+                pointer-events: none;
+            }
+
+            :host(:not([empty-body]):not([inline-content])) [action] {
+                margin-top: 8px;
+            }
+
+            :host(:not([empty-body]):not([inline-content])) mat-avatar[action] {
+                margin-top: 16px;
+            }
+
+            :host(:not([empty-body]):not([inline-content])) [primary][action] {
+                @apply(--layout-self-start);
+            }
+
+            :host #matItemWrapper,
+            :host #matItemMain {
+                @apply(--layout-horizontal);
+                @apply(--layout-center);
+            }
+
+            :host #matItemDivider {
+                display: none;
+            }
+
+            :host #matItemPrimary {
+                @apply(--layout-flex);
+                overflow: hidden;
+            }
+
+            :host #matItemPrimary mat-avatar[action] {
+                margin-right: 0;
+            }
+
+            :host #matItemAnchor {
+                display: block;
+                outline: 0;
+                overflow: hidden;
+                text-decoration: none;
+            }
+
+            :host #matItemAnchor[href]:hover {
+                text-decoration: underline;
+            }
+
+            :host #matItemText {
+                @apply(--layout-flex);
+                overflow: hidden;
+                padding: 11px 16px 13px 16px;
+            }
+
+            :host([inline-content]) #matItemText {
+                @apply(--layout-horizontal);
+                @apply(--layout-center);
+            }
+
+            :host([empty-body]:not([empty-description]):not([inline-content])) #matItemText {
+                padding: 15px 16px 13px 16px;
+            }
+
+            :host-context([inset]) #matItemDivider:not([inset]) + #matItemPrimary #matItemText {
+                padding-left: 72px;
+            }
+
+            :host #matItemLabel {
+                @apply(--mat-font-subhead);
+                overflow: hidden;
+                text-overflow: ellipsis !important; /* override */
+                white-space: nowrap !important; /* override */
+            }
+
+            :host #matItemDescription {
+                @apply(--mat-font-body);
+                overflow: hidden;
+                text-overflow: ellipsis !important; /* override */
+                white-space: nowrap !important; /* override */
+            }
+
+            :host([inline-content]) #matItemDescription {
+                @apply(--mat-font-subhead);
+            }
+
+            :host #matItemBody {
+                @apply(--mat-font-body);
+            }
+
+            :host([inline-content]) #matItemBody {
+                @apply(--layout-horizontal);
+                @apply(--layout-center);
+                @apply(--layout-end-justified);
+                @apply(--layout-flex);
+                @apply(--mat-font-subhead);
+            }
+
+            :host([empty-body]) #matItemBody {
+                display: none !important;
+            }
+
+            :host #matItemSecondary {
+                text-align: right;
+            }
+
+            :host([empty-secondary]) #matItemSecondary {
+                display: none !important;
+            }
+
+            :host([secondary-no-tap]) #matItemSecondary {
+                pointer-events: none !important;
+            }
+
+            :host([secondary-text]:not([secondary-text=""])) #matItemSecondary,
+            :host(:not([empty-body]):not([inline-content])) #matItemSecondary {
+                @apply(--layout-self-start);
+            }
+
+            :host #matItemSecondary [action] {
+                margin-left: -12px;
+            }
+
+            :host #matItemSecondary mat-avatar[action] {
+                margin-left: 0;
+            }
+
+            :host #matItemSecondaryText {
+                @apply(--mat-font-caption);
+                margin: 14px 16px 0 0;
+            }
+
+            :host([secondary-text=""]) #matItemSecondaryText,
+            :host(:not([secondary-text])) #matItemSecondaryText {
+                display: none !important;
+            }
+
+            :host([empty-body][primary-type="avatar"]) #matItemSecondaryText {
+                margin-top: 18px;
+            }
+
+            :host([active]:not([primary-type="checkbox"])) #matItemRipple::shadow #matRippleBackground {
+                opacity: 0.10;
+            }
+        </style>
+
+        <mat-ink id="matItemWrapper" disabled="[[disabled]]">
+            <mat-divider id="matItemDivider" inset="[[inset]]" baseline></mat-divider>
+            <div id="matItemPrimary" on-xp-active="_handleStop" on-xp-activate="_handleStop" on-xp-input-change="_handlePrimary">
+                <a id="matItemAnchor" tabindex="-1">
+                    <div id="matItemMain">
+                        <template is="dom-if" if="[[inset]]" restamp>
+                            <template is="dom-if" if="[[_isPrimaryAvatar(primaryType)]]" restamp><mat-avatar background="[[_computePrimaryBackground(active, primaryActiveBackground, primaryBackground)]]" color="[[_computePrimaryColor(active, primaryActiveColor, primaryColor)]]" icon="[[primaryIcon]]" icon-src="[[primaryIconSrc]]" tabindex="-1" primary action></mat-avatar></template>
+                            <template is="dom-if" if="[[_isPrimaryButton(primaryType)]]" restamp><mat-icon-button active="[[active]]" active-icon="[[primaryActiveIcon]]" active-icon-src="[[primaryActiveIconSrc]]" color="[[_computePrimaryColor(active, primaryActiveColor, primaryColor)]]" icon="[[primaryIcon]]" icon-src="[[primaryIconSrc]]" tabindex="-1" toggleable primary action></mat-icon-button></template>
+                            <template is="dom-if" if="[[_isPrimaryCheckbox(primaryType)]]" restamp><mat-checkbox model="[[active]]" tabindex="-1" primary action></mat-checkbox></template>
+                        </template>
+                        <div id="matItemText">
+                            <template is="dom-if" if="[[label]]" restamp><div id="matItemLabel">{{label}}</div></template>
+                            <template is="dom-if" if="[[description]]" restamp><mat-ink id="matItemDescription" opacity="secondary">{{description}}</mat-ink></template>
+                            <div id="matItemBody"><content id="content"></content></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div id="matItemSecondary" on-xp-active="_handleSecondary" on-xp-activate="_handleSecondary" on-xp-input-change="_handleSecondary">
+                <template is="dom-if" if="[[!emptySecondary]]" restamp>
+                    <template is="dom-if" if="[[secondaryText]]" restamp><div id="matItemSecondaryText">{{secondaryText}}</div></template>
+                    <template is="dom-if" if="[[_isSecondaryAvatar(secondaryType)]]" restamp><mat-avatar active="{{secondaryActive}}" background="[[_computeSecondaryBackground(secondaryActive, secondaryActiveBackground, secondaryBackground)]]" color="[[_computeSecondaryColor(secondaryActive, secondaryActiveColor, secondaryColor)]]" data="[[data]]" disabled="[[secondaryDisabled]]" icon="[[secondaryIcon]]" icon-src="[[secondaryIconSrc]]" target="[[secondaryTarget]]" tabindex="{{bindableTabIndex}}" toggleable="[[secondaryToggleable]]" toggles-target="[[secondaryTogglesTarget]]" on-click="_handleStop" on-down="_handleStop" on-up="_handleStop" secondary action></mat-avatar></template>
+                    <template is="dom-if" if="[[_isSecondaryButton(secondaryType)]]" restamp><mat-icon-button active="{{secondaryActive}}" active-icon="[[secondaryActiveIcon]]" active-icon-src="[[secondaryActiveIconSrc]]" color="[[_computeSecondaryColor(secondaryActive, secondaryActiveColor, secondaryColor)]]" data="[[data]]" dimmed="[[secondaryDimmed]]" disabled="[[secondaryDisabled]]" icon="[[_computeSecondaryIcon(secondaryIcon, secondaryTarget, secondaryTogglesTarget)]]" icon-src="[[secondaryIconSrc]]" tabindex="[[bindableTabIndex]]" target="[[secondaryTarget]]" toggleable="[[secondaryToggleable]]" toggles-target="[[secondaryTogglesTarget]]" on-click="_handleStop" on-down="_handleStop" on-up="_handleStop" secondary action></mat-icon-button></template>
+                    <template is="dom-if" if="[[_isSecondaryCheckbox(secondaryType)]]" restamp><mat-checkbox changed="{{secondaryChanged}}" disabled="[[secondaryDisabled]]" model="{{secondaryValue}}" tabindex="{{bindableTabIndex}}" on-click="_handleStop" on-down="_handleStop" on-up="_handleStop" secondary action></mat-checkbox></template>
+                </template>
+            </div>
+            <mat-ripple context="[[self]]" id="matItemRipple"></mat-ripple>
+        </mat-ink>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'mat-item',
+
+            // BEHAVIORS
+            behaviors: [
+                Polymer.XPAnchorBehavior,
+                Polymer.XPPressedBehavior,
+                Polymer.XPReferralBehavior
+            ],
+
+            /*********************************************************************/
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * The element's data.
+                 *
+                 * @attribute data
+                 * @type *
+                 * @notifies
+                 */
+                data: {
+                    notify: true,
+                    value: null
+                },
+
+                /**
+                 * The item's description.
+                 *
+                 * @attribute description
+                 * @type string
+                 */
+                description: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * If set to true, the body is hidden.
+                 *
+                 * @attribute empty-body
+                 * @type boolean
+                 * @default false
+                 * @notifies
+                 * @readonly
+                 */
+                emptyBody: {
+                    notify: true,
+                    readOnly: true,
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the description is hidden.
+                 *
+                 * @attribute empty-description
+                 * @type boolean
+                 * @notifies
+                 * @readonly
+                 */
+                emptyDescription: {
+                    computed: '_computeEmptyDescription(description)',
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: Boolean
+                },
+
+                /**
+                 * If set to true, the label is hidden.
+                 *
+                 * @attribute empty-label
+                 * @type boolean
+                 * @notifies
+                 * @readonly
+                 */
+                emptyLabel: {
+                    computed: '_computeEmptyLabel(label)',
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: Boolean
+                },
+
+                /**
+                 * If set to true, the secondary is hidden.
+                 *
+                 * @attribute empty-secondary
+                 * @type boolean
+                 * @notifies
+                 * @readonly
+                 */
+                emptySecondary: {
+                    computed: '_computeEmptySecondary(secondaryIcon, secondaryIconSrc, secondaryTarget, secondaryText, secondaryTogglesTarget, secondaryType)',
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: Boolean
+                },
+
+                /**
+                 * If set to true, the element's content is positioned inline.
+                 *
+                 * @attribute inline-content
+                 * @type boolean
+                 * @default false
+                 */
+                inlineContent: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the element is indented.
+                 *
+                 * @attribute inset
+                 * @type boolean
+                 * @notifies
+                 * @readonly
+                 */
+                inset: {
+                    computed: '_computeInset(primaryActiveIcon, primaryActiveIconSrc, primaryIcon, primaryIconSrc, primaryType)',
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: Boolean
+                },
+
+                /**
+                 * The item's label.
+                 *
+                 * @attribute label
+                 * @type string
+                 */
+                label: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's primary active background.
+                 *
+                 * @attribute primary-active-background
+                 * @type string
+                 */
+                primaryActiveBackground: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's primary active color.
+                 *
+                 * @attribute primary-active-color
+                 * @type string
+                 */
+                primaryActiveColor: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's primary active icon.
+                 *
+                 * @attribute primary-active-icon
+                 * @type string
+                 */
+                primaryActiveIcon: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's primary active icon's src.
+                 *
+                 * @attribute primary-active-icon-src
+                 * @type string
+                 */
+                primaryActiveIconSrc: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's primary background.
+                 *
+                 * @attribute primary-background
+                 * @type string
+                 */
+                primaryBackground: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's primary color.
+                 *
+                 * @attribute primary-color
+                 * @type string
+                 */
+                primaryColor: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's primary icon.
+                 *
+                 * @attribute primary-icon
+                 * @type string
+                 */
+                primaryIcon: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's primary icon's src.
+                 *
+                 * @attribute primary-icon-src
+                 * @type string
+                 */
+                primaryIconSrc: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's primary type.
+                 *
+                 * @attribute primary-type
+                 * @type string
+                 * @default "button"
+                 */
+                primaryType: {
+                    observer: '_primaryTypeChanged',
+                    reflectToAttribute: true,
+                    type: String,
+                    value: 'button'
+                },
+
+                /**
+                 * If set to true, the secondary is active.
+                 *
+                 * @attribute secondary-active
+                 * @type boolean
+                 * @default false
+                 */
+                secondaryActive: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The item's secondary active background.
+                 *
+                 * @attribute secondary-active-background
+                 * @type string
+                 */
+                secondaryActiveBackground: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's secondary active color.
+                 *
+                 * @attribute secondary-active-color
+                 * @type string
+                 */
+                secondaryActiveColor: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's secondary active icon.
+                 *
+                 * @attribute secondary-active-icon
+                 * @type string
+                 */
+                secondaryActiveIcon: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's secondary active icon's src.
+                 *
+                 * @attribute secondary-active-icon-src
+                 * @type string
+                 */
+                secondaryActiveIconSrc: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's secondary background.
+                 *
+                 * @attribute secondary-background
+                 * @type string
+                 */
+                secondaryBackground: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * If set to true, the secondary action is changed.
+                 *
+                 * @attribute secondary-changed
+                 * @type boolean
+                 * @default false
+                 */
+                secondaryChanged: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the secondary action is checked.
+                 *
+                 * @attribute secondary-value
+                 * @type boolean
+                 * @default false
+                 */
+                secondaryChecked: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The item's secondary background.
+                 *
+                 * @attribute secondary-color
+                 * @type string
+                 */
+                secondaryColor: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * If set to true, the secondary action is disabled.
+                 *
+                 * @attribute secondary-disabled
+                 * @type boolean
+                 * @default false
+                 */
+                secondaryDisabled: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The item's secondary icon.
+                 *
+                 * @attribute secondary-icon
+                 * @type string
+                 */
+                secondaryIcon: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The item's secondary icon's src.
+                 *
+                 * @attribute secondary-icon-src
+                 * @type string
+                 */
+                secondaryIconSrc: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * If set to true, the secondary icon is dimmed on inactive state.
+                 *
+                 * @attribute secondary-dimmed
+                 * @type boolean
+                 * @default false
+                 */
+                secondaryDimmed: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the secondary action has pointer events disabled.
+                 *
+                 * @attribute secondary-no-tap
+                 * @type boolean
+                 * @default false
+                 */
+                secondaryNoTap: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The `id` of the secondary targeted element or the element itself.
+                 *
+                 * @attribute secondary-target
+                 * @type Element | string
+                 * @notifies
+                 */
+                secondaryTarget: {
+                    notify: true,
+                    value: null
+                },
+
+                /**
+                 * The item's secondary text.
+                 *
+                 * @attribute secondary-text
+                 * @type string
+                 */
+                secondaryText: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * If set to true, the secondary action is toggleable.
+                 *
+                 * @attribute secondary-toggleable
+                 * @type boolean
+                 * @default false
+                 */
+                secondaryToggleable: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the secondary target's `toggle` method is called on press.
+                 *
+                 * @attribute secondary-toggles-target
+                 * @type boolean
+                 * @default false
+                 */
+                secondaryTogglesTarget: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The item's secondary type.
+                 *
+                 * @attribute secondary-type
+                 * @type string
+                 * @default "button"
+                 */
+                secondaryType: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: 'button'
+                }
+            },
+
+            /**
+             * The bindable tabIndex.
+             *
+             * @property bindableTabIndex
+             * @type number
+             * @default -1
+             * @readonly
+             */
+            bindableTabIndex: -1,
+
+            /**
+             * The list of types.
+             *
+             * @property types
+             * @type Array
+             * @default ["avatar", "button", "checkbox"]
+             * @readonly
+             */
+            types: ['avatar', 'button', 'checkbox'],
+
+            /*********************************************************************/
+
+            // COMPUTER
+            _computeEmptyDescription: function (description) {
+                return !description;
+            },
+
+            // COMPUTER
+            _computeEmptyLabel: function (label) {
+                return !label;
+            },
+
+            // COMPUTER
+            _computeEmptySecondary: function (secondaryIcon, secondaryIconSrc, secondaryTarget, secondaryText, secondaryTogglesTarget, secondaryType) {
+                return !secondaryIcon && !secondaryIconSrc && (!secondaryTarget || !secondaryTogglesTarget) && !secondaryText && secondaryType !== 'checkbox';
+            },
+
+            // COMPUTER
+            _computeInset: function (primaryActiveIcon, primaryActiveIconSrc, primaryIcon, primaryIconSrc, primaryType) {
+                return !!primaryActiveIcon || !!primaryActiveIconSrc || !!primaryIcon || !!primaryIconSrc || primaryType === "checkbox";
+            },
+
+            // COMPUTER
+            _computePrimaryBackground: function (active, primaryActiveBackground, primaryBackground) {
+                return (active && primaryActiveBackground) || primaryBackground;
+            },
+
+            // COMPUTER
+            _computePrimaryColor: function (active, primaryActiveColor, primaryColor) {
+                return (active && primaryActiveColor) || primaryColor;
+            },
+
+            // COMPUTER
+            _computeSecondaryBackground: function (secondaryActive, secondaryActiveBackground, secondaryBackground) {
+                return (secondaryActive && secondaryActiveBackground) || secondaryBackground;
+            },
+
+            // COMPUTER
+            _computeSecondaryColor: function (secondaryActive, secondaryActiveColor, secondaryColor) {
+                return (secondaryActive && secondaryActiveColor) || secondaryColor;
+            },
+
+            // COMPUTER
+            _computeSecondaryIcon: function (secondaryIcon, secondaryTarget, secondaryTogglesTarget) {
+                return secondaryIcon || (secondaryTarget && secondaryTogglesTarget && 'navigation:more-vert') || null;
+            },
+
+            // COMPUTER
+            _isPrimaryAvatar: function (primaryType) {
+                return primaryType === 'avatar';
+            },
+
+            // COMPUTER
+            _isPrimaryButton: function (primaryType) {
+                return primaryType !== 'avatar' && primaryType !== 'checkbox';
+            },
+
+            // COMPUTER
+            _isPrimaryCheckbox: function (primaryType) {
+                return primaryType === 'checkbox';
+            },
+
+            // COMPUTER
+            _isSecondaryAvatar: function (secondaryType) {
+                return secondaryType === 'avatar';
+            },
+
+            // COMPUTER
+            _isSecondaryButton: function (secondaryType) {
+                return secondaryType !== 'avatar' && secondaryType !== 'checkbox';
+            },
+
+            // COMPUTER
+            _isSecondaryCheckbox: function (secondaryType) {
+                return secondaryType === 'checkbox';
+            },
+
+            /*********************************************************************/
+
+            // OBSERVER
+            _primaryTypeChanged: function (post) {
+                if (post === 'checkbox') { this.toggleable = true; }
+            },
+
+            /*********************************************************************/
+
+            // LISTENER
+            attached: function () {
+                this.mutated();
+            },
+
+            // LISTENER
+            mutated: function () {
+
+                // Vars
+                var self = this;
+
+                // Setting
+                self._setEmptyBody(!XP.isContent(Polymer.dom(self.$.content), true));
+                self.bindableTabIndex = self.tabIndex;
+
+                // Observing
+                XP.onMutation(self, self.mutated.bind(self), {attributes: true, childList: true, subtree: true, attributeFilter: ['tabindex']});
+            },
+
+            // LISTENER
+            ready: function () {
+                this._setAnchor(this.$.matItemAnchor);
+            },
+
+            /*********************************************************************/
+
+            // HANDLER
+            _handlePrimary: function (event) {
+
+                // Stopping
+                event.stopPropagation();
+
+                // Overriding
+                if (this.fire(event.type, XP.assign(event.detail, {firer: this}), {cancelable: true}).defaultPrevented) { event.preventDefault(); }
+            },
+
+            // HANDLER
+            _handleSecondary: function (event) {
+
+                // Stopping
+                event.stopPropagation();
+
+                // Overriding
+                if (this.fire(event.type, XP.assign(event.detail, {firer: this, isSecondary: true}), {cancelable: true}).defaultPrevented) { event.preventDefault(); }
+            },
+
+            // HANDLER
+            _handleStop: function (event) {
+
+                // Stopping
+                event.stopPropagation();
+            }
+        });
+    </script>
+
+</dom-module>

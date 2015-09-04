@@ -1,0 +1,37 @@
+{
+  "name": "mat-content",
+  "license": "BSD-3-Clause",
+  "version": "0.9.8",
+  "main": "mat-content.html",
+  "description": "A custom element used to display a generic Material Design container",
+  "homepage": "http://expandjs.com/elements/mat-content",
+  "authors": [
+    "Giuliano Rullo <g.rullo@expandjs.com>",
+    "Maurizio Stefàno <m.stefano@expandjs.com>",
+    "Robert Manolea <r.manolea@expandjs.com>"
+  ],
+  "keywords": [
+    "material design",
+    "material content",
+    "web app",
+    "html5",
+    "expandjs",
+    "web-components"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "expandjs": "ExpandJS/expandjs#0.9.8",
+    "polymer": "Polymer/polymer#^1.1.0"
+  },
+  "_release": "0.9.8",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.9.8",
+    "commit": "e2f3322eaef66cb4eaa8fa02b048e5c72b1f4b03"
+  },
+  "_source": "git://github.com/ExpandJS/mat-content.git",
+  "_target": "0.9.8",
+  "_originalSource": "ExpandJS/mat-content"
+}

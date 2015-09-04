@@ -1,0 +1,57 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This behavior is used to recognize whether the context element is inside an iframe or not.
+
+@behavior xp-embedded-behavior
+@description A behavior used to recognize whether the context element is inside an iframe or not
+@keywords web app, html5, expandjs, web-components
+@group behaviors
+@homepage http://expandjs.com/elements/xp-embedded-behavior
+@repository https://github.com/ExpandJS/xp-embedded-behavior
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+
+<script>
+    Polymer.XPEmbeddedBehavior = {
+
+        // PROPERTIES
+        properties: {
+
+            /**
+             * If set to true, the element is embedded.
+             *
+             * @attribute embedded
+             * @type boolean
+             * @default false
+             * @notifies
+             * @readonly
+             */
+            embedded: {
+                notify: true,
+                readOnly: true,
+                reflectToAttribute: true,
+                type: Boolean,
+                value: false
+            }
+        },
+
+        /*********************************************************************/
+
+        // LISTENER
+        ready: function () {
+            this._setEmbedded(!!window.frameElement);
+        }
+    };
+</script>

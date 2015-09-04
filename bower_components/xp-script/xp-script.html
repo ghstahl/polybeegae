@@ -1,0 +1,209 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This element is used to load a script asynchronously.
+It's particularly useful to perform a JSONP request.
+
+@element xp-script
+@description A custom element used to load scripts asynchronously
+@keywords web app, html5, expandjs, web-components
+@group functionality
+@homepage http://expandjs.com/elements/xp-script
+@repository https://github.com/ExpandJS/xp-script
+
+@behavior xp-shared-behavior /bower_components/xp-shared-behavior/xp-shared-behavior.html
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency xp-shared-behavior ExpandJS/xp-shared-behavior#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../xp-shared-behavior/xp-shared-behavior.html">
+
+<script>
+    Polymer({
+
+        // ELEMENT
+        is: 'xp-script',
+
+        // BEHAVIORS
+        behaviors: [
+            Polymer.XPSharedBehavior
+        ],
+
+        /*********************************************************************/
+
+        /**
+         * Fired when the script is loaded.
+         *
+         * @event xp-script-load
+         * @param {Element} firer
+         * @param {*} data
+         * @param {string} src
+         * @bubbles
+         */
+
+        /**
+         * Fired when the script state changes.
+         *
+         * @event xp-script-state
+         * @param {Element} firer
+         * @param {string} state
+         * @bubbles
+         */
+
+        /*********************************************************************/
+
+        /**
+         * Injects the script tag.
+         *
+         * @method inject
+         * @param {boolean} [force = false]
+         * @returns {Element}
+         */
+        inject: function (force) {
+
+            // Checking
+            if (this.state === 'pending') { return this; }
+
+            // Vars
+            var self     = this,
+                callback = self.callback,
+                src      = self.src,
+                promised = XP.has(self.promises, src) && !force,
+                deferred = promised ? null : new XP.Deferred(),
+                head     = promised ? null : XP.getElement('head'),
+                older    = promised ? null : XP.getElement(head, 'script[src="' + src + '"]'),
+                script   = promised ? null : XP.assign(XP.createElement('script'), {async: true, src: src}),
+                resolver = promised ? null : function (response) { deferred.resolve(response);},
+                promise  = promised ? self.promises[src] : deferred.promise;
+
+            // Resolving
+            self.promises[src] = promise.then(function (data) {
+
+                // Checking
+                if (callback) { delete window[callback]; }
+
+                // Setting
+                self._setState('loaded');
+                self._setData(data);
+
+                // Sharing
+                if (callback) { self.share(callback, data); }
+
+                // Firing
+                self.fire('xp-script-load', {firer: self, data: data, src: src});
+
+                return data;
+            });
+
+            // Checking
+            if (promised) { return self; }
+
+            // Resolver
+            if (callback) { window[callback] = resolver; } else { script.onload = resolver; }
+
+            // Appending
+            XP.removeChild(head, older);
+            XP.prependChild(head, script);
+
+            // Setting
+            if (self.state !== 'loaded') { self._setState('pending'); }
+
+            return self;
+        },
+
+        /*********************************************************************/
+
+        // PROPERTIES
+        properties: {
+
+            /**
+             * The name of the callback to be executed in a JSONP request.
+             *
+             * @attribute callback
+             * @type string
+             */
+            callback: {
+                reflectToAttribute: true,
+                type: String,
+                value: null
+            },
+
+            /**
+             * The received data.
+             *
+             * @attribute data
+             * @type *
+             * @notifies
+             * @readonly
+             */
+            data: {
+                notify: true,
+                readOnly: true,
+                value: null
+            },
+
+            /**
+             * The script's src.
+             *
+             * @attribute src
+             * @type string
+             */
+            src: {
+                observer: '_srcChanged',
+                reflectToAttribute: true,
+                type: String,
+                value: null
+            },
+
+            /**
+             * The script's state.
+             *
+             * @attribute state
+             * @type string
+             * @default "idle"
+             * @notifies
+             * @readonly
+             */
+            state: {
+                notify: true,
+                observer: '_stateChanged',
+                readOnly: true,
+                reflectToAttribute: true,
+                type: String,
+                value: 'idle'
+            }
+        },
+
+        /**
+         * The list of request promises.
+         *
+         * @property promises
+         * @type Object
+         * @default {}
+         * @readonly
+         */
+        promises: {},
+
+        /*********************************************************************/
+
+        // OBSERVER
+        _srcChanged: function (post) {
+            if (post) { this.inject(); }
+        },
+
+        // OBSERVER
+        _stateChanged: function (post) {
+            this.fire('xp-script-state', {firer: this, state: post});
+        }
+    });
+</script>

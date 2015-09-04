@@ -1,0 +1,66 @@
+<link rel="import" href="../mat-demo/mat-demo.html">
+<link rel="import" href="mat-progress.html">
+
+<dom-module id="mat-progress-demo">
+
+    <template>
+
+        <mat-demo name="mat-progress" type="element" url="http://expandjs.com/elements/mat-progress">
+
+            <mat-demo-panel label="Default">
+                <script type="text/html">
+                    <mat-progress id="demoDefault" value="50" showed></mat-progress>
+                </script>
+                <mat-progress id="demoDefault" value="50" showed></mat-progress>
+            </mat-demo-panel>
+
+            <mat-demo-panel label="Colored buffer">
+                <script type="text/html">
+                    <mat-progress id="demoBuffer" buffer-color="red-100" buffer-value="66" color="red" mode="buffer" value="33" showed></mat-progress>
+                </script>
+                <mat-progress id="demoBuffer" buffer-color="red-100" buffer-value="66" color="red" mode="buffer" value="33" showed></mat-progress>
+            </mat-demo-panel>
+
+            <mat-demo-panel label="Indeterminate">
+                <script type="text/html">
+                    <mat-progress id="demoIndeterminate" mode="indeterminate" showed></mat-progress>
+                </script>
+                <mat-progress id="demoIndeterminate" mode="indeterminate" showed></mat-progress>
+            </mat-demo-panel>
+
+            <mat-demo-panel label="Query then determinate">
+                <script type="text/html">
+                    <mat-progress id="demoQuery" mode="query" showed></mat-progress>
+                </script>
+                <mat-progress id="demoQuery" mode="query" showed></mat-progress>
+            </mat-demo-panel>
+
+        </mat-demo>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'mat-progress-demo',
+
+            /*********************************************************************/
+
+            // LISTENER
+            ready: function () {
+
+                // Vars
+                var self   = this,
+                    bar    = self.$.demoQuery,
+                    query1 = function () { XP.assign(bar, {mode: 'query', value: null}); XP.delay(query2, 4000);},
+                    query2 = function () { XP.assign(bar, {mode: 'determinate', value: 0}); query3(); },
+                    query3 = function () { if (bar.value < 100) { bar.value += 1; XP.delay(query3, 20); } else { query1(); } };
+
+                // Starting
+                query1();
+            }
+        });
+    </script>
+
+</dom-module>

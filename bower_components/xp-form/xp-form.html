@@ -1,0 +1,405 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This element is used to add XHR capabilities to the standard HTML form.
+
+@element xp-form
+@description A custom element used to add XHR capabilities to the standard HTML form
+@keywords web app, html5, expandjs, web-components
+@group inputs
+@homepage http://expandjs.com/elements/xp-form
+@repository https://github.com/ExpandJS/xp-form
+
+@extends form
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency xp-request ExpandJS/xp-request#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../xp-request/xp-request.html">
+
+<dom-module id="xp-form">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                overflow: visible;
+            }
+        </style>
+
+        <xp-request id="xpFormRequest" data="{{data}}" error="{{error}}" headers="[[headers]]"
+                    keep-alive="[[keepAlive]]" path="[[path]]" port="[[port]]" response="{{response}}"
+                    state="{{state}}" url="[[url]]" on-xp-request-chunk="_handleEvent"
+                    on-xp-request-data="_handleEvent" on-xp-request-error="_handleEvent"
+                    on-xp-request-response="_handleEvent" on-xp-request-state="_handleEvent"
+                    on-xp-request-submit="_handleEvent"></xp-request>
+        <content id="content"></content>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'xp-form',
+
+            // EXTENDS
+            extends: 'form',
+
+            /*********************************************************************/
+
+            /**
+             * Fired when a chunk of data is received.
+             *
+             * @event xp-form-chunk
+             * @param {Element} firer
+             * @param {Buffer | string} chunk
+             * @bubbles
+             */
+
+            /**
+             * Fired when the entire data is received.
+             *
+             * @event xp-form-data
+             * @param {Element} firer
+             * @param {Buffer | string} data
+             * @bubbles
+             */
+
+            /**
+             * Fired when an error is received.
+             *
+             * @event xp-form-error
+             * @param {Element} firer
+             * @param {string} error
+             * @bubbles
+             */
+
+            /**
+             * Fired when the submit is prevented due to invalid inputs.
+             *
+             * @event xp-form-invalid
+             * @param {Element} firer
+             * @param {Object} data
+             * @bubbles
+             */
+
+            /**
+             * Fired when a response is received.
+             *
+             * @event xp-form-response
+             * @param {Element} firer
+             * @param {Object} response
+             * @bubbles
+             */
+
+            /**
+             * Fired when the form state changes.
+             *
+             * @event xp-form-state
+             * @param {Element} firer
+             * @param {string} state
+             * @bubbles
+             */
+
+            /**
+             * Fired when the form is about to be submitted.
+             *
+             * @event xp-form-submit
+             * @param {Element} firer
+             * @param {Object} data
+             * @bubbles
+             * @cancelable
+             */
+
+            /*********************************************************************/
+
+            /**
+             * Stacks all the form's inputs in a json object.
+             *
+             * @method stack
+             * @returns {Object}
+             */
+            stack: function () {
+
+                // Vars
+                var self = this,
+                    json = {};
+
+                // Stacking
+                XP.forEach(self.elements, function (element) {
+
+                    // Vars
+                    var value = XP.getValue(element, self.casted),
+                        multi = XP.isDefined(value) && element.name.slice(-2) === '[]',
+                        name  = multi ? element.name.slice(0, -2) : element.name;
+
+                    // Checking
+                    if (!name || !XP.isDefined(value)) { return; }
+
+                    // Setting
+                    if (multi) { (json[name] = json[name] || []).push(value); } else { json[name] = value; }
+                });
+
+                return json;
+            },
+
+            /**
+             * Submits the request through an XHR request.
+             *
+             * @method submit
+             * @returns {Element}
+             */
+            submit: function () {
+
+                // Vars
+                var self = this;
+
+                // Validating
+                self._validate();
+
+                // Firing
+                if (self.invalid) { self.fire('xp-form-invalid', {firer: self, data: self.stack()}); }
+
+                // Submitting
+                if (!self.invalid) { self.$.xpFormRequest.submit(self.stack()); }
+
+                return self;
+            },
+
+            /*********************************************************************/
+
+            /**
+             * Validates the form.
+             *
+             * @method _validate
+             * @returns {Element}
+             * @private
+             */
+            _validate: function () {
+                var self = this;
+                self._setInvalid(!self.noValidate && !!XP.find(self.elements, function (element) { return XP.isInvalid(element); }));
+                return self;
+            },
+
+            /*********************************************************************/
+
+            // LISTENERS
+            listeners: {
+                'change': '_validate',
+                'input': '_validate',
+                'submit': '_handleSubmit'
+            },
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * If set to true, the inputs values will be casted while stacking.
+                 *
+                 * @attribute casted
+                 * @type boolean
+                 * @default false
+                 */
+                casted: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * Content type to be used when sending data.
+                 *
+                 * @attribute content-type
+                 * @type string
+                 * @notifies
+                 */
+                contentType: {
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: String,
+                    value: 'application/x-www-form-urlencoded'
+                },
+
+                /**
+                 * The request received data.
+                 *
+                 * @attribute data
+                 * @type Buffer | string
+                 * @notifies
+                 * @readonly
+                 */
+                data: {
+                    notify: true
+                },
+
+                /**
+                 * The request error message.
+                 *
+                 * @attribute error
+                 * @type string
+                 * @notifies
+                 * @readonly
+                 */
+                error: {
+                    notify: true,
+                    type: String
+                },
+
+                /**
+                 * If set to true, the input's value is not valid.
+                 *
+                 * @attribute invalid
+                 * @type boolean
+                 * @default false
+                 * @notifies
+                 * @readonly
+                 */
+                invalid: {
+                    notify: true,
+                    readOnly: true,
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * How often to submit TCP KeepAlive packets over sockets being kept alive.
+                 *
+                 * @attribute keep-alive
+                 * @type number
+                 * @default 0
+                 */
+                keepAlive: {
+                    reflectToAttribute: true,
+                    type: Number,
+                    value: 0
+                },
+
+                /**
+                 * The request path, useful for relative requests.
+                 *
+                 * @attribute path
+                 * @type string
+                 */
+                path: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The request port, useful for relative requests.
+                 *
+                 * @attribute port
+                 * @type number
+                 */
+                port: {
+                    reflectToAttribute: true,
+                    type: Number,
+                    value: null
+                },
+
+                /**
+                 * The request received response.
+                 *
+                 * @attribute response
+                 * @type Object
+                 * @notifies
+                 * @readonly
+                 */
+                response: {
+                    notify: true,
+                    type: Object
+                },
+
+                /**
+                 * The request state.
+                 *
+                 * @attribute state
+                 * @type string
+                 * @notifies
+                 * @readonly
+                 */
+                state: {
+                    notify: true,
+                    reflectToAttribute: true,
+                    type: String
+                }
+            },
+
+            /*********************************************************************/
+
+            // LISTENER
+            mutatedAttributes: function () {
+
+                // Vars
+                var self = this;
+
+                // Setting
+                XP.assign(self.$.xpFormRequest, {contentType: self.contentType, method: self.method, url: self.action});
+
+                // Observing
+                XP.onMutation(self, self.mutatedAttributes.bind(self), {attributes: true, attributeFilter: ['action', 'content-type', 'method']});
+            },
+
+            // LISTENER
+            mutatedDOM: function () {
+
+                // Vars
+                var self = this;
+
+                // Validating
+                self._validate();
+
+                // Observing
+                XP.onMutation(self, self.mutatedDOM.bind(self), {attributes: true, childList: true, subtree: true});
+            },
+
+            // LISTENER
+            ready: function () {
+
+                // Vars
+                var self = this;
+
+                // Mutating
+                self.mutatedAttributes();
+                self.mutatedDOM();
+            },
+
+            /*********************************************************************/
+
+            // HANDLER
+            _handleEvent: function (event) {
+
+                // Stopping
+                event.stopPropagation();
+
+                // Firing
+                if (this.fire(event.type.replace('xp-request-', 'xp-form-'), XP.assign(event.detail, {firer: this, isSecondary: true}), {cancelable: true}).defaultPrevented) { event.preventDefault(); }
+            },
+
+            // HANDLER
+            _handleSubmit: function (event) {
+
+                // Preventing
+                event.preventDefault();
+
+                // Overriding
+                this.submit();
+            }
+        });
+    </script>
+
+</dom-module>

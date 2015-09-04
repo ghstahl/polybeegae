@@ -1,0 +1,361 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+An element used to display a [Material Design checkbox](http://www.google.com/design/spec/components/selection-controls.html#selection-controls-checkbox).
+
+```html
+<mat-checkbox></mat-checkbox>
+```
+
+It can have a label along side itself...
+
+```html
+<mat-checkbox label="My checkbox"></mat-checkbox>
+```
+
+...and it can also be right aligned.
+
+```html
+<mat-checkbox label="My checkbox" flip></mat-checkbox>
+```
+
+To access the actual value, you have two attributes:
+
+- **checked** is the current value as boolean
+- **model** does the same, however it adds some additional behaviors
+
+If the initial value was `null`, when the checkbox is unchecked, the `model` returns to
+`null` instead of `false`.
+
+This is useful for binding data that has not yet been initialized, needs to be created on
+the fly or comes from external sources.
+
+Generally, we recommend to use the `model` for data binding and `checked` to set the default.
+
+```html
+<mat-checkbox label="My checkbox" model="{{myCheckbox}}" checked></mat-checkbox>
+```
+
+@element mat-checkbox
+@description A custom element used to display a Material Design checkbox
+@keywords material design, material checkbox, web app, html5, expandjs, web-components
+@group inputs
+@homepage http://expandjs.com/elements/mat-checkbox
+@repository https://github.com/ExpandJS/mat-checkbox
+@demo http://expandjs.com/demo/mat-checkbox
+
+@behavior xp-input-behavior /bower_components/xp-input-behavior/xp-input-behavior.html
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency mat-icon-button ExpandJS/mat-icon-button#0.9.8
+@dependency mat-icons ExpandJS/mat-icons#0.9.8
+@dependency mat-ink ExpandJS/mat-ink#0.9.8
+@dependency xp-input-behavior ExpandJS/xp-input-behavior#0.9.8
+
+@devDependency mat-demo ExpandJS/mat-demo#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../mat-icon-button/mat-icon-button.html">
+<link rel="import" href="../mat-icons/toggle-icons.html">
+<link rel="import" href="../mat-ink/mat-ink.html">
+<link rel="import" href="../xp-input-behavior/xp-input-behavior.html">
+
+<dom-module id="mat-checkbox">
+
+    <template>
+
+        <style>
+            :host {
+                @apply(--mat-font-subhead);
+                cursor: pointer;
+                display: block;
+                height: 48px;
+                line-height: 48px !important; /* override */
+                overflow: visible;
+                text-overflow: ellipsis !important; /* override */
+                -moz-user-select: none;
+                -ms-user-select: none;
+                -webkit-user-select: none;
+                user-select: none;
+                white-space: nowrap !important; /* override */
+            }
+
+            :host([disabled]) {
+                cursor: not-allowed !important;
+                pointer-events: none !important;
+            }
+
+            :host([empty-label]) {
+                height: 40px;
+                margin: 4px;
+                width: 40px;
+            }
+
+            :host([flip]) {
+                margin-right: -12px;
+                text-align: right;
+            }
+
+            :host(:not([flip])) {
+                margin-left: -12px;
+                text-align: left;
+            }
+
+            :host ::content input {
+                display: none !important;
+            }
+
+            :host #matCheckboxWrapper {
+                height: 100%;
+                position: relative;
+            }
+
+            :host([disabled]) #matCheckboxToggle[active]::shadow #matIconButtonIcon {
+                display: none !important;
+            }
+
+            :host([empty-label]) #matCheckboxToggle {
+                margin: 0;
+            }
+
+            :host(:not([empty-label])[flip]) #matCheckboxToggle {
+                right: 0;
+                position: absolute;
+            }
+
+            :host(:not([empty-label]):not([flip])) #matCheckboxToggle {
+                left: 0;
+                position: absolute;
+            }
+
+            :host #matCheckboxLabel {
+                height: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            :host([flip]) #matCheckboxLabel {
+                padding-right: 64px;
+            }
+
+            :host(:not([flip])) #matCheckboxLabel {
+                padding-left: 64px;
+            }
+
+            /* ANIMATION */
+
+            :host #matCheckboxToggle::shadow #matIconButtonIcon {
+                -webkit-transform: scale(1);
+                transform: scale(1);
+                transition-delay: -0.05s;
+            }
+
+            :host #matCheckboxToggle[active]::shadow #matIconButtonIcon {
+                opacity: 0;
+                transition-delay: 0.1s;
+            }
+
+            :host #matCheckboxToggle::shadow #matIconButtonIcon #matIconWrapper {
+                transition: color 0.4s;
+            }
+        </style>
+
+        <div id="matCheckboxWrapper">
+            <mat-icon-button id="matCheckboxToggle" active="{{checked}}" active-color="teal" active-icon="toggle:check-box" disabled="[[disabled]]" focused="{{focused}}" icon="toggle:check-box-outline-blank" toggleable></mat-icon-button>
+            <template is="dom-if" if="[[label]]"><mat-ink id="matCheckboxLabel" disabled="[[disabled]]" on-click="_handleToggle">{{label}}</mat-ink></template>
+            <content id="content" select="input"></content>
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'mat-checkbox',
+
+            // BEHAVIORS
+            behaviors: [
+                Polymer.XPInputBehavior
+            ],
+
+            /*********************************************************************/
+
+            /**
+             * Blurs the input.
+             *
+             * @method blur
+             * @returns {Element}
+             */
+            blur: function () {
+                var self = this;
+                self.$.matCheckboxToggle.blur();
+                return self;
+            },
+
+            /**
+             * Focuses the input
+             *
+             * @method focus
+             * @returns {Element}
+             */
+            focus: function () {
+                var self = this;
+                self.$.matCheckboxToggle.focus();
+                return self;
+            },
+
+            /**
+             * Updates element's validation state.
+             *
+             * @method updateValidation
+             * @param {boolean | string} [invalidMessage = ""]
+             * @returns {Element}
+             */
+            updateValidation: function (invalidMessage) {
+
+                // Asserting
+                XP.assertArgument(XP.isVoid(invalidMessage) || XP.isFalse(invalidMessage) || XP.isString(invalidMessage), 1, 'string');
+
+                // Vars
+                var self = this;
+
+                // Customizing
+                if (invalidMessage !== undefined) { self.adaptee.setCustomValidity(invalidMessage || ''); }
+
+                // Setting
+                self._setInvalidMessage(self.adaptee.validationMessage || null);
+                self._setInvalid(self.adaptee.validity.valid === false);
+
+                return self;
+            },
+
+            /*********************************************************************/
+
+            /**
+             * Set the adaptee.
+             *
+             * @method _adapt
+             * @returns {Element}
+             * @private
+             */
+            _adapt: function () {
+                var self = this;
+                self._setAdaptee(XP.appendChild(Polymer.dom(self), XP.createElement('input', {attributes: {type: self.type, checked: self.checked, value: self.value}})));
+                return self;
+            },
+
+            /**
+             * Reflects adapted input's `value` onto the element.
+             *
+             * @method _commitFrom
+             * @returns {Element}
+             * @private
+             */
+            _commitFrom: function () {
+                var self = this;
+                self.checked = self.adaptee.checked;
+                self.value = self.adaptee.value;
+                return self;
+            },
+
+            /**
+             * Reflect element's `value` onto the adapted input.
+             *
+             * @method _commitTo
+             * @returns {Element}
+             * @private
+             */
+            _commitTo: function () {
+                var self = this;
+                if (self.checked !== self.adaptee.checked) { self.adaptee.checked = self.checked; }
+                if (self.value !== self.adaptee.value ) { self.adaptee.value = self.value }
+                return self;
+            },
+
+            /**
+             * Reflects element's `tabIndex` onto the adapted input.
+             *
+             * @method _index
+             * @param {number} value
+             * @returns {Element}
+             * @private
+             */
+            _index: function (value) {
+                var self = this;
+                self.$.matCheckboxToggle.tabIndex = value;
+                return self;
+            },
+
+            /**
+             * Updates adapted input's attributes.
+             *
+             * @method _update
+             * @returns {Element}
+             * @private
+             */
+            _update: function () {
+                var self = this;
+                XP.setAttribute(self.adaptee, 'disabled', self.disabled);
+                XP.setAttribute(self.adaptee, 'name', self.name);
+                XP.setAttribute(self.adaptee, 'value', self.value);
+                return self;
+            },
+
+            /*********************************************************************/
+
+            // LISTENERS
+            listeners: {
+                'keyup': '_handleToggle'
+            },
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * If set to true, the check is right floated.
+                 *
+                 * @attribute flip
+                 * @type boolean
+                 * @default false
+                 */
+                flip: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The input's type.
+                 *
+                 * @attribute type
+                 * @type string
+                 * @default "checkbox"
+                 */
+                type: {
+                    observer: '_typeChanged',
+                    reflectToAttribute: true,
+                    type: String,
+                    value: 'checkbox'
+                }
+            },
+
+            /*********************************************************************/
+
+            // HANDLER
+            _handleToggle: function (event) {
+                if (!event.button && (!event.keyCode || event.keyCode === 32)) { this.toggle(); }
+            }
+        });
+    </script>
+
+</dom-module>

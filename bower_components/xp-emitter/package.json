@@ -1,0 +1,30 @@
+{
+  "name": "xp-emitter",
+  "license": "BSD-3-Clause",
+  "description": "This class is used to provide event emitting functionalities.",
+  "version": "0.9.8",
+  "homepage": "https://github.com/ExpandJS/xp-emitter",
+  "author": "ExpandJS <dev@expandjs.com> (http://expandjs.com)",
+  "contributors": [
+    "Giuliano Rullo <g.rullo@expandjs.com>",
+    "Maurizio Stefàno <m.stefano@expandjs.com>",
+    "Robert Manolea <r.manolea@expandjs.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ExpandJS/xp-emitter.git"
+  },
+  "dependencies": {
+    "eventemitter3": "^0.1.0",
+    "expandjs": "^0.9.8"
+  },
+  "scripts": {
+    "build": "browserify index -i expandjs --standalone XPEmitter > dist/xp-emitter.js && npm run build:min",
+    "build:min": "browserify -d index -i expandjs --standalone XPEmitter -p [minifyify --map xp-emitter.min.map --output dist/xp-emitter.min.map] > dist/xp-emitter.min.js"
+  },
+  "keywords": [
+      "expandjs",
+      "web app",
+      "event emitter"
+  ]
+}

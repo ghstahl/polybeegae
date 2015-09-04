@@ -1,0 +1,51 @@
+{
+  "name": "mat-fab",
+  "license": "BSD-3-Clause",
+  "version": "0.9.8",
+  "main": "mat-fab.html",
+  "description": "A custom element used to display a material floating button",
+  "homepage": "http://expandjs.com/elements/mat-fab",
+  "authors": [
+    "Giuliano Rullo <g.rullo@expandjs.com>",
+    "Maurizio Stefàno <m.stefano@expandjs.com>",
+    "Robert Manolea <r.manolea@expandjs.com>"
+  ],
+  "keywords": [
+    "material design",
+    "material fab",
+    "material button",
+    "web app",
+    "html5",
+    "expandjs",
+    "web-components"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "expandjs": "ExpandJS/expandjs#0.9.8",
+    "mat-icon": "ExpandJS/mat-icon#0.9.8",
+    "mat-paper": "ExpandJS/mat-paper#0.9.8",
+    "mat-ripple": "ExpandJS/mat-ripple#0.9.8",
+    "xp-anchor-behavior": "ExpandJS/xp-anchor-behavior#0.9.8",
+    "xp-pressed-behavior": "ExpandJS/xp-pressed-behavior#0.9.8",
+    "xp-referral-behavior": "ExpandJS/xp-referral-behavior#0.9.8",
+    "polymer": "Polymer/polymer#^1.1.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0"
+  },
+  "devDependencies": {
+    "mat-content": "ExpandJS/mat-content#0.9.8",
+    "mat-demo": "ExpandJS/mat-demo#0.9.8",
+    "mat-header-panel": "ExpandJS/mat-header-panel#0.9.8",
+    "mat-icons": "ExpandJS/mat-icons#0.9.8"
+  },
+  "_release": "0.9.8",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.9.8",
+    "commit": "ab7cebfaae6160593129e90dba5b759fc41db022"
+  },
+  "_source": "git://github.com/ExpandJS/mat-fab.git",
+  "_target": "0.9.8",
+  "_originalSource": "ExpandJS/mat-fab"
+}

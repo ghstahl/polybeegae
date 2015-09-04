@@ -1,0 +1,38 @@
+{
+  "name": "xp-markdown",
+  "license": "BSD-3-Clause",
+  "version": "0.9.8",
+  "main": "xp-markdown.html",
+  "description": "A custom element able to parse and display a markdown formatted text",
+  "homepage": "http://expandjs.com/elements/xp-markdown",
+  "authors": [
+    "Giuliano Rullo <g.rullo@expandjs.com>",
+    "Maurizio Stefàno <m.stefano@expandjs.com>",
+    "Robert Manolea <r.manolea@expandjs.com>"
+  ],
+  "keywords": [
+    "web app",
+    "html5",
+    "expandjs",
+    "web-components"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "expandjs": "ExpandJS/expandjs#0.9.8",
+    "xp-adapter-behavior": "ExpandJS/xp-adapter-behavior#0.9.8",
+    "markdown-it": "Markdown-it/markdown-it#^4.0.0",
+    "polymer": "Polymer/polymer#^1.1.0",
+    "prism": "PrismJS/prism#^1.0.0"
+  },
+  "_release": "0.9.8",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.9.8",
+    "commit": "28aab0176f45ba74a5978bc0d1169579eff23feb"
+  },
+  "_source": "git://github.com/ExpandJS/xp-markdown.git",
+  "_target": "0.9.8",
+  "_originalSource": "ExpandJS/xp-markdown"
+}

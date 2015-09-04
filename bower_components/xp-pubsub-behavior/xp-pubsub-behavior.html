@@ -1,0 +1,107 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This behavior is used to add pub/sub capabilities on the context element.
+
+@behavior xp-pubsub-behavior
+@description A behavior used to add pub/sub capabilities on the context element
+@keywords web app, html5, expandjs, web-components
+@group behaviors
+@homepage http://expandjs.com/elements/xp-pubsub-behavior
+@repository https://github.com/ExpandJS/xp-pubsub-behavior
+
+@behavior xp-array-behavior /bower_components/xp-array-behavior/xp-array-behavior.html
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency xp-array-behavior ExpandJS/xp-array-behavior#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../xp-array-behavior/xp-array-behavior.html">
+
+<script>
+    Polymer.XPPubSubBehaviorImp = {
+
+        /**
+         * Fires a notifying event on the subscribers.
+         *
+         * @method notify
+         * @param {string} type
+         * @param {Object} [detail = {}]
+         * @param {Function | Object | string} [predicate]
+         * @param {*} [thisArg]
+         * @returns {Event}
+         */
+        notify: function (type, detail, predicate, thisArg) {
+
+            // Asserting
+            XP.assertArgument(XP.isString(type, true), 1, 'string');
+            XP.assertArgument(XP.isVoid(detail) || XP.isObject(detail), 2, 'Object');
+            XP.assertArgument(XP.isVoid(predicate) || XP.isPredicate(predicate), 3, 'Function, Object or string');
+
+            // Vars
+            var self        = this._ensure(),
+                event       = new CustomEvent(type, {bubbles: true, detail: XP.assign({firer: self}, detail)}),
+                subscribers = predicate ? XP.filter(self.subscribers, predicate, thisArg) : self.subscribers;
+
+            // Notifying
+            XP.invoke(subscribers, 'dispatchEvent', event);
+
+            return event;
+        },
+
+        /**
+         * Adds an element to the subscription list.
+         *
+         * @method subscribe
+         * @param {Element} subscriber
+         * @returns {Element}
+         */
+        subscribe: function (subscriber) {
+            var self = this._ensure();
+            if (XP.isElement(subscriber)) { self.append('subscribers', subscriber); }
+            return self;
+        },
+
+        /**
+         * Removes an element from the subscription list.
+         *
+         * @method unsubscribe
+         * @param {Element} subscriber
+         * @returns {Element}
+         */
+        unsubscribe: function (subscriber) {
+            var self = this._ensure();
+            if (XP.isElement(subscriber)) { self.pull('subscribers', subscriber); }
+            return self;
+        },
+
+        /*********************************************************************/
+
+        /**
+         * Ensures that the subscription list is initialized.
+         *
+         * @method _ensure
+         * @returns {Element}
+         * @private
+         */
+        _ensure: function () {
+            var self = this;
+            if (!self.subscribers) { self.subscribers = []; }
+            return self;
+        }
+    };
+
+    Polymer.XPPubSubBehavior = [
+        Polymer.XPArrayBehavior,
+        Polymer.XPPubSubBehaviorImp
+    ];
+</script>

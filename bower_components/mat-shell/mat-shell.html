@@ -1,0 +1,154 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+An element used to wrap a [Material Design application](http://www.google.com/design/spec/layout/structure.html#structure-ui-regions), giving it a base scaffold.
+
+```html
+<mat-shell>
+
+    <mat-drawer>...</mat-drawer>
+
+    <mat-header-panel>
+        <mat-header>...</mat-header>
+        <mat-content>...</mat-content>
+    </mat-header-panel>
+
+    <mat-drawer right>...</mat-drawer>
+
+</mat-shell>
+```
+
+@element mat-shell
+@description A custom element used to wrap a Material Design app
+@keywords material design, material app, web app, html5, expandjs, web-components
+@group containers
+@homepage http://expandjs.com/elements/mat-shell
+@repository https://github.com/ExpandJS/mat-shell
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency iron-flex-layout PolymerElements/iron-flex-layout#^1.0.0
+@dependency mat-paper ExpandJS/mat-paper#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../mat-paper/mat-paper.html">
+
+<dom-module id="mat-shell">
+
+    <template>
+
+        <style>
+            :host {
+                @apply(--layout-fit);
+                display: block;
+                overflow: visible;
+                text-align: left;
+            }
+
+            :host #matShellWrapper {
+                @apply(--layout-horizontal);
+                @apply(--layout-horizontal-reverse);
+                height: 100%;
+                position: relative;
+            }
+
+            :host #matShellMain {
+                @apply(--layout-flex);
+                height: 100%;
+                position: relative;
+            }
+        </style>
+
+        <mat-paper id="matShellWrapper" background="[[background]]" brightness="shell">
+            <content id="rightContent" select='[drawer=""][right=""]'></content>
+            <div id="matShellMain"><content id="content" select=':not([drawer=""])'></content></div>
+            <content id="leftContent" select='[drawer=""]'></content>
+        </mat-paper>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'mat-shell',
+
+            /*********************************************************************/
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * The paper's background color.
+                 *
+                 * @attribute background
+                 * @type string
+                 */
+                background: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: null
+                },
+
+                /**
+                 * The left drawer.
+                 *
+                 * @attribute drawer
+                 * @type Element
+                 * @notifies
+                 * @readonly
+                 */
+                drawer: {
+                    notify: true,
+                    readOnly: true,
+                    value: null
+                },
+
+                /**
+                 * The right drawer.
+                 *
+                 * @attribute right-drawer
+                 * @type Element
+                 * @notifies
+                 * @readonly
+                 */
+                rightDrawer: {
+                    notify: true,
+                    readOnly: true,
+                    value: null
+                }
+            },
+
+            /*********************************************************************/
+
+            // LISTENER
+            attached: function () {
+                this.mutated();
+            },
+
+            // LISTENER
+            mutated: function () {
+
+                // Vars
+                var self = this;
+
+                // Setting
+                self._setDrawer(XP.getDistributedElement(Polymer.dom(self.$.leftContent), '[drawer=""]'));
+                self._setRightDrawer(XP.getDistributedElement(Polymer.dom(self.$.rightContent), '[drawer=""]'));
+
+                // Observing
+                XP.onMutation(self, self.mutated.bind(self));
+            }
+        });
+    </script>
+
+</dom-module>

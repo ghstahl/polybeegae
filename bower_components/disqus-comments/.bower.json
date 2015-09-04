@@ -1,0 +1,27 @@
+{
+  "name": "disqus-comments",
+  "keywords": [
+    "polymer",
+    "web-components",
+    "disqus",
+    "comments"
+  ],
+  "main": "disqus-comments.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^2.0.0"
+  },
+  "homepage": "https://github.com/divshot/disqus-comments",
+  "_release": "0915a95a2d",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "0915a95a2dc0a8e38724d5245f7be7afd6107601"
+  },
+  "_source": "git://github.com/divshot/disqus-comments.git",
+  "_target": "master",
+  "_originalSource": "divshot/disqus-comments",
+  "_direct": true
+}

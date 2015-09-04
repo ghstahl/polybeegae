@@ -1,0 +1,309 @@
+<!--
+@license
+Copyright (c) 2015 The ExpandJS authors. All rights reserved.
+This code may only be used under the BSD style license found at https://expandjs.github.io/LICENSE.txt
+The complete set of authors may be found at https://expandjs.github.io/AUTHORS.txt
+The complete set of contributors may be found at https://expandjs.github.io/CONTRIBUTORS.txt
+-->
+
+<!--
+This element is used to display a collapsible element.
+
+@element xp-collapse
+@description A custom element used to create a collapsible element
+@keywords web app, html5, expandjs, web-components
+@group containers
+@homepage http://expandjs.com/elements/xp-collapse
+@repository https://github.com/ExpandJS/xp-collapse
+
+@dependency polymer Polymer/polymer#^1.1.0
+@dependency expandjs ExpandJS/expandjs#0.9.8
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../expandjs/expandjs.html">
+
+<dom-module id="xp-collapse">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                overflow: hidden;
+            }
+
+            :host #xpCollapseWrapper {
+                position: relative;
+            }
+
+            :host([empty]) #xpCollapseWrapper,
+            :host([collapsed]:not([animated])) #xpCollapseWrapper {
+                display: none !important;
+            }
+        </style>
+
+        <div id="xpCollapseWrapper">
+            <content id="content"></content>
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            // ELEMENT
+            is: 'xp-collapse',
+
+            /*********************************************************************/
+
+            /**
+             * Fired when the collapsed state changes.
+             *
+             * @event xp-collapse
+             * @param {Element} firer
+             * @param {boolean} isCollapsed
+             * @bubbles
+             */
+
+            /*********************************************************************/
+
+            /**
+             * Collapses the element.
+             *
+             * @method collapse
+             * @returns {Element}
+             */
+            collapse: function () {
+                var self = this;
+                self.collapsed = true;
+                return self;
+            },
+
+            /**
+             * Expands the element.
+             *
+             * @method expand
+             * @returns {Element}
+             */
+            expand: function () {
+                var self = this;
+                self.collapsed = false;
+                return self;
+            },
+
+            /**
+             * Toggles the collapsed state.
+             *
+             * @method toggle
+             * @returns {Element}
+             */
+            toggle: function () {
+                return this[this.collapsed ? 'expand' : 'collapse']();
+            },
+
+            /*********************************************************************/
+
+            /**
+             * Animates the element
+             *
+             * @method _animate
+             * @returns {Element}
+             * @private
+             */
+            _animate: function () {
+
+                // Vars
+                var self     = this,
+                    animated = self.animated,
+                    duration = self.duration / 1000,
+                    easing   = self.easing,
+                    wrapper  = self.$.xpCollapseWrapper;
+
+                // Setting
+                if (self.animatable) { self._setAnimated(true); } else { return self; }
+
+                // Frame 1
+                XP.requestAnimationFrame(function () {
+
+                    // Preparing
+                    if (!animated) {
+                        XP.setStyle(wrapper, 'transition', 'margin-bottom 0s, margin-top 0s');
+                        XP.setStyle(wrapper, 'margin-top', !self.backward ? null : (self.collapsed ? 0 : -wrapper.scrollHeight + 'px'));
+                        XP.setStyle(wrapper, 'margin-bottom', self.backward ? null : (self.collapsed ? 0 : -wrapper.scrollHeight + 'px'));
+                    }
+
+                    // Frame 2
+                    XP.requestAnimationFrame(function () {
+
+                        // Animating
+                        XP.setStyle(wrapper, 'transition', 'margin-bottom ' + duration + 's ' + easing + ', margin-top ' + duration + 's ' + easing);
+                        XP.setStyle(wrapper, 'margin-top', !self.backward ? null : (self.collapsed ? -wrapper.scrollHeight + 'px' : 0));
+                        XP.setStyle(wrapper, 'margin-bottom', self.backward ? null : (self.collapsed ? -wrapper.scrollHeight + 'px' : 0));
+
+                        // Debouncing
+                        self._jobAnimation();
+                    });
+                });
+
+                return self;
+            },
+
+            /**
+             * Refreshes the element.
+             *
+             * @method _refresh
+             * @returns {Element}
+             * @private
+             */
+            _refresh: function () {
+
+                // Vars
+                var self = this;
+
+                // Debouncing
+                self._jobAnimation = XP.debounce(self._setAnimated.bind(self, false), self.duration);
+
+                return self;
+            },
+
+            /*********************************************************************/
+
+            // OBSERVERS
+            observers: [
+                '_refresh(duration)'
+            ],
+
+            // PROPERTIES
+            properties: {
+
+                /**
+                 * If set to true, the animation can be executed.
+                 *
+                 * @attribute animatable
+                 * @type boolean
+                 * @default false
+                 * @notifies
+                 */
+                animatable: {
+                    notify: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the collapse animation is running.
+                 *
+                 * @attribute animated
+                 * @type boolean
+                 * @default false
+                 * @notifies
+                 * @readonly
+                 */
+                animated: {
+                    notify: true,
+                    readOnly: true,
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the animation will act like a slide instead of a compress.
+                 *
+                 * @attribute backward
+                 * @type boolean
+                 * @default false
+                 */
+                backward: {
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * If set to true, the element is collapsed.
+                 *
+                 * @attribute collapsed
+                 * @type boolean
+                 * @default false
+                 * @notifies
+                 */
+                collapsed: {
+                    notify: true,
+                    observer: '_collapsedChanged',
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                },
+
+                /**
+                 * The animation's duration.
+                 *
+                 * @attribute duration
+                 * @type number
+                 * @default 330
+                 */
+                duration: {
+                    reflectToAttribute: true,
+                    type: Number,
+                    value: 330
+                },
+
+                /**
+                 * The animation's easing.
+                 *
+                 * @attribute easing
+                 * @type string
+                 * @default ease
+                 */
+                easing: {
+                    reflectToAttribute: true,
+                    type: String,
+                    value: 'ease'
+                },
+
+                /**
+                 * If set to true, the element is hidden.
+                 *
+                 * @attribute empty
+                 * @type boolean
+                 * @default false
+                 * @notifies
+                 * @readonly
+                 */
+                empty: {
+                    notify: true,
+                    readOnly: true,
+                    reflectToAttribute: true,
+                    type: Boolean,
+                    value: false
+                }
+            },
+
+            /*********************************************************************/
+
+            // OBSERVER
+            _collapsedChanged: function (post) {
+                this.fire('xp-collapse', {firer: this._animate(), isCollapsed: post});
+            },
+
+            /*********************************************************************/
+
+            // LISTENER
+            attached: function () {
+                var self = this;
+                self.mutated();
+                XP.delay(function () { self.animatable = true; });
+            },
+
+            // LISTENER
+            mutated: function () {
+                var self = this;
+                self._setEmpty(!XP.isContent(Polymer.dom(self.$.content), true));
+                XP.onMutation(self, self.mutated.bind(self));
+            }
+        });
+    </script>
+
+</dom-module>

@@ -1,0 +1,22 @@
+{
+    "route": [
+        {
+            "label": "Home",
+            "href": "/",
+            "icon": "home",
+            "data-route": "home"
+        },
+        {
+            "label": "Users",
+            "href": "/users",
+            "icon": "info",
+            "data-route": "users"
+        },
+        {
+            "label": "Contact",
+            "href": "/contact",
+            "icon": "mail",
+            "data-route": "contact"
+        }
+    ]
+}
