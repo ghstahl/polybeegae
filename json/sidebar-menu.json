@@ -56,12 +56,12 @@
             "menuItems": [
                 {
                     "label": "Atlanta",
-                    "href": "/static/atlanta",
+                    "href": "/static/Atlanta",
                     "icon": "home",
                     "dataRoute": "markdown-section",
                     "section": "markdown-section",
                     "customData": {
-                        "mdPath": "/static/atlanta/index.md"
+                        "mdPath": "/static/Atlanta/index.md"
                     }
 
                 }

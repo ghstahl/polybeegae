@@ -1,14 +1,13 @@
 package main
 
 import (
-    _ "routers"
-   "beegoapp"
-
+	"beegoapp"
+	_ "routers"
 )
 
 func init() {
 	// initialize the trace.
 
-    beegoapp.TheApp.Initialize()
-    beegoapp.TheApp.Run()
+	beegoapp.TheApp.Initialize()
+	beegoapp.TheApp.Run()
 }
