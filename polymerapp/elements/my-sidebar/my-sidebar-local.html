@@ -1,18 +1,14 @@
-<link rel="import" href="../../bower_components/mat-divider/mat-divider.html">
-<link rel="import" href="../../bower_components/mat-subheader/mat-subheader.html">
+<link rel="import" href="../../../bower_components/mat-divider/mat-divider.html">
+<link rel="import" href="../../../bower_components/mat-subheader/mat-subheader.html">
 
-<dom-module id="my-sidebar">
+<dom-module id="my-sidebar-local">
     <style>
 
     </style>
     <template>
-        <iron-ajax id="menuAjax" params="{{menuParams}}" on-response="handleResponse" handle-as="json" last-response="{{ajaxResponse}}">
-        </iron-ajax>
         <paper-menu class="list" attr-for-selected="data-route" selected="{{route_selected}}" on-iron-select="onMenuSelect">
 
-            <template is="dom-repeat" items="{{ajaxResponse.sidebar}}">
-
-
+            <template is="dom-repeat" items="{{menu_data}}">
                 <template is="dom-if" if="{{item.title}}">
                     <mat-divider></mat-divider>
                     <mat-subheader label="{{item.title}}"></mat-subheader>
@@ -27,14 +23,14 @@
 
                 </template>
             </template>
-
         </paper-menu>
+
     </template>
 
     <script>
         (function () {
             Polymer({
-                is: 'my-sidebar',
+                is: 'my-sidebar-local',
 
                 properties: {
                     route_selected: {
@@ -42,33 +38,26 @@
                         value: null,
                         notify: true
                     },
-                    ajaxResponse: {},
-                    url: {
-                        type: String
-                    },
-                    menuParams: {}
+                    menu_data: {
+                        type: Object
+
+                    }
                 },
+
                 ready: function () {
-                    this.url = "/json/sidebar-menu.json";
-                    this.$.menuAjax.url = this.url;
-                    this.$.menuAjax.auto = true;
-                    console.log("my-sidebar is ready");
-                },
-                handleResponse: function (request) {
-                    console.log("response recieved");
+                    console.log("my-sidebar-local is ready");
                 },
                 onMenuSelect: function () {
                     var drawerPanel = document.querySelector('#paperDrawerPanel');
-                    if (drawerPanel != null) {
+                    if (drawerPanel !== null) {
 
-                        if (drawerPanel.narrow != null) {
+                        if (drawerPanel.narrow !== null) {
                             if (drawerPanel.narrow) {
                                 drawerPanel.closeDrawer();
                             }
                         }
                     }
                 }
-
             });
         })();
     </script>

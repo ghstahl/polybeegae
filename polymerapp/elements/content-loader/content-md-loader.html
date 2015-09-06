@@ -1,0 +1,36 @@
+<dom-module id="content-md-loader">
+    <template>
+        <marked-element id="content"></marked-element>
+
+    </template>
+    <script>
+        Polymer({
+            is: "content-md-loader",
+            properties: {
+                filePath: {
+                    type: String,
+                    observer: 'loadFile'
+                }
+            },
+
+            loadFile: function (path) {
+                if (this.filePath) {
+                    console.log(this.filePath);
+                    var link = this.importHref(this.filePath,
+                        function () {
+
+
+
+                            this.$.content.markdown = link.import.body.innerHTML;
+
+
+                        },
+                        function () {
+                            console.log("error");
+                        }
+                    );
+                }
+            }
+        });
+    </script>
+</dom-module>

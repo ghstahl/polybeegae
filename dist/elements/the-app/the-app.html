@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <link href="../../bower_components/polymer/polymer.html" rel="import">
+    <link href="../../../bower_components/polymer/polymer.html" rel="import">
     <!-- Element Imports -->
 </head>
 
@@ -94,7 +94,7 @@
 
                     <!-- Application name -->
                     <div class="middle  middle-container center horizontal layout">
-                        <img class="middleTall" src="../../images/james_cmyk-white.png" alt="Mountain View" style="height:228px;">
+                        <img class="middleTall" src="/images/james_cmyk-white.png" alt="Mountain View" style="height:228px;">
 
 
                         <!--  <div class="app-name">Polymer Starter Kit</div> -->
@@ -102,7 +102,7 @@
                     <!-- Application name -->
                     <div class="bottom middleNotTall app-name">
 
-                        <img src="../../images/james_cmyk-white.png" alt="Mountain View" style="height:80px;">
+                        <img src="/images/james_cmyk-white.png" alt="Mountain View" style="height:80px;">
                     </div>
 
                     <!-- Application sub title -->
@@ -155,7 +155,7 @@
         </paper-drawer-panel>
     </template>
 </dom-module>
-<script src="../../bower_components/page/page.js"></script>
+<script src="../../../bower_components/page/page.js"></script>
 
 <script>
     Polymer({
@@ -214,7 +214,7 @@
         arrayItem: function (change, index, path) {
             // this.get(path, root) returns a value for a path
             // relative to a root object.
-            if (change.base[index] == null) {
+            if (change.base[index] === null) {
                 change.base[index] = {};
             }
             var res = change.base[index];
@@ -228,7 +228,7 @@
             path.page_routes.forEach(function (record) {
                 page(record.route, function (data) {
                     thisElement.route_record_array[record.dataRoute] = record;
-                    if (record.section == "markdown-section") {
+                    if (record.section === "markdown-section") {
 
                         thisElement.section_element_map[record.dataRoute].route_record = record;
                     } else
@@ -252,7 +252,7 @@
 
                     page(record.href, function () {
                         thisElement.route_record_array[record.dataRoute] = record;
-                        if (record.section == "markdown-section") {
+                        if (record.section === "markdown-section") {
 
                             thisElement.section_element_map[record.section].route_record = record;
                         } else

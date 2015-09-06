@@ -1,5 +1,5 @@
-<link rel="import" href="../../bower_components/mat-divider/mat-divider.html">
-<link rel="import" href="../../bower_components/mat-subheader/mat-subheader.html">
+<link rel="import" href="../../../bower_components/mat-divider/mat-divider.html">
+<link rel="import" href="../../../bower_components/mat-subheader/mat-subheader.html">
 
 <dom-module id="my-sidebar-local">
     <style>
@@ -49,9 +49,9 @@
                 },
                 onMenuSelect: function () {
                     var drawerPanel = document.querySelector('#paperDrawerPanel');
-                    if (drawerPanel != null) {
+                    if (drawerPanel !== null) {
 
-                        if (drawerPanel.narrow != null) {
+                        if (drawerPanel.narrow !== null) {
                             if (drawerPanel.narrow) {
                                 drawerPanel.closeDrawer();
                             }

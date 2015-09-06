@@ -35,7 +35,7 @@
                     }
                 },
                 _locationChanged: function (newValue, oldValue) {
-                    if (newValue != null) {
+                    if (newValue !== null) {
                         console.log("_locationChanged:" + newValue);
                         this.identifier = this.route_record.identifier;
                         this.title = this.route_record.label;

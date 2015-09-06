@@ -1,0 +1,39 @@
+<dom-module id="content-loader">
+    <template>
+        <pre id="content"></pre>
+    </template>
+    <script>
+        Polymer({
+            is: "content-loader",
+            properties: {
+                filePath: {
+                    type: String,
+                    observer: 'loadFile'
+                }
+            },
+
+            loadFile: function (path) {
+                if (this.filePath) {
+                    console.log(this.filePath);
+                    var link = this.importHref(this.filePath,
+                        function () {
+                        
+                            while (this.$.content.firstChild) {
+                               this.$.content.removeChild(this.$.content.firstChild);
+                            }
+
+                            this.$.content.innerHTML = "";
+                            var d = document.createElement('div');
+                            d.innerHTML = link.import.body.innerHTML;
+                            this.$.content.appendChild(d);
+
+                        },
+                        function () {
+                            console.log("error");
+                        }
+                    );
+                }
+            }
+        });
+    </script>
+</dom-module>

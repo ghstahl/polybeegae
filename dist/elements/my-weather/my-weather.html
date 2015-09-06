@@ -51,7 +51,7 @@
                     weatherParams: {}
                 },
                 _locationChanged: function (newValue, oldValue) {
-                    if (newValue != null) {
+                    if (newValue !== null) {
                         console.log("_locationChanged:" + newValue);
                         this.weatherParams = {
                             q: this.location,
