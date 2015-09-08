@@ -1,0 +1,4 @@
+cron:
+- description: daily session garbage collection
+  url: /_session_gc
+  schedule: every day 00:00
