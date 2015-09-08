@@ -10,7 +10,13 @@ import (
 	"github.com/astaxie/beegae"
 	"fmt"
     "html/template"
+     "sync" 
+    "appengine"
+    "datautils"
+    "net/http"
+	 
 )
+var startOnce sync.Once 
 
 type MainController struct {
 	beegae.Controller
@@ -30,7 +36,28 @@ func (this *MainController) Prepare() {
 	this.Data["xsrfdata"]=template.HTML(this.XsrfFormHtml())
 }
 
+func start(w http.ResponseWriter,c appengine.Context) {   
+
+    ensure_data.Sign(c,w)
+    // startup code here; datastore requests, etc 
+    ensure_data.EnsureData(w,c)
+       
+
+} 
+
+
 func (this *MainController) Get() {
+    r := this.Ctx.Request
+	w := this.Ctx.ResponseWriter
+    ctx  := appengine.NewContext(r) 
+    
+    startOnce.Do(func() { 
+        ctx.Infof("startOnce")
+        start(w,ctx) 
+    }) 
+	ctx.Infof("Serving the front page.")
+
+
 	this.Data["Website"] = "beego.me"
 	this.Data["Email"] = "astaxie@gmail.com"
 	this.TplNames = "index.tpl"
