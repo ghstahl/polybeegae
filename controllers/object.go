@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"appengine"
-	"datautils"
 	"encoding/json"
 	"github.com/astaxie/beegae"
 	"models"
+	"stores"
 )
 
 // Operations about object
@@ -36,11 +36,13 @@ func (o *ObjectController) Post() {
 func (o *ObjectController) Get() {
 
 	r := o.Ctx.Request
-	//	w := o.Ctx.ResponseWriter
-	ctx := appengine.NewContext(r)
-	ctx.Infof("ObjectController Get")
-	products := ensure_data.GetAllProds(ctx)
-	o.Data["json"] = products
+	c := appengine.NewContext(r)
+	c.Infof("ObjectController GetAll")
+
+	classes := productStore.GetAllClassesFromProds(c)
+
+	//products := ensure_data.GetAllProds(ctx)
+	o.Data["json"] = classes
 
 	/*
 			objectId := o.Ctx.Input.Params[":objectId"]
@@ -71,11 +73,8 @@ func (o *ObjectController) GetAll() {
 	c.Infof("ObjectController GetAll")
 
 	var item_list []models.Product
-	item_list = ensure_data.GetAllProds(c)
+	item_list = productStore.GetAllProds(c)
 
-	ensure_data.GetAllClassesFromProds(c)
-	
-	//products := ensure_data.GetAllProds(ctx)
 	o.Data["json"] = item_list
 
 	//	obs := models.GetAll()
