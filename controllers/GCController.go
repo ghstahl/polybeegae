@@ -9,5 +9,3 @@ type GCController struct {
 func (this *GCController) Get() {
 	beegae.GlobalSessions.GC(this.AppEngineCtx)
 }
-
-

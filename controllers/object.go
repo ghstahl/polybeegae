@@ -1,11 +1,11 @@
 package controllers
 
 import (
+	"appengine"
+	"datautils"
+	"encoding/json"
 	"github.com/astaxie/beegae"
 	"models"
-	"encoding/json"
-
-	"appengine"
 )
 
 // Operations about object
@@ -36,25 +36,27 @@ func (o *ObjectController) Post() {
 func (o *ObjectController) Get() {
 
 	r := o.Ctx.Request
-//	w := o.Ctx.ResponseWriter
-    ctx  := appengine.NewContext(r) 
-    ctx.Infof("ObjectController Get")
-  
-	
-	
-	objectId := o.Ctx.Input.Params[":objectId"]
+	//	w := o.Ctx.ResponseWriter
+	ctx := appengine.NewContext(r)
+	ctx.Infof("ObjectController Get")
+	products := ensure_data.GetAllProds(ctx)
+	o.Data["json"] = products
 
-    ctx.Infof("ObjectController objectId:%v",objectId)
-	
-	if objectId != "" {
-		ob, err := models.GetOne(objectId)
-		if err != nil {
-			o.Data["json"] = err
-		} else {
-			o.Data["json"] = ob
-		}
-		ctx.Infof("ObjectController ob:%v",ob)
-	}
+	/*
+			objectId := o.Ctx.Input.Params[":objectId"]
+
+		    ctx.Infof("ObjectController objectId:%v",objectId)
+
+			if objectId != "" {
+				ob, err := models.GetOne(objectId)
+				if err != nil {
+					o.Data["json"] = err
+				} else {
+					o.Data["json"] = ob
+				}
+				ctx.Infof("ObjectController ob:%v",ob)
+			}
+	*/
 	o.ServeJson()
 }
 
@@ -64,8 +66,20 @@ func (o *ObjectController) Get() {
 // @Failure 403 :objectId is empty
 // @router /v1/object/ [get]
 func (o *ObjectController) GetAll() {
-	obs := models.GetAll()
-	o.Data["json"] = obs
+	r := o.Ctx.Request
+	c := appengine.NewContext(r)
+	c.Infof("ObjectController GetAll")
+
+	var item_list []models.Product
+	item_list = ensure_data.GetAllProds(c)
+
+	ensure_data.GetAllClassesFromProds(c)
+	
+	//products := ensure_data.GetAllProds(ctx)
+	o.Data["json"] = item_list
+
+	//	obs := models.GetAll()
+	//	o.Data["json"] = obs
 	o.ServeJson()
 }
 
@@ -102,4 +116,3 @@ func (o *ObjectController) Delete() {
 	o.Data["json"] = "delete success!"
 	o.ServeJson()
 }
-
