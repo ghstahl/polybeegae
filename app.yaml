@@ -22,14 +22,14 @@ handlers:
   static_dir: json
  
 - url: /elements.html
-  static_files: dist/elements/elements.vulcanized.html
-  upload: dist/elements/elements.vulcanized.html
+  static_files: polymerapp/elements/elements.html
+  upload: polymerapp/elements/elements.html
   
 - url: /static/
   static_dir: static
 
 - url: /polymerapp/
-  static_dir: dist
+  static_dir: polymerapp
 
 - url: /.*
   script: _go_app

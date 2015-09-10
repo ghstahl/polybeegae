@@ -37,7 +37,7 @@
 
 
     <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
-    <link href="elements.html" rel="import">
+    <link href="polymerapp/elements/elements.html" rel="import">
 </head>
 
 <body fullbreed unresolved>
