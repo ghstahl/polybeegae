@@ -1,0 +1,20 @@
+<script>
+    AbstractSectionBehavior = {
+        properties: {
+            route_record: {
+                type: Object,
+                notify: true,
+                observer: '_routeRecordChanged'
+            },
+            _activatedPing: {
+                type: Boolean,
+                value: false,
+                notify: true,
+                observer: '_onActivated'
+            }
+        },
+        TouchActivated: function () {
+            this._activatedPing = !this._activatedPing;
+        }
+    };
+</script>

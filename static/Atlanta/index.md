@@ -1,9 +1,5 @@
 # Atlanta
-[TheWolf]: /images/wolf.jpg "Optional title attribute"
 
-<div class="wolf">
-![Flowers][TheWolf] 
-</div>
 
 
 ### Get Started

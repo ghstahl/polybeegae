@@ -18,12 +18,7 @@
                     console.log(this.filePath);
                     var link = this.importHref(this.filePath,
                         function () {
-
-
-
                             this.$.content.markdown = link.import.body.innerHTML;
-
-
                         },
                         function () {
                             console.log("error");

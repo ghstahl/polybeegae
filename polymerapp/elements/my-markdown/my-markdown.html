@@ -5,13 +5,7 @@
 
     </style>
     <template>
-        <paper-material elevation="1">
-            <content-md-loader id="mdContent"></content-md-loader>
-        </paper-material>
-        <paper-material elevation="1">
-            <disqus-comments id="myMarkdownDisqusId" shortname="myscotch" identifier={{identifier}} url={{identifier}} title={{title}} https=true></disqus-comments>
-        </paper-material>
-
+        <content-md-loader id="mdContent"></content-md-loader>
     </template>
     <script>
         (function () {
@@ -22,26 +16,12 @@
                         type: Object,
                         value: null,
                         observer: '_locationChanged'
-                    },
-                    identifier: {
-                        type: String,
-                        value: '',
-                        notify: true
-                    },
-                    title: {
-                        type: String,
-                        value: '',
-                        notify: true
                     }
                 },
                 _locationChanged: function (newValue, oldValue) {
                     if (newValue !== null) {
                         console.log("_locationChanged:" + newValue);
-                        this.identifier = this.route_record.identifier;
-                        this.title = this.route_record.label;
-                        this.$.mdContent.filePath = this.route_record.customData.mdPath;
-                        this.$.myMarkdownDisqusId.reset();
-
+                        this.$.mdContent.filePath = this.route_record.customData.dataUrl;
                     }
                 },
                 ready: function () {

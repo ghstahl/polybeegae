@@ -35,7 +35,7 @@
                     "dataRoute": "contact",
                     "section": "markdown-section",
                     "customData": {
-                        "mdPath": "/static/contact/index.md"
+                        "dataUrl": "/static/contact/index.md"
                     }
                 },
                 {
@@ -45,7 +45,37 @@
                     "dataRoute": "about",
                     "section": "markdown-section",
                     "customData": {
-                        "mdPath": "/static/about/index.md"
+                        "dataUrl": "/static/about/index.md"
+                    }
+                }
+            ]
+        },
+        {
+            "secondary": true,
+            "title": "Products",
+            "menuItems": [
+                {
+                    "polymerElement": "my-plants",
+
+                    "label": "Plants",
+                    "href": "/product/plants",
+                    "icon": "home",
+                    "dataRoute": "plants",
+                    "section": "abstract-section",
+                    "customData": {
+                        "dataUrl": "/v1/object"
+                    }
+                },
+                {
+                    "polymerElement": "my-abstract-markdown",
+                    "DISQUS": true,
+                    "label": "Los Angeles",
+                    "href": "/product/LosAngeles",
+                    "icon": "home",
+                    "dataRoute": "los angeles",
+                    "section": "abstract-section",
+                    "customData": {
+                        "dataUrl": "/static/Los Angeles/index.md"
                     }
                 }
             ]
@@ -55,16 +85,17 @@
             "title": "Secondary",
             "menuItems": [
                 {
+                    "polymerElement": "my-abstract-markdown",
                     "label": "Atlanta",
                     "href": "/static/Atlanta",
                     "icon": "home",
-                    "dataRoute": "markdown-section",
-                    "section": "markdown-section",
+                    "dataRoute": "Atlanta",
+                    "section": "abstract-section",
                     "customData": {
-                        "mdPath": "/static/Atlanta/index.md"
+                        "dataUrl": "/static/Atlanta/index.md"
                     }
-
                 }
+
             ]
         }
     ]

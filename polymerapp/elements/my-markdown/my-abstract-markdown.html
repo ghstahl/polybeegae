@@ -1,0 +1,58 @@
+<link rel="import" href="../abstract-section-behavior/abstract-section-behavior.html">
+<link rel="import" href="my-markdown.html">
+
+<dom-module id="my-abstract-markdown">
+
+    <style>
+
+    </style>
+    <template>
+        <paper-material elevation="1">
+            <my-markdown id="markdown_section_id" route_record={{route_record}}></my-markdown>
+        </paper-material>
+
+        <paper-material id="paperDisqus" elevation="1">
+            <disqus-comments id="myMarkdownDisqusId" shortname="myscotch" identifier={{identifier}} url={{identifier}} title={{title}} https=true></disqus-comments>
+        </paper-material>
+    </template>
+    <script>
+        (function () {
+            Polymer({
+                is: 'my-abstract-markdown',
+                behaviors: [AbstractSectionBehavior],
+                properties: {
+                    identifier: {
+                        type: String,
+                        value: '',
+                        notify: true
+                    },
+                    title: {
+                        type: String,
+                        value: '',
+                        notify: true
+                    }
+                },
+                _routeRecordChanged: function (value) {
+                    console.log("_routeRecordChanged hit:" + value.dataRoute);
+                },
+                Activate: function () {
+
+                    if (this.route_record) {
+                        this.$.paperDisqus.className = 'active';
+                        this.identifier = this.route_record.identifier;
+                        this.title = this.route_record.label;
+                        this.$.myMarkdownDisqusId.reset();
+                    }
+                },
+                _onActivated: function () {
+                    this.Activate();
+                },
+                ready: function () {
+
+                    console.log("my-abstract-markdown ready");
+                }
+            });
+        })();
+    </script>
+
+</dom-module>

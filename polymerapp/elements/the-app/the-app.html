@@ -149,6 +149,9 @@
 
                         </section>
 
+                        <section selected-attribute="abstract-section">
+                            <div id="abstract_section_id"></div>
+                        </section>
                     </iron-pages>
                 </div>
             </paper-header-panel>
@@ -186,6 +189,10 @@
                 type: Array,
                 value: []
             },
+            abstract_section_element_map: {
+                type: Array,
+                value: []
+            },
             hashbang: {
                 type: Boolean,
                 value: true
@@ -194,7 +201,7 @@
         },
         scrollHandler: function (event) {
             var scroller = event.detail.target;
-            console.log(scroller.scrollTop);
+
         },
         /*---------------------------------------------------------------*/
         _selectedIndexChanged: function (newIndex, oldIndex) {
@@ -221,6 +228,36 @@
             return res;
             //            return this.get(path, change.base[index]);
         },
+        onPageHandler: function (record) {
+            if (record.polymerElement) {
+                var polyDom = Polymer.dom(this.$.abstract_section_id);
+                var children = polyDom.childNodes;
+                while (children.length != 0) {
+                    polyDom.removeChild(children[0]);
+                    children = polyDom.childNodes;
+                }
+                var polymerElement = this.abstract_section_element_map[record.polymerElement];
+                if (!polymerElement) {
+                    polymerElement = document.createElement(record.polymerElement);
+                    this.abstract_section_element_map[record.polymerElement] = polymerElement;
+                }
+                polymerElement.route_record = record;
+                polyDom.appendChild(polymerElement);
+                polymerElement.TouchActivated();
+            }
+            this.route_record_array[record.dataRoute] = record;
+            if (record.section === "markdown-section") {
+
+                this.section_element_map[record.section].route_record = record;
+            } else
+                this.route_record = record;
+
+            this.route = record.dataRoute;
+
+            this.route_selected = record.dataRoute;
+            this.section_selected = record.section;
+
+        },
         /*---------------------------------------------------------------*/
         onRouteAjaxResonse: function (path) {
             this.section_element_map["markdown-section"] = this.$.markdown_section_id;
@@ -235,7 +272,7 @@
                         thisElement.route_record = record;
 
                     thisElement.route = record.dataRoute;
-                    thisElement.sectionRoute = record.sectionRoute;
+
                     thisElement.route_params = data.params;
                 });
             });
@@ -251,17 +288,7 @@
                     record.identifier = fullPath;
 
                     page(record.href, function () {
-                        thisElement.route_record_array[record.dataRoute] = record;
-                        if (record.section === "markdown-section") {
-
-                            thisElement.section_element_map[record.section].route_record = record;
-                        } else
-                            thisElement.route_record = record;
-
-                        thisElement.route = record.dataRoute;
-                        thisElement.sectionRoute = record.sectionRoute;
-                        thisElement.route_selected = record.dataRoute;
-                        thisElement.section_selected = record.section;
+                        thisElement.onPageHandler(record, thisElement);
                     });
 
                     console.log(record.label);

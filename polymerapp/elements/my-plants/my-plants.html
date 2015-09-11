@@ -1,0 +1,34 @@
+<link rel="import" href="../abstract-section-behavior/abstract-section-behavior.html">
+<dom-module id="my-plants">
+
+    <style>
+
+    </style>
+    <template>
+        <span>{{route_record.label}}</span>
+    </template>
+    <script>
+        (function () {
+            Polymer({
+                is: 'my-plants',
+                behaviors: [AbstractSectionBehavior],
+                properties: {
+                    plants: {
+                        type: Array
+                    }
+                },
+                _routeRecordChanged: function (value) {
+                    console.log("_routeRecordChanged hit:" + value.dataRoute);
+                },
+                _onActivated: function () {
+
+                },
+                ready: function () {
+
+                    console.log("my-plants ready");
+                }
+            });
+        })();
+    </script>
+
+</dom-module>
