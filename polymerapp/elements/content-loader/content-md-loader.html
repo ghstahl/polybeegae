@@ -1,5 +1,9 @@
+<link rel="import" href="../my-iron-ajax/my-iron-ajax.html">
 <dom-module id="content-md-loader">
     <template>
+        <my-iron-ajax id="myIronAjax" params="{{routeParams}}" handle-as="text" last-Response="{{ajaxResponse}}">
+        </my-iron-ajax>
+
         <marked-element id="content"></marked-element>
 
     </template>
@@ -7,23 +11,24 @@
         Polymer({
             is: "content-md-loader",
             properties: {
+                ajaxResponse: {
+                    type: Object,
+                    observer: 'onAjaxResponse'
+                },
                 filePath: {
                     type: String,
                     observer: 'loadFile'
+                },
+                value: {
+                    type: Object
                 }
             },
-
+            onAjaxResponse: function (path) {
+                this.$.content.markdown = path;
+            },
             loadFile: function (path) {
                 if (this.filePath) {
-                    console.log(this.filePath);
-                    var link = this.importHref(this.filePath,
-                        function () {
-                            this.$.content.markdown = link.import.body.innerHTML;
-                        },
-                        function () {
-                            console.log("error");
-                        }
-                    );
+                    this.$.myIronAjax.dataUrl = this.filePath;
                 }
             }
         });

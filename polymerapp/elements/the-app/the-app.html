@@ -13,6 +13,10 @@
             background: var(--paper-menu-background-color);
         }
         
+        .myTall {
+            height: 300px;
+        }
+        
         #footer {
             background: var(--paper-menu-background-color);
             position: absolute;
@@ -69,9 +73,8 @@
         }
     </style>
     <template>
-        <iron-ajax id="routeAjax" params="{{routeParams}}" on-response="handleRouteAjaxResponse" handle-as="json" last-response="{{routeAjaxResponse}}">
-        </iron-ajax>
-
+        <my-iron-ajax id="myIronAjax" params="{{routeParams}}" handle-as="json" last-Response="{{routeAjaxResponse}}">
+        </my-iron-ajax>
         <paper-drawer-panel id="paperDrawerPanel">
 
             <!-- Drawer Scroll Header Panel -->
@@ -82,7 +85,7 @@
                 </paper-toolbar>
                 <my-sidebar-local menu_data={{sidebarMenuData}} route_selected={{route_selected}}></my-sidebar-local>
             </paper-scroll-header-panel>
-            <paper-header-panel main mode="waterfall-tall" on-content-scroll="scrollHandler">
+            <paper-header-panel id="mainPaperHeaderPanel" main mode="waterfall-tall" on-content-scroll="scrollHandler">
                 <!-- Main Toolbar -->
                 <paper-toolbar id="mainToolbar">
                     <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
@@ -168,6 +171,11 @@
                 type: Object,
                 observer: 'onRouteAjaxResonse'
             },
+            myIronAjaxLastResponse: {
+                type: Object,
+                notify: true,
+                observer: '_myIronAjaxLastResponseChanged'
+            },
 
             routeAjaxUrl: {
                 type: String
@@ -201,6 +209,17 @@
         },
         scrollHandler: function (event) {
             var scroller = event.detail.target;
+            /*
+                        if (this.$.mainPaperHeaderPanel.atTop) {
+                            this.$.mainPaperHeaderPanel.mode = 'waterfall-tall';
+                        } else {
+                            this.$.mainPaperHeaderPanel.mode = 'waterfall';
+                        }
+                        */
+            //            var classList = this.$.mainToolbar.classList;
+            //            this.$.mainPaperHeaderPanel.mode = 'waterfall';
+            //          this.$.mainPaperHeaderPanel.tallClass = 'myTall';
+
 
         },
         /*---------------------------------------------------------------*/
@@ -258,6 +277,9 @@
             this.section_selected = record.section;
 
         },
+        _myIronAjaxLastResponseChanged: function (path) {
+            console.log("_myIronAjaxLastResponseChanged:");
+        },
         /*---------------------------------------------------------------*/
         onRouteAjaxResonse: function (path) {
             this.section_element_map["markdown-section"] = this.$.markdown_section_id;
@@ -305,11 +327,23 @@
         /*---------------------------------------------------------------*/
         ready: function (e) {
             this.routeAjaxUrl = "/json/sidebar-menu.json";
-            this.$.routeAjax.url = this.routeAjaxUrl;
-            this.$.routeAjax.auto = true;
 
 
+            this.$.myIronAjax.dataUrl = this.routeAjaxUrl;
 
+            this._observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    console.log(mutation);
+                });
+            });
+            var config = {
+                attributes: true,
+                attributeOldValue: true,
+                childList: true,
+                characterData: true,
+                subtree: true
+            };
+            this._observer.observe(this.$.mainToolbar, config);
             console.log("the-app is ready");
         }
     });

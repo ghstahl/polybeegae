@@ -17,6 +17,7 @@
     "expandjs": "expandjs/expandjs#~0.9.8",
     "iron-ajax": "Polymerelements/iron-ajax#~1.0.4",
     "iron-icons": "polymerelements/iron-icons#~1.0.3",
+    "iron-localstorage": "polymerelements/iron-localstorage#~1.0.4",
     "iron-pages": "polymerelements/iron-pages#~1.0.3",
     "marked-element": "polymerelements/marked-element#~1.0.2",
     "mat-divider": "expandjs/mat-divider#~0.9.8",

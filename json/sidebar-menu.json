@@ -1,4 +1,7 @@
 {
+    "app_config": {
+        "cacheBust": "1234"
+    },
     "page_routes": [
         {
             "route": "/markdown/*",
@@ -92,7 +95,7 @@
                     "dataRoute": "Atlanta",
                     "section": "abstract-section",
                     "customData": {
-                        "dataUrl": "/static/Atlanta/index.md"
+                        "dataUrl": "/static/Atlanta/index.md?1234"
                     }
                 }
 

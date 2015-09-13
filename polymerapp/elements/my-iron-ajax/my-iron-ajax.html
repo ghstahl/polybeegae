@@ -1,0 +1,79 @@
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../bower_components/iron-localstorage/iron-localstorage.html">
+
+<dom-module id="my-iron-ajax">
+    <style>
+
+    </style>
+    <template>
+        <iron-localstorage id="ironLocalStorageId" name={{dataUrl}} value="{{_localStorageValue}}" on-iron-localstorage-load-empty="initializeDefaultValue"></iron-localstorage>
+        <iron-ajax id="ironAjaxId" params="{{params}}" on-response="handleResponse" handle-as={{handleAs}} last-response="{{_ajaxResponse}}">
+        </iron-ajax>
+
+    </template>
+
+    <script>
+        (function () {
+            Polymer({
+                is: 'my-iron-ajax',
+
+                properties: {
+                    dataUrl: {
+                        type: String,
+                        value: null,
+                        observer: '_dataUrlChanged'
+                    },
+                    handleAs: {
+                        type: String,
+                        value: 'json'
+                    },
+                    _ajaxResponse: {
+                        observer: '_ajaxResponseChanged'
+                    },
+                    lastResponse: {
+                        type: Object,
+                        notify: true,
+                        readOnly: true
+                    },
+                    _localStorageValue: {
+                        type: Object
+                    },
+
+                    params: {}
+                },
+                initializeDefaultValue: function (ev) {
+                    this.localStorageValue = null
+                },
+                _dataUrlChanged: function (newValue, oldValue) {
+                    if (newValue !== null) {
+                        // hmm, are you in the local storage?
+                        this.$.ironLocalStorageId.reload();
+                        if (this._localStorageValue) {
+                            this._setLastResponse(this._localStorageValue);
+                        } else {
+                            this.$.ironAjaxId.url = this.dataUrl;
+                            this.$.ironAjaxId.auto = true;
+                        }
+                    }
+                },
+                _ajaxResponseChanged: function (newValue, oldValue) {
+                    if (newValue !== null) {
+                        console.log("my-iron-ajax _ajaxResponseChanged " + newValue);
+                        this._localStorageValue = newValue;
+                        // commit this to local storage
+                        this._setLastResponse(newValue);
+                    }
+                },
+                ready: function () {
+                    console.log("my-iron-ajax is ready");
+                },
+                handleResponse: function (request) {
+                    console.log(" my-iron-ajax response recieved");
+
+                }
+
+            });
+        })();
+    </script>
+
+</dom-module>
