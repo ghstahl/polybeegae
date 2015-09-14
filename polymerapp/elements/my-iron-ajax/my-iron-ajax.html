@@ -7,7 +7,7 @@
     </style>
     <template>
         <iron-localstorage id="ironLocalStorageId" name={{dataUrl}} value="{{_localStorageValue}}" on-iron-localstorage-load-empty="initializeDefaultValue"></iron-localstorage>
-        <iron-ajax id="ironAjaxId" params="{{params}}" on-response="handleResponse" handle-as={{handleAs}} last-response="{{_ajaxResponse}}">
+        <iron-ajax id="ironAjaxId" auto="false" params="{{params}}" on-response="handleResponse" handle-as={{handleAs}} last-response="{{_ajaxResponse}}">
         </iron-ajax>
 
     </template>
@@ -38,14 +38,22 @@
                     _localStorageValue: {
                         type: Object
                     },
-
-                    params: {}
+                    params: {
+                        hash: 1234
+                    }
                 },
                 initializeDefaultValue: function (ev) {
                     this.localStorageValue = null
                 },
                 _dataUrlChanged: function (newValue, oldValue) {
                     if (newValue !== null) {
+                        this.$.ironAjaxId.auto = false;
+                        this.$.ironAjaxId.url = this.dataUrl;
+                        this.$.ironAjaxId.params = {
+                            hash: "abcd123"
+                        };
+
+                        this.$.ironLocalStorageId.name = this.$.ironAjaxId.requestUrl;
                         // hmm, are you in the local storage?
                         this.$.ironLocalStorageId.reload();
                         if (this._localStorageValue) {
