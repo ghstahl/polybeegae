@@ -1,0 +1,37 @@
+<link rel="import" href="../iron-ajax-localstorage/iron-ajax-localstorage.html">
+<dom-module id="content-md-loader-iron-ajax-localstorage">
+    <template>
+
+        <iron-ajax-localstorage id="ironAjaxLocalstorage" params="{{routeParams}}" handle-as="text" last-response="{{ajaxResponse}}"></iron-ajax-localstorage>
+
+        <marked-element id="content"></marked-element>
+
+    </template>
+    <script>
+        Polymer({
+            is: "content-md-loader-iron-ajax-localstorage",
+            properties: {
+                ajaxResponse: {
+                    type: Object,
+                    observer: 'onAjaxResponse'
+                },
+                filePath: {
+                    type: String,
+                    observer: 'loadFile'
+                },
+                value: {
+                    type: Object
+                }
+            },
+            onAjaxResponse: function (path) {
+                this.$.content.markdown = path;
+            },
+
+            loadFile: function (path) {
+                if (this.filePath) {
+                    this.$.ironAjaxLocalstorage.dataUrl = this.filePath;
+                }
+            }
+        });
+    </script>
+</dom-module>

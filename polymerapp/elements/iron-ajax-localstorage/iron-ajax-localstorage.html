@@ -7,7 +7,7 @@
     </style>
     <template>
         <iron-localstorage id="ironLocalStorageId" name={{localStorageKey}} value="{{_localStorageValue}}" on-iron-localstorage-load-empty="initializeDefaultValue"></iron-localstorage>
-        <iron-ajax id="ironAjaxId" auto="false" params="{{params}}" on-response="handleResponse" handle-as={{handleAs}} last-response="{{_ajaxResponse}}">
+        <iron-ajax id="ironAjaxId" params="{{params}}" on-response="handleResponse" handle-as={{handleAs}} last-response="{{_ajaxResponse}}">
         </iron-ajax>
 
     </template>
@@ -53,7 +53,7 @@
                 },
                 _dataUrlChanged: function (newValue, oldValue) {
                     if (newValue !== null) {
-                        this.$.ironAjaxId.auto = false;
+
                         this.$.ironAjaxId.url = this.dataUrl;
                         this.$.ironAjaxId.params = {
                             hash: "abcd123"
@@ -66,7 +66,7 @@
                             this._setLastResponse(this._localStorageValue);
                         } else {
                             this.$.ironAjaxId.url = this.dataUrl;
-                            this.$.ironAjaxId.auto = true;
+                            this.$.ironAjaxId.generateRequest();
                         }
                     }
                 },
