@@ -69,8 +69,10 @@
         }
     </style>
     <template>
-        <iron-ajax id="routeAjax" params="{{routeParams}}" on-response="handleRouteAjaxResponse" handle-as="json" last-response="{{routeAjaxResponse}}">
-        </iron-ajax>
+
+
+        <iron-ajax-localstorage id="ironAjaxLocalstorage" params="{{routeParams}}" handle-as="json" last-response="{{routeAjaxResponse}}"></iron-ajax-localstorage>
+
 
         <paper-drawer-panel id="paperDrawerPanel">
 
@@ -305,10 +307,8 @@
         /*---------------------------------------------------------------*/
         ready: function (e) {
             this.routeAjaxUrl = "/json/sidebar-menu.json";
-            this.$.routeAjax.url = this.routeAjaxUrl;
-            this.$.routeAjax.auto = true;
 
-
+            this.$.ironAjaxLocalstorage.dataUrl = this.routeAjaxUrl;
 
             console.log("the-app is ready");
         }
