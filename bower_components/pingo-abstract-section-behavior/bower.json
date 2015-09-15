@@ -1,0 +1,24 @@
+{
+  "name": "pingo-abstract-section-behavior",
+  "version": "0.0.1",
+  "authors": [
+    "Herb Stahl"
+  ],
+  "description": "shared behavior for the abstract section",
+  "keywords": [
+    "Polymer",
+    "web-components"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ghstahl/pingo-abstract-section-behavior",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "~1.1.3"
+  }
+}
