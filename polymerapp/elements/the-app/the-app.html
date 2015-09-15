@@ -306,10 +306,7 @@
         },
         /*---------------------------------------------------------------*/
         ready: function (e) {
-            this.routeAjaxUrl = "/json/sidebar-menu.json";
-
-            this.$.ironAjaxLocalstorage.dataUrl = this.routeAjaxUrl;
-
+            this.$.ironAjaxLocalstorage.url = "/json/sidebar-menu.json";
             console.log("the-app is ready");
         }
     });

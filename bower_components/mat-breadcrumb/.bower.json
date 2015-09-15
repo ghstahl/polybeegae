@@ -1,7 +1,7 @@
 {
   "name": "mat-breadcrumb",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "mat-breadcrumb.html",
   "description": "A custom element used to display a Material Design breadcrumb",
   "homepage": "http://expandjs.com/elements/mat-breadcrumb",
@@ -22,29 +22,29 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "mat-icon": "ExpandJS/mat-icon#0.9.8",
-    "mat-icons": "ExpandJS/mat-icons#0.9.8",
-    "mat-ink": "ExpandJS/mat-ink#0.9.8",
-    "xp-anchor-behavior": "ExpandJS/xp-anchor-behavior#0.9.8",
-    "xp-master-behavior": "ExpandJS/xp-master-behavior#0.9.8",
-    "xp-media-query": "ExpandJS/xp-media-query#0.9.8",
-    "xp-slave-behavior": "ExpandJS/xp-slave-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "mat-icon": "ExpandJS/mat-icon#0.9.9",
+    "mat-icons": "ExpandJS/mat-icons#0.9.9",
+    "mat-ink": "ExpandJS/mat-ink#0.9.9",
+    "xp-anchor-behavior": "ExpandJS/xp-anchor-behavior#0.9.9",
+    "xp-master-behavior": "ExpandJS/xp-master-behavior#0.9.9",
+    "xp-media-query": "ExpandJS/xp-media-query#0.9.9",
+    "xp-slave-behavior": "ExpandJS/xp-slave-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0"
   },
   "devDependencies": {
-    "mat-demo": "ExpandJS/mat-demo#0.9.8",
-    "mat-fab": "ExpandJS/mat-fab#0.9.8",
-    "mat-header-panel": "ExpandJS/mat-header-panel#0.9.8"
+    "mat-demo": "ExpandJS/mat-demo#0.9.9",
+    "mat-fab": "ExpandJS/mat-fab#0.9.9",
+    "mat-header-panel": "ExpandJS/mat-header-panel#0.9.9"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "5bd6fe22281636075750e66d605ae4dea8a6c89f"
+    "tag": "v0.9.9",
+    "commit": "e200d54db20639b2b4a3fa9c8c36ee4855cb1c27"
   },
   "_source": "git://github.com/ExpandJS/mat-breadcrumb.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/mat-breadcrumb"
 }

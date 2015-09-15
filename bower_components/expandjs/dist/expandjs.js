@@ -1520,11 +1520,12 @@ function isNullOrUndefined(arg) {
     "use strict";
 
     // Vars
-    var AbstractError, AlreadyDefinedError, AlreadyUsedError, ArgumentError, Class, CustomError, Deferred, DeniedError, InvalidError, NotFoundError, Promise, RejectedError, RequiredError, UnavailableError, UndefinedError, ValidationError, addAttribute, addAttributes, addClass, after, alignElement, and, append, appendChild, apply, ary, assert, assertArgument, assertOption, assign, at, attempt, before, call, camelCase, camelCaseRegex, capitalize, capitalizeRegex, chunk, clean, clone, cloneDeep, compact, concat, countBy, createElement, createElementNS, debounce, deburr, defaults, defineProperties, defineProperty, delay, difference, drop, dropRight, dropRightWhile, dropWhile, endsWith, escape, escapeRegExp, every, fileExtension, fileName, filter, filterElements, find, findDeep, findElement, findElements, findIndex, findKey, findLast, findLastElement, findLastIndex, findLastKey, findNextElement, findNextElements, findParentElement, findPreviousElement, findPreviousElements, findSiblingElement, findSiblingElements, first, fit, fixed, flatten, flattenDeep, flush, forEach, forEachRight, forIn, forInRight, forOwn, forOwnRight, freeze, functions, getAllNext, getAllNextElements, getAllPrevious, getAllPreviousElements, getAllSiblingElements, getAllSiblings, getAttribute, getAttributes, getBoundings, getChildren, getDistributedElement, getDistributedElements, getElement, getElementById, getElements, getHTML, getHeight, getMargin, getNext, getNextElement, getNode, getNodes, getPadding, getParentElement, getPrevious, getPreviousElement, getSiblingElements, getSiblings, getStyle, getStyles, getTag, getText, getValue, getWidth, groupBy, has, hasAttribute, hasChild, hasClass, includes, includesDeep, indexBy, indexOf, initial, intersection, invert, invoke, isAlphanumeric, isAny, isArguments, isArray, isArrayable, isBase62, isBindable, isBoolean, isBrowser, isCamelCase, isCapitalize, isClean, isCollection, isContent, isCustomEvent, isDate, isDefined, isElement, isEmpty, isEnumerable, isEqual, isEquivalent, isError, isEscape, isEscapeRegExp, isEven, isEvent, isExotic, isFalse, isFinite, isFloat, isFunction, isHex, isIndex, isInfinite, isInstance, isInt, isInvalid, isKebabCase, isKeyCase, isLast, isLastIndex, isLowerCase, isNaN, isNative, isNegative, isNode, isNull, isNullable, isNumber, isNumeric, isObject, isObservable, isOdd, isPlainObject, isPolyfilled, isPositive, isPredicate, isPrevented, isPrimitive, isReadable, isRegExp, isSelector, isShady, isSnakeCase, isStartCase, isString, isTemplate, isTrue, isUniq, isUpperCase, isVoid, isWithin, iterate, kebabCase, kebabCaseRegex, keyCase, keyCaseRegex, keys, keysIn, last, lastIndexOf, listen, localize, lowerCase, lowerCaseRegex, map, mapOne, mapValues, match, matches, max, memoize, merge, min, mock, moveFirst, moveLast, nand, negate, nor, not, omit, onMutation, once, or, overwrite, pad, padLeft, padRight, pairs, parallel, parseBase62, parseHex, parseJSON, parseURL, partition, percentage, pick, pluck, prefix, prependChild, preventDefault, pull, pullAt, push, random, range, ratio, readable, readableRegex, redirect, reduce, reduceRight, reject, remove, removeAttribute, removeAttributes, removeChild, removeClass, removeStyle, removeStyles, renameElement, repeat, replaceNode, requestAnimationFrame, rest, round, sample, seal, setAttribute, setAttributes, setChildren, setHTML, setStyle, setStyles, setText, shrink, shuffle, size, slice, snakeCase, snakeCaseRegex, some, sortBy, split, startCase, startCaseRegex, startsWith, stop, stopPropagation, stretch, strip, suffix, take, takeRight, takeRightWhile, takeWhile, throttle, toArray, toBase62, toBoolean, toDOMIdentity, toDOMPredicate, toElapsedTime, toHex, toIndex, toInfinite, toInput, toInt, toJSON, toNumber, toObject, toPosition, toQueryString, toRegExp, toString, toTemplate, toURL, toUseful, toValue, toggleAttribute, toggleClass, trim, trimLeft, trimRegex, trimRight, trunc, unescape, union, uniq, unlisten, unzip, updateElement, upperCase, upperCaseRegex, value, valueIn, values, valuesIn, waterfall, where, willBleedBottom, willBleedHorizontally, willBleedLeft, willBleedRight, willBleedTop, willBleedVertically, withdraw, within, without, words, wrap, xnor, xor, zip, zipObject, 
+    var AbstractError, AlreadyDefinedError, AlreadyUsedError, ArgumentError, Class, CustomError, Deferred, DeniedError, InvalidError, NotFoundError, Promise, RejectedError, RequiredError, UnavailableError, UndefinedError, ValidationError, addAttribute, addAttributes, addClass, after, alignElement, and, append, appendChild, apply, ary, assert, assertArgument, assertOption, assign, at, attempt, before, call, camelCase, camelCaseRegex, capitalize, capitalizeRegex, chunk, clean, clone, cloneDeep, compact, concat, countBy, createElement, createElementNS, debounce, deburr, defaults, defineProperties, defineProperty, delay, difference, drop, dropRight, dropRightWhile, dropWhile, endsWith, escape, escapeRegExp, every, fileExtension, fileName, filter, filterElements, find, findDeep, findElement, findElements, findIndex, findKey, findLast, findLastElement, findLastIndex, findLastKey, findNextElement, findNextElements, findParentElement, findPreviousElement, findPreviousElements, findSiblingElement, findSiblingElements, first, fit, fixed, flatten, flattenDeep, flush, forEach, forEachRight, forIn, forInRight, forOwn, forOwnRight, freeze, functions, getAllNext, getAllNextElements, getAllPrevious, getAllPreviousElements, getAllSiblingElements, getAllSiblings, getAttribute, getAttributes, getBoundings, getChildren, getDistributedElement, getDistributedElements, getElement, getElementById, getElements, getHTML, getHeight, getMargin, getNext, getNextElement, getNode, getNodes, getPadding, getParentElement, getPrevious, getPreviousElement, getSiblingElements, getSiblings, getStyle, getStyles, getTag, getText, getValue, getWidth, groupBy, has, hasAttribute, hasChild, hasClass, includes, includesDeep, indexBy, indexOf, initial, intersection, invert, invoke, isAny, isArguments, isArray, isArrayable, isBase62, isBindable, isBoolean, isBrowser, isCamelCase, isCapitalize, isClean, isCollection, isContent, isCustomEvent, isDate, isDefined, isElement, isEmpty, isEnumerable, isEqual, isEquivalent, isError, isEscape, isEscapeRegExp, isEven, isEvent, isExotic, isFalse, isFinite, isFloat, isFunction, isHex, isIndex, isInfinite, isInput, isInstance, isInt, isInvalid, isKebabCase, isKeyCase, isLast, isLastIndex, isLowerCase, isNaN, isNative, isNegative, isNode, isNull, isNullable, isNumber, isNumeric, isObject, isObservable, isOdd, isPlainObject, isPolyfilled, isPositive, isPredicate, isPrevented, isPrimitive, isRegExp, isSelector, isShady, isSnakeCase, isStartCase, isString, isTemplate, isTrue, isUniq, isUpperCase, isUuid, isVoid, isWithin, iterate, kebabCase, kebabCaseRegex, keyCase, keyCaseRegex, keys, keysIn, last, lastIndexOf, listen, localize, lowerCase, lowerCaseRegex, map, mapOne, mapValues, match, matches, max, memoize, merge, min, mock, moveFirst, moveLast, nand, negate, nor, not, omit, onMutation, once, or, overwrite, pad, padLeft, padRight, pairs, parallel, parseBase62, parseHex, parseJSON, parseURL, partition, percentage, pick, pluck, prefix, prependChild, preventDefault, pull, pullAt, push, random, range, ratio, readable, redirect, reduce, reduceRight, reject, remove, removeAttribute, removeAttributes, removeChild, removeClass, removeStyle, removeStyles, renameElement, repeat, replaceNode, requestAnimationFrame, rest, round, sample, seal, setAttribute, setAttributes, setChildren, setHTML, setStyle, setStyles, setText, shrink, shuffle, size, slice, snakeCase, snakeCaseRegex, some, sortBy, split, startCase, startCaseRegex, startsWith, stop, stopPropagation, stretch, strip, suffix, take, takeRight, takeRightWhile, takeWhile, throttle, toArray, toBase62, toBoolean, toDOMIdentity, toDOMPredicate, toElapsedTime, toHex, toIndex, toInfinite, toInput, toInt, toJSON, toNumber, toObject, toPosition, toQueryString, toRegExp, toString, toTemplate, toURL, toUseful, toValue, toggleAttribute, toggleClass, trim, trimLeft, trimRegex, trimRight, trunc, unescape, union, uniq, unlisten, unzip, updateElement, upperCase, upperCaseRegex, uuid, uuidRegex, value, valueIn, values, valuesIn, waterfall, where, willBleedBottom, willBleedHorizontally, willBleedLeft, willBleedRight, willBleedTop, willBleedVertically, withdraw, within, without, words, wrap, xnor, xor, zip, zipObject, 
         exp     = module.exports,
         lodash  = require("lodash"),
         q       = require("q"),
-        url     = require("url");
+        url     = require("url"),
+        UUID    = require("uuid");
 
     // ABSTRACTERROR
     exp.AbstractError = AbstractError = function AbstractError(key) {
@@ -1564,106 +1565,34 @@ function isNullOrUndefined(arg) {
 
         // Evaluating
         eval('Constructor = function ' + name + '() {' +
-             '    var self = this, promised = self.promise;' +
-             '    self.options = self.options || Constructor.options;' +
-             '    self.plugins = self.plugins || {};' +
-             '    self.promise = self.promise || (initialize.promise ? new Promise(arguments, initialize.value, self) : null);' +
-             '    return initialize !== Function && (promised || !initialize.promise) ? initialize.apply(self, arguments) : self;' +
-             '};');
+            '    var self = this, promised = self._promise;' +
+            '    self.options   = self.options || Constructor.options;' +
+            '    self._snippets = self._snippets || {};' +
+            '    self._promise  = self._promise || (initialize.promise ? new Promise(arguments, initialize.value, self) : null);' +
+            '    return initialize !== Function && (promised || !initialize.promise) ? initialize.apply(self, arguments) : self;' +
+            '};');
 
         // Extending
         Constructor.prototype = Object.create(Super.prototype, {constructor: {configurable: true, value: Constructor, writable: true}});
 
-        // Setting (static properties)
+        // Defining (static)
         defineProperties(Constructor, {
 
-            // OPTIONS
+            /**
+             * TODO DOC
+             *
+             * @property options
+             * @type Object
+             * @static
+             */
             options: {
                 'static': true,
                 value: assign({}, Super.options, options)
             }
         });
 
-        // Setting (default properties)
+        // Defining (prototype)
         defineProperties(Constructor, {
-
-            /**
-             * Adds a plugin to a group
-             *
-             * @method addPlugin
-             * @param {string} group
-             * @param {Function} func
-             * @returns {Object}
-             */
-            addPlugin: function (group, func) {
-                assertArgument(isString(group, true), 1, 'string');
-                assertArgument(isFunction(func), 2, 'Function');
-                var self = this;
-                push(self.plugins[group] = self.plugins[group] || [], func);
-                return self;
-            },
-
-            /**
-             * Returns a group of plugins
-             *
-             * @method getPlugins
-             * @param {string} group
-             * @returns {Array}
-             */
-            getPlugins: function (group) {
-                assertArgument(isString(group, true), 1, 'string');
-                return this.plugins ? this.plugins[group] || [] : [];
-            },
-
-            /**
-             * Invokes a group of plugins
-             *
-             * @method invokePlugins
-             * @param {string} group
-             * @param {Array} [args]
-             * @param {Function} [callback]
-             * @returns {Object}
-             */
-            invokePlugins: function (group, args, callback) {
-                assertArgument(isString(group, true), 1, 'string');
-                assertArgument(isVoid(args) || isArrayable(args), 2, 'Arrayable');
-                assertArgument(isVoid(callback) || isFunction(callback), 3, 'Function');
-                var self = this, func = function (next) { next.apply(undefined, concat([null], args, [self])); };
-                waterfall(concat([func], self.getPlugins(group)), callback);
-                return self;
-            },
-
-            /**
-             * Removes a plugin from a group
-             *
-             * @method removePlugin
-             * @param {string} group
-             * @param {Function} func
-             * @returns {Object}
-             */
-            removePlugin: function (group, func) {
-                assertArgument(isString(group, true), 1, 'string');
-                assertArgument(isFunction(func), 2, 'Function');
-                var self = this;
-                pull(self.getPlugins(group), func);
-                return self;
-            },
-
-            /**
-             * Removes all the plugins from a group
-             *
-             * @method removePlugins
-             * @param {string} group
-             * @returns {Object}
-             */
-            removePlugins: function (group) {
-                assertArgument(isString(group, true), 1, 'string');
-                var self = this;
-                flush(self.getPlugins(group));
-                return self;
-            },
-
-            /*********************************************************************/
 
             /**
              * Wraps promise.catch
@@ -1674,7 +1603,9 @@ function isNullOrUndefined(arg) {
              */
             rejected: function (callback) {
                 assertArgument(isFunction(callback), 1, 'Function');
-                return assign(this, this.promise ? {promise: this.promise.catch(function (err) { callback(err); throw err; })} : {});
+                var self = this;
+                if (self._promise) { self._promise = self._promise.catch(function (error) { callback(error); throw error; }); }
+                return self;
             },
 
             /**
@@ -1686,7 +1617,145 @@ function isNullOrUndefined(arg) {
              */
             resolved: function (callback) {
                 assertArgument(isFunction(callback), 1, 'Function');
-                return assign(this, this.promise ? {promise: this.promise.then(function (data) { callback(data); return data; })} : {});
+                var self = this;
+                if (self._promise) { self._promise = self._promise.then(function (data) { callback(data); return data; }); }
+                return self;
+            },
+
+            /*********************************************************************/
+
+            /**
+             * TODO DOC
+             *
+             * @method _assert
+             * @param {Object} values
+             * @param {Function} resolver
+             * @returns {Promise}
+             * @private
+             */
+            _assert: {
+                enumerable: false,
+                value: function (values, resolver) {
+                    assertArgument(isObject(values), 1, 'Object');
+                    assertArgument(isFunction(resolver), 2, 'Function');
+                    var self = this, error = null;
+                    forOwn(values, function (value, key) { error = self['_assert' + capitalize(key)](value) || error; return !error; });
+                    resolver(error);
+                }
+            },
+
+            /**
+             * Insert the `snippet` on the specified `point`.
+             *
+             * @method _insertSnippet
+             * @param {string} point
+             * @param {Function} snippet
+             * @returns {Object}
+             * @private
+             */
+            _insertSnippet: {
+                enumerable: false,
+                value: function (point, snippet) {
+                    assertArgument(isString(point, true), 1, 'string');
+                    assertArgument(isFunction(snippet), 2, 'Function');
+                    var self = this;
+                    push(self._snippets[point] = self._snippets[point] || [], snippet);
+                    return self;
+                }
+            },
+
+            /**
+             * Insert the specified `snippets`.
+             *
+             * @method _insertSnippets
+             * @param {Object} snippets
+             * @returns {Object}
+             * @private
+             */
+            _insertSnippets: {
+                enumerable: false,
+                value: function (snippets) {
+                    assertArgument(isObject(snippets), 1, 'Object');
+                    var self = this;
+                    forOwn(snippets, function (snippet, point) { self._insertSnippet(point, snippet); });
+                    return self;
+                }
+            },
+
+            /**
+             * Returns the list of snippets on the specified `point`.
+             *
+             * @method _insertedSnippets
+             * @param {string} point
+             * @returns {Array}
+             * @private
+             */
+            _insertedSnippets: {
+                enumerable: false,
+                value: function (point) {
+                    assertArgument(isString(point, true), 1, 'string');
+                    return (this._snippets[point] && concat([], this._snippets[point])) || [];
+                }
+            },
+
+            /**
+             * Invokes the snippets on the specified `point`.
+             *
+             * @method _invokeSnippets
+             * @param {string} point
+             * @param {Array} [args]
+             * @param {Function} [callback]
+             * @returns {Object}
+             * @private
+             */
+            _invokeSnippets: {
+                enumerable: false,
+                value: function (point, args, callback) {
+                    assertArgument(isString(point, true), 1, 'string');
+                    assertArgument(isVoid(args) || isArrayable(args), 2, 'Arrayable');
+                    assertArgument(isVoid(callback) || isFunction(callback), 3, 'Function');
+                    var self = this, start = function (next) { next.apply(null, concat([null], args, [self])); };
+                    waterfall(concat([start], self._snippets[point] || []), callback);
+                    return self;
+                }
+            },
+
+            /**
+             * Removes the `snippet` from the specified `point`.
+             *
+             * @method _removeSnippet
+             * @param {string} point
+             * @param {Function} snippet
+             * @returns {Object}
+             * @private
+             */
+            _removeSnippet: {
+                enumerable: false,
+                value: function (point, snippet) {
+                    assertArgument(isString(point, true), 1, 'string');
+                    assertArgument(isFunction(snippet), 2, 'Function');
+                    var self = this;
+                    if (self._snippets[point]) { pull(self._snippets[point], snippet); }
+                    return self;
+                }
+            },
+
+            /**
+             * Removes all the snippets from the specified `point`.
+             *
+             * @method _removeSnippets
+             * @param {string} point
+             * @returns {Object}
+             * @private
+             */
+            _removeSnippets: {
+                enumerable: false,
+                value: function (point) {
+                    assertArgument(isString(point, true), 1, 'string');
+                    var self = this;
+                    if (self._snippets[point]) { flush(self._snippets[point]); }
+                    return self;
+                }
             },
 
             /*********************************************************************/
@@ -1698,47 +1767,36 @@ function isNullOrUndefined(arg) {
              * @type Object
              */
             options: {
-                set: function (val) { return assign(this.options || {}, val); },
-                then: function (post) { var self = this; forOwn(post.plugins || {}, function (func, group) { self.addPlugin(group, func); delete post.plugins[group]; }); }
+                set: function (val) { return assign(this.options || {}, val); }
             },
 
             /**
              * TODO DOC
              *
-             * @property plugins
-             * @type Object
-             */
-            plugins: {
-                set: function (val) { return assign(this.plugins || {}, val); }
-            },
-
-            /**
-             * TODO DOC
-             *
-             * @property promise
+             * @property _snippets
              * @type Object
              * @private
              */
-            promise: {
+            _snippets: {
                 enumerable: false,
-                validate: function (val) { return isObject(val) || isVoid(val); }
+                set: function (val) { return assign(this._snippets || {}, val); }
             },
 
             /**
              * TODO DOC
              *
-             * @property resolver
-             * @type Function
+             * @property _promise
+             * @type Object
+             * @private
              */
-            resolver: {
-                validate: function (val) { return isFunction(val) || isVoid(val); }
+            _promise: {
+                enumerable: false,
+                validate: function (val) { return isObject(val) || isVoid(val); }
             }
         });
 
-        // Setting (specified properties)
-        defineProperties(Constructor, opt);
-
-        return Constructor;
+        // Defining (custom)
+        return defineProperties(Constructor, opt);
     };
 
     // CUSTOMERROR
@@ -1981,7 +2039,7 @@ function isNullOrUndefined(arg) {
         // Function
         function next() {
             var args = slice(arguments);
-            delay(function () { cb.apply(undefined, args); });
+            delay(function () { cb.apply(null, args); });
         }
 
         // Doing
@@ -2143,9 +2201,9 @@ function isNullOrUndefined(arg) {
             value: value(opt, 'value'),
             writable: value(opt, 'writable', true)
         } : {
-            get: isGetter ? opt.get : function () { return value(this, '_' + name); },
+            get: isGetter ? opt.get : function () { return value(this, name + '_'); },
             set: isGetter ? opt.set : function (val) {
-                var self = this, key = '_' + name, pre = self[key], post = opt.set.call(self, val);
+                var self = this, key = name + '_', pre = self[key], post = opt.set.call(self, val);
                 if (!opt.validate.call(self, post)) { throw new InvalidError(name); }
                 if (!has(self, key)) { Object.defineProperty(self, key, {configurable: true, enumerable: opt.enumerable, writable: true, value: post}); } else { self[key] = post; }
                 if (opt.sealed) { seal(post); }
@@ -2825,11 +2883,6 @@ function isNullOrUndefined(arg) {
         return lodash.invoke.apply(lodash, concat([collection, methodName], slice(arguments, 2)));
     };
 
-    // ISALPHANUMERIC
-    exp.isAlphanumeric = isAlphanumeric = function isAlphanumeric(value, notEmpty) {
-        return isFinite(value) || isString(value, notEmpty);
-    };
-
     // ISANY
     exp.isAny = isAny = function isAny(value) {
         return !isNullable(value);
@@ -2921,7 +2974,7 @@ function isNullOrUndefined(arg) {
 
     // ISEMPTY
     exp.isEmpty = isEmpty = function isEmpty(value) {
-        return isNullable(value) || isArrayable(value, false) || isElement(value, false) || isObject(value, false);
+        return isNullable(value) || isArrayable(value, false) || isObject(value, false) || isElement(value, false);
     };
 
     // ISENUMERABLE
@@ -3006,6 +3059,11 @@ function isNullOrUndefined(arg) {
     // ISINFINITE
     exp.isInfinite = isInfinite = function isInfinite(value) {
         return value === Infinity || value === -Infinity;
+    };
+
+    // ISINPUT
+    exp.isInput = isInput = function isInput(value, notEmpty) {
+        return isFinite(value) || isString(value, notEmpty);
     };
 
     // ISINSTANCE
@@ -3140,11 +3198,6 @@ function isNullOrUndefined(arg) {
         return isBoolean(value) || isFinite(value) || isString(value);
     };
 
-    // ISREADABLE
-    exp.isReadable = isReadable = function isReadable(value, notEmpty) {
-        return isString(value) && readableRegex.test(value) && (isVoid(notEmpty) || xnor(value.length, notEmpty));
-    };
-
     // ISREGEXP
     exp.isRegExp = isRegExp = function isRegExp(value) {
         return lodash.isRegExp(value);
@@ -3193,6 +3246,11 @@ function isNullOrUndefined(arg) {
     // ISUPPERCASE
     exp.isUpperCase = isUpperCase = function isUpperCase(value, notEmpty) {
         return isString(value) && upperCaseRegex.test(value) && (isVoid(notEmpty) || xnor(value.length, notEmpty));
+    };
+
+    // ISUUID
+    exp.isUuid = isUuid = function isKeyCase(value, notEmpty) {
+        return isString(value) && uuidRegex.test(value) && (isVoid(notEmpty) || xnor(value.length, notEmpty));
     };
 
     // ISVOID
@@ -3413,7 +3471,7 @@ function isNullOrUndefined(arg) {
     // OMIT
     exp.omit = omit = function omit(object, predicate, thisArg) {
         assertArgument(isObject(object), 1, 'Object');
-        assertArgument(isArrayable(predicate) || isFunction(predicate), 2, 'Arrayable or Function');
+        assertArgument(isString(predicate) || isArrayable(predicate) || isFunction(predicate), 2, 'Arrayable, Function or string');
         return lodash.omit(object, predicate, thisArg);
     };
 
@@ -3552,7 +3610,7 @@ function isNullOrUndefined(arg) {
     // PICK
     exp.pick = pick = function pick(object, predicate, thisArg) {
         assertArgument(isObject(object), 1, 'Object');
-        assertArgument(isArrayable(predicate) || isFunction(predicate), 2, 'Arrayable or Function');
+        assertArgument(isString(predicate) || isArrayable(predicate) || isFunction(predicate), 2, 'Arrayable, Function or string');
         return lodash.pick(object, predicate, thisArg);
     };
 
@@ -3636,9 +3694,6 @@ function isNullOrUndefined(arg) {
         assertArgument(isVoid(string) || isString(string), 1, 'string');
         return string ? lodash.capitalize(lodash.snakeCase(lodash.trim(string)).replace(/_/g, ' ')) : '';
     };
-
-    // READABLEREGEX
-    exp.readableRegex = readableRegex = /^[A-Z]\s{0,1}(([a-z])+\s{1}|([0-9])+\s{1})*[a-z0-9]$|^$/;
 
     // REDIRECT
     exp.redirect = redirect = function redirect(url, hash) {
@@ -4285,6 +4340,15 @@ function isNullOrUndefined(arg) {
     // UPPERCASEREGEX
     exp.upperCaseRegex = upperCaseRegex = /^[^\sa-z]+[^\sa-z]*$|^$/;
 
+    // UUID
+    exp.uuid = uuid = function uuid(generator) {
+        assertArgument(isVoid(generator) || isFunction(generator), 1, 'Function');
+        return UUID.v4(generator && {rng: generator});
+    };
+
+    // UUIDREGEX
+    exp.uuidRegex = uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$|^$/;
+
     // VALUE
     exp.value = value = function value(object, key, defaultValue) {
         assertArgument(isObject(object), 1, 'Object');
@@ -4329,7 +4393,7 @@ function isNullOrUndefined(arg) {
             for (i = i + 1; i < fns.length; i += 1) { if (isFunction(fns[i])) { break; } }
             for (j = i + 1; j < fns.length; j += 1) { if (isFunction(fns[j])) { break; } }
             err = args.splice(0, 1, fns[j] ? next : cb)[0];
-            (!err && fns[i] ? fns[i] : cb).apply(undefined, err ? [err] : args);
+            (!err && fns[i] ? fns[i] : cb).apply(null, err ? [err] : args);
         }
 
         // Doing
@@ -4456,7 +4520,7 @@ function isNullOrUndefined(arg) {
 }(typeof window !== "undefined" ? window : global, typeof window !== "undefined"));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"lodash":8,"q":9,"url":6}],8:[function(require,module,exports){
+},{"lodash":8,"q":9,"url":6,"uuid":11}],8:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -18863,5 +18927,225 @@ return Q;
 });
 
 }).call(this,require('_process'))
-},{"_process":1}]},{},[7])(7)
+},{"_process":1}],10:[function(require,module,exports){
+(function (global){
+
+var rng;
+
+if (global.crypto && crypto.getRandomValues) {
+  // WHATWG crypto-based RNG - http://wiki.whatwg.org/wiki/Crypto
+  // Moderately fast, high quality
+  var _rnds8 = new Uint8Array(16);
+  rng = function whatwgRNG() {
+    crypto.getRandomValues(_rnds8);
+    return _rnds8;
+  };
+}
+
+if (!rng) {
+  // Math.random()-based (RNG)
+  //
+  // If all else fails, use Math.random().  It's fast, but is of unspecified
+  // quality.
+  var  _rnds = new Array(16);
+  rng = function() {
+    for (var i = 0, r; i < 16; i++) {
+      if ((i & 0x03) === 0) r = Math.random() * 0x100000000;
+      _rnds[i] = r >>> ((i & 0x03) << 3) & 0xff;
+    }
+
+    return _rnds;
+  };
+}
+
+module.exports = rng;
+
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],11:[function(require,module,exports){
+//     uuid.js
+//
+//     Copyright (c) 2010-2012 Robert Kieffer
+//     MIT License - http://opensource.org/licenses/mit-license.php
+
+// Unique ID creation requires a high quality random # generator.  We feature
+// detect to determine the best RNG source, normalizing to a function that
+// returns 128-bits of randomness, since that's what's usually required
+var _rng = require('./rng');
+
+// Maps for number <-> hex string conversion
+var _byteToHex = [];
+var _hexToByte = {};
+for (var i = 0; i < 256; i++) {
+  _byteToHex[i] = (i + 0x100).toString(16).substr(1);
+  _hexToByte[_byteToHex[i]] = i;
+}
+
+// **`parse()` - Parse a UUID into it's component bytes**
+function parse(s, buf, offset) {
+  var i = (buf && offset) || 0, ii = 0;
+
+  buf = buf || [];
+  s.toLowerCase().replace(/[0-9a-f]{2}/g, function(oct) {
+    if (ii < 16) { // Don't overflow!
+      buf[i + ii++] = _hexToByte[oct];
+    }
+  });
+
+  // Zero out remaining bytes if string was short
+  while (ii < 16) {
+    buf[i + ii++] = 0;
+  }
+
+  return buf;
+}
+
+// **`unparse()` - Convert UUID byte array (ala parse()) into a string**
+function unparse(buf, offset) {
+  var i = offset || 0, bth = _byteToHex;
+  return  bth[buf[i++]] + bth[buf[i++]] +
+          bth[buf[i++]] + bth[buf[i++]] + '-' +
+          bth[buf[i++]] + bth[buf[i++]] + '-' +
+          bth[buf[i++]] + bth[buf[i++]] + '-' +
+          bth[buf[i++]] + bth[buf[i++]] + '-' +
+          bth[buf[i++]] + bth[buf[i++]] +
+          bth[buf[i++]] + bth[buf[i++]] +
+          bth[buf[i++]] + bth[buf[i++]];
+}
+
+// **`v1()` - Generate time-based UUID**
+//
+// Inspired by https://github.com/LiosK/UUID.js
+// and http://docs.python.org/library/uuid.html
+
+// random #'s we need to init node and clockseq
+var _seedBytes = _rng();
+
+// Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
+var _nodeId = [
+  _seedBytes[0] | 0x01,
+  _seedBytes[1], _seedBytes[2], _seedBytes[3], _seedBytes[4], _seedBytes[5]
+];
+
+// Per 4.2.2, randomize (14 bit) clockseq
+var _clockseq = (_seedBytes[6] << 8 | _seedBytes[7]) & 0x3fff;
+
+// Previous uuid creation time
+var _lastMSecs = 0, _lastNSecs = 0;
+
+// See https://github.com/broofa/node-uuid for API details
+function v1(options, buf, offset) {
+  var i = buf && offset || 0;
+  var b = buf || [];
+
+  options = options || {};
+
+  var clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq;
+
+  // UUID timestamps are 100 nano-second units since the Gregorian epoch,
+  // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
+  // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
+  // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
+  var msecs = options.msecs !== undefined ? options.msecs : new Date().getTime();
+
+  // Per 4.2.1.2, use count of uuid's generated during the current clock
+  // cycle to simulate higher resolution clock
+  var nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1;
+
+  // Time since last uuid creation (in msecs)
+  var dt = (msecs - _lastMSecs) + (nsecs - _lastNSecs)/10000;
+
+  // Per 4.2.1.2, Bump clockseq on clock regression
+  if (dt < 0 && options.clockseq === undefined) {
+    clockseq = clockseq + 1 & 0x3fff;
+  }
+
+  // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
+  // time interval
+  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
+    nsecs = 0;
+  }
+
+  // Per 4.2.1.2 Throw error if too many uuids are requested
+  if (nsecs >= 10000) {
+    throw new Error('uuid.v1(): Can\'t create more than 10M uuids/sec');
+  }
+
+  _lastMSecs = msecs;
+  _lastNSecs = nsecs;
+  _clockseq = clockseq;
+
+  // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
+  msecs += 12219292800000;
+
+  // `time_low`
+  var tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
+  b[i++] = tl >>> 24 & 0xff;
+  b[i++] = tl >>> 16 & 0xff;
+  b[i++] = tl >>> 8 & 0xff;
+  b[i++] = tl & 0xff;
+
+  // `time_mid`
+  var tmh = (msecs / 0x100000000 * 10000) & 0xfffffff;
+  b[i++] = tmh >>> 8 & 0xff;
+  b[i++] = tmh & 0xff;
+
+  // `time_high_and_version`
+  b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
+  b[i++] = tmh >>> 16 & 0xff;
+
+  // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
+  b[i++] = clockseq >>> 8 | 0x80;
+
+  // `clock_seq_low`
+  b[i++] = clockseq & 0xff;
+
+  // `node`
+  var node = options.node || _nodeId;
+  for (var n = 0; n < 6; n++) {
+    b[i + n] = node[n];
+  }
+
+  return buf ? buf : unparse(b);
+}
+
+// **`v4()` - Generate random UUID**
+
+// See https://github.com/broofa/node-uuid for API details
+function v4(options, buf, offset) {
+  // Deprecated - 'format' argument, as supported in v1.2
+  var i = buf && offset || 0;
+
+  if (typeof(options) == 'string') {
+    buf = options == 'binary' ? new Array(16) : null;
+    options = null;
+  }
+  options = options || {};
+
+  var rnds = options.random || (options.rng || _rng)();
+
+  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+  rnds[6] = (rnds[6] & 0x0f) | 0x40;
+  rnds[8] = (rnds[8] & 0x3f) | 0x80;
+
+  // Copy bytes to buffer, if provided
+  if (buf) {
+    for (var ii = 0; ii < 16; ii++) {
+      buf[i + ii] = rnds[ii];
+    }
+  }
+
+  return buf || unparse(rnds);
+}
+
+// Export public API
+var uuid = v4;
+uuid.v1 = v1;
+uuid.v4 = v4;
+uuid.parse = parse;
+uuid.unparse = unparse;
+
+module.exports = uuid;
+
+},{"./rng":10}]},{},[7])(7)
 });

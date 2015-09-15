@@ -1,7 +1,7 @@
 {
   "name": "xp-router",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-router.html",
   "description": "A custom element used to perform client side routing",
   "homepage": "http://expandjs.com/elements/xp-router",
@@ -20,8 +20,8 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "xp-selected-behavior": "ExpandJS/xp-selected-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "xp-selected-behavior": "ExpandJS/xp-selected-behavior#0.9.9",
     "director": "Flatiron/director#^1.0.0",
     "polymer": "Polymer/polymer#^1.1.0"
   }

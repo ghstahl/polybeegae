@@ -1,7 +1,7 @@
 {
   "name": "xp-overlay",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-overlay.html",
   "description": "A custom element used to create an overlay",
   "homepage": "http://expandjs.com/elements/xp-overlay",
@@ -20,8 +20,8 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "xp-overlay-behavior": "ExpandJS/xp-overlay-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "xp-overlay-behavior": "ExpandJS/xp-overlay-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   }
 }

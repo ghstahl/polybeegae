@@ -1,7 +1,7 @@
 {
   "name": "mat-panel",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "mat-panel.html",
   "description": "A custom element used to display a Material Design panel",
   "homepage": "http://expandjs.com/elements/mat-panel",
@@ -22,21 +22,21 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "mat-paper": "ExpandJS/mat-paper#0.9.8",
-    "mat-toolbar": "ExpandJS/mat-toolbar#0.9.8",
-    "xp-collapse": "ExpandJS/xp-collapse#0.9.8",
-    "xp-master-behavior": "ExpandJS/xp-master-behavior#0.9.8",
-    "xp-slave-behavior": "ExpandJS/xp-slave-behavior#0.9.8",
-    "polymer": "Polymer/polymer#^1.1.0"
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "mat-paper": "ExpandJS/mat-paper#0.9.9",
+    "mat-toolbar": "ExpandJS/mat-toolbar#0.9.9",
+    "xp-collapse": "ExpandJS/xp-collapse#0.9.9",
+    "xp-master-behavior": "ExpandJS/xp-master-behavior#0.9.9",
+    "xp-slave-behavior": "ExpandJS/xp-slave-behavior#0.9.9",
+    "polymer": "Polymer/polymer#^1.0.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "67c0cfe0959bdf01b2cf32806d9d3be6fbc53d9e"
+    "tag": "v0.9.9",
+    "commit": "f23e6d5fb4db719ede7b21068c861ac9bb3788ef"
   },
   "_source": "git://github.com/ExpandJS/mat-panel.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/mat-panel"
 }

@@ -1,7 +1,7 @@
 {
   "name": "mat-dropdown",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "mat-dropdown.html",
   "description": "A custom element used to display a Material Design dropdown",
   "homepage": "http://expandjs.com/elements/mat-dropdown",
@@ -23,28 +23,28 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "mat-divider": "ExpandJS/mat-divider#0.9.8",
-    "mat-icon": "ExpandJS/mat-icon#0.9.8",
-    "mat-icons": "ExpandJS/mat-icons#0.9.8",
-    "mat-input-decorator": "ExpandJS/mat-input-decorator#0.9.8",
-    "mat-menu": "ExpandJS/mat-menu#0.9.8",
-    "mat-option": "ExpandJS/mat-option#0.9.8",
-    "xp-input-behavior": "ExpandJS/xp-input-behavior#0.9.8",
-    "xp-referral-behavior": "ExpandJS/xp-referral-behavior#0.9.8",
-    "xp-selected-behavior": "ExpandJS/xp-selected-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "mat-divider": "ExpandJS/mat-divider#0.9.9",
+    "mat-icon": "ExpandJS/mat-icon#0.9.9",
+    "mat-icons": "ExpandJS/mat-icons#0.9.9",
+    "mat-input-decorator": "ExpandJS/mat-input-decorator#0.9.9",
+    "mat-menu": "ExpandJS/mat-menu#0.9.9",
+    "mat-option": "ExpandJS/mat-option#0.9.9",
+    "xp-input-behavior": "ExpandJS/xp-input-behavior#0.9.9",
+    "xp-referral-behavior": "ExpandJS/xp-referral-behavior#0.9.9",
+    "xp-selected-behavior": "ExpandJS/xp-selected-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
   "devDependencies": {
-    "mat-demo": "ExpandJS/mat-demo#0.9.8"
+    "mat-demo": "ExpandJS/mat-demo#0.9.9"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "30e70954d33b9f0828306d341257d3ead2523a33"
+    "tag": "v0.9.9",
+    "commit": "336066dc9689a9c7f38153f35670eec50d399d09"
   },
   "_source": "git://github.com/ExpandJS/mat-dropdown.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/mat-dropdown"
 }

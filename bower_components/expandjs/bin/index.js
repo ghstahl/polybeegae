@@ -4,11 +4,12 @@
     "use strict";
 
     // Vars
-    var AbstractError, AlreadyDefinedError, AlreadyUsedError, ArgumentError, Class, CustomError, Deferred, DeniedError, InvalidError, NotFoundError, Promise, RejectedError, RequiredError, UnavailableError, UndefinedError, ValidationError, addAttribute, addAttributes, addClass, after, alignElement, and, append, appendChild, apply, ary, assert, assertArgument, assertOption, assign, at, attempt, before, call, camelCase, camelCaseRegex, capitalize, capitalizeRegex, chunk, clean, clone, cloneDeep, compact, concat, countBy, createElement, createElementNS, debounce, deburr, defaults, defineProperties, defineProperty, delay, difference, drop, dropRight, dropRightWhile, dropWhile, endsWith, escape, escapeRegExp, every, fileExtension, fileName, filter, filterElements, find, findDeep, findElement, findElements, findIndex, findKey, findLast, findLastElement, findLastIndex, findLastKey, findNextElement, findNextElements, findParentElement, findPreviousElement, findPreviousElements, findSiblingElement, findSiblingElements, first, fit, fixed, flatten, flattenDeep, flush, forEach, forEachRight, forIn, forInRight, forOwn, forOwnRight, freeze, functions, getAllNext, getAllNextElements, getAllPrevious, getAllPreviousElements, getAllSiblingElements, getAllSiblings, getAttribute, getAttributes, getBoundings, getChildren, getDistributedElement, getDistributedElements, getElement, getElementById, getElements, getHTML, getHeight, getMargin, getNext, getNextElement, getNode, getNodes, getPadding, getParentElement, getPrevious, getPreviousElement, getSiblingElements, getSiblings, getStyle, getStyles, getTag, getText, getValue, getWidth, groupBy, has, hasAttribute, hasChild, hasClass, includes, includesDeep, indexBy, indexOf, initial, intersection, invert, invoke, isAlphanumeric, isAny, isArguments, isArray, isArrayable, isBase62, isBindable, isBoolean, isBrowser, isCamelCase, isCapitalize, isClean, isCollection, isContent, isCustomEvent, isDate, isDefined, isElement, isEmpty, isEnumerable, isEqual, isEquivalent, isError, isEscape, isEscapeRegExp, isEven, isEvent, isExotic, isFalse, isFinite, isFloat, isFunction, isHex, isIndex, isInfinite, isInstance, isInt, isInvalid, isKebabCase, isKeyCase, isLast, isLastIndex, isLowerCase, isNaN, isNative, isNegative, isNode, isNull, isNullable, isNumber, isNumeric, isObject, isObservable, isOdd, isPlainObject, isPolyfilled, isPositive, isPredicate, isPrevented, isPrimitive, isReadable, isRegExp, isSelector, isShady, isSnakeCase, isStartCase, isString, isTemplate, isTrue, isUniq, isUpperCase, isVoid, isWithin, iterate, kebabCase, kebabCaseRegex, keyCase, keyCaseRegex, keys, keysIn, last, lastIndexOf, listen, localize, lowerCase, lowerCaseRegex, map, mapOne, mapValues, match, matches, max, memoize, merge, min, mock, moveFirst, moveLast, nand, negate, nor, not, omit, onMutation, once, or, overwrite, pad, padLeft, padRight, pairs, parallel, parseBase62, parseHex, parseJSON, parseURL, partition, percentage, pick, pluck, prefix, prependChild, preventDefault, pull, pullAt, push, random, range, ratio, readable, readableRegex, redirect, reduce, reduceRight, reject, remove, removeAttribute, removeAttributes, removeChild, removeClass, removeStyle, removeStyles, renameElement, repeat, replaceNode, requestAnimationFrame, rest, round, sample, seal, setAttribute, setAttributes, setChildren, setHTML, setStyle, setStyles, setText, shrink, shuffle, size, slice, snakeCase, snakeCaseRegex, some, sortBy, split, startCase, startCaseRegex, startsWith, stop, stopPropagation, stretch, strip, suffix, take, takeRight, takeRightWhile, takeWhile, throttle, toArray, toBase62, toBoolean, toDOMIdentity, toDOMPredicate, toElapsedTime, toHex, toIndex, toInfinite, toInput, toInt, toJSON, toNumber, toObject, toPosition, toQueryString, toRegExp, toString, toTemplate, toURL, toUseful, toValue, toggleAttribute, toggleClass, trim, trimLeft, trimRegex, trimRight, trunc, unescape, union, uniq, unlisten, unzip, updateElement, upperCase, upperCaseRegex, value, valueIn, values, valuesIn, waterfall, where, willBleedBottom, willBleedHorizontally, willBleedLeft, willBleedRight, willBleedTop, willBleedVertically, withdraw, within, without, words, wrap, xnor, xor, zip, zipObject, 
+    var AbstractError, AlreadyDefinedError, AlreadyUsedError, ArgumentError, Class, CustomError, Deferred, DeniedError, InvalidError, NotFoundError, Promise, RejectedError, RequiredError, UnavailableError, UndefinedError, ValidationError, addAttribute, addAttributes, addClass, after, alignElement, and, append, appendChild, apply, ary, assert, assertArgument, assertOption, assign, at, attempt, before, call, camelCase, camelCaseRegex, capitalize, capitalizeRegex, chunk, clean, clone, cloneDeep, compact, concat, countBy, createElement, createElementNS, debounce, deburr, defaults, defineProperties, defineProperty, delay, difference, drop, dropRight, dropRightWhile, dropWhile, endsWith, escape, escapeRegExp, every, fileExtension, fileName, filter, filterElements, find, findDeep, findElement, findElements, findIndex, findKey, findLast, findLastElement, findLastIndex, findLastKey, findNextElement, findNextElements, findParentElement, findPreviousElement, findPreviousElements, findSiblingElement, findSiblingElements, first, fit, fixed, flatten, flattenDeep, flush, forEach, forEachRight, forIn, forInRight, forOwn, forOwnRight, freeze, functions, getAllNext, getAllNextElements, getAllPrevious, getAllPreviousElements, getAllSiblingElements, getAllSiblings, getAttribute, getAttributes, getBoundings, getChildren, getDistributedElement, getDistributedElements, getElement, getElementById, getElements, getHTML, getHeight, getMargin, getNext, getNextElement, getNode, getNodes, getPadding, getParentElement, getPrevious, getPreviousElement, getSiblingElements, getSiblings, getStyle, getStyles, getTag, getText, getValue, getWidth, groupBy, has, hasAttribute, hasChild, hasClass, includes, includesDeep, indexBy, indexOf, initial, intersection, invert, invoke, isAny, isArguments, isArray, isArrayable, isBase62, isBindable, isBoolean, isBrowser, isCamelCase, isCapitalize, isClean, isCollection, isContent, isCustomEvent, isDate, isDefined, isElement, isEmpty, isEnumerable, isEqual, isEquivalent, isError, isEscape, isEscapeRegExp, isEven, isEvent, isExotic, isFalse, isFinite, isFloat, isFunction, isHex, isIndex, isInfinite, isInput, isInstance, isInt, isInvalid, isKebabCase, isKeyCase, isLast, isLastIndex, isLowerCase, isNaN, isNative, isNegative, isNode, isNull, isNullable, isNumber, isNumeric, isObject, isObservable, isOdd, isPlainObject, isPolyfilled, isPositive, isPredicate, isPrevented, isPrimitive, isRegExp, isSelector, isShady, isSnakeCase, isStartCase, isString, isTemplate, isTrue, isUniq, isUpperCase, isUuid, isVoid, isWithin, iterate, kebabCase, kebabCaseRegex, keyCase, keyCaseRegex, keys, keysIn, last, lastIndexOf, listen, localize, lowerCase, lowerCaseRegex, map, mapOne, mapValues, match, matches, max, memoize, merge, min, mock, moveFirst, moveLast, nand, negate, nor, not, omit, onMutation, once, or, overwrite, pad, padLeft, padRight, pairs, parallel, parseBase62, parseHex, parseJSON, parseURL, partition, percentage, pick, pluck, prefix, prependChild, preventDefault, pull, pullAt, push, random, range, ratio, readable, redirect, reduce, reduceRight, reject, remove, removeAttribute, removeAttributes, removeChild, removeClass, removeStyle, removeStyles, renameElement, repeat, replaceNode, requestAnimationFrame, rest, round, sample, seal, setAttribute, setAttributes, setChildren, setHTML, setStyle, setStyles, setText, shrink, shuffle, size, slice, snakeCase, snakeCaseRegex, some, sortBy, split, startCase, startCaseRegex, startsWith, stop, stopPropagation, stretch, strip, suffix, take, takeRight, takeRightWhile, takeWhile, throttle, toArray, toBase62, toBoolean, toDOMIdentity, toDOMPredicate, toElapsedTime, toHex, toIndex, toInfinite, toInput, toInt, toJSON, toNumber, toObject, toPosition, toQueryString, toRegExp, toString, toTemplate, toURL, toUseful, toValue, toggleAttribute, toggleClass, trim, trimLeft, trimRegex, trimRight, trunc, unescape, union, uniq, unlisten, unzip, updateElement, upperCase, upperCaseRegex, uuid, uuidRegex, value, valueIn, values, valuesIn, waterfall, where, willBleedBottom, willBleedHorizontally, willBleedLeft, willBleedRight, willBleedTop, willBleedVertically, withdraw, within, without, words, wrap, xnor, xor, zip, zipObject, 
         exp     = module.exports,
         lodash  = require("lodash"),
         q       = require("q"),
-        url     = require("url");
+        url     = require("url"),
+        UUID    = require("uuid");
 
     // ABSTRACTERROR
     exp.AbstractError = AbstractError = function AbstractError(key) {
@@ -48,106 +49,34 @@
 
         // Evaluating
         eval('Constructor = function ' + name + '() {' +
-             '    var self = this, promised = self.promise;' +
-             '    self.options = self.options || Constructor.options;' +
-             '    self.plugins = self.plugins || {};' +
-             '    self.promise = self.promise || (initialize.promise ? new Promise(arguments, initialize.value, self) : null);' +
-             '    return initialize !== Function && (promised || !initialize.promise) ? initialize.apply(self, arguments) : self;' +
-             '};');
+            '    var self = this, promised = self._promise;' +
+            '    self.options   = self.options || Constructor.options;' +
+            '    self._snippets = self._snippets || {};' +
+            '    self._promise  = self._promise || (initialize.promise ? new Promise(arguments, initialize.value, self) : null);' +
+            '    return initialize !== Function && (promised || !initialize.promise) ? initialize.apply(self, arguments) : self;' +
+            '};');
 
         // Extending
         Constructor.prototype = Object.create(Super.prototype, {constructor: {configurable: true, value: Constructor, writable: true}});
 
-        // Setting (static properties)
+        // Defining (static)
         defineProperties(Constructor, {
 
-            // OPTIONS
+            /**
+             * TODO DOC
+             *
+             * @property options
+             * @type Object
+             * @static
+             */
             options: {
                 'static': true,
                 value: assign({}, Super.options, options)
             }
         });
 
-        // Setting (default properties)
+        // Defining (prototype)
         defineProperties(Constructor, {
-
-            /**
-             * Adds a plugin to a group
-             *
-             * @method addPlugin
-             * @param {string} group
-             * @param {Function} func
-             * @returns {Object}
-             */
-            addPlugin: function (group, func) {
-                assertArgument(isString(group, true), 1, 'string');
-                assertArgument(isFunction(func), 2, 'Function');
-                var self = this;
-                push(self.plugins[group] = self.plugins[group] || [], func);
-                return self;
-            },
-
-            /**
-             * Returns a group of plugins
-             *
-             * @method getPlugins
-             * @param {string} group
-             * @returns {Array}
-             */
-            getPlugins: function (group) {
-                assertArgument(isString(group, true), 1, 'string');
-                return this.plugins ? this.plugins[group] || [] : [];
-            },
-
-            /**
-             * Invokes a group of plugins
-             *
-             * @method invokePlugins
-             * @param {string} group
-             * @param {Array} [args]
-             * @param {Function} [callback]
-             * @returns {Object}
-             */
-            invokePlugins: function (group, args, callback) {
-                assertArgument(isString(group, true), 1, 'string');
-                assertArgument(isVoid(args) || isArrayable(args), 2, 'Arrayable');
-                assertArgument(isVoid(callback) || isFunction(callback), 3, 'Function');
-                var self = this, func = function (next) { next.apply(undefined, concat([null], args, [self])); };
-                waterfall(concat([func], self.getPlugins(group)), callback);
-                return self;
-            },
-
-            /**
-             * Removes a plugin from a group
-             *
-             * @method removePlugin
-             * @param {string} group
-             * @param {Function} func
-             * @returns {Object}
-             */
-            removePlugin: function (group, func) {
-                assertArgument(isString(group, true), 1, 'string');
-                assertArgument(isFunction(func), 2, 'Function');
-                var self = this;
-                pull(self.getPlugins(group), func);
-                return self;
-            },
-
-            /**
-             * Removes all the plugins from a group
-             *
-             * @method removePlugins
-             * @param {string} group
-             * @returns {Object}
-             */
-            removePlugins: function (group) {
-                assertArgument(isString(group, true), 1, 'string');
-                var self = this;
-                flush(self.getPlugins(group));
-                return self;
-            },
-
-            /*********************************************************************/
 
             /**
              * Wraps promise.catch
@@ -158,7 +87,9 @@
              */
             rejected: function (callback) {
                 assertArgument(isFunction(callback), 1, 'Function');
-                return assign(this, this.promise ? {promise: this.promise.catch(function (err) { callback(err); throw err; })} : {});
+                var self = this;
+                if (self._promise) { self._promise = self._promise.catch(function (error) { callback(error); throw error; }); }
+                return self;
             },
 
             /**
@@ -170,7 +101,145 @@
              */
             resolved: function (callback) {
                 assertArgument(isFunction(callback), 1, 'Function');
-                return assign(this, this.promise ? {promise: this.promise.then(function (data) { callback(data); return data; })} : {});
+                var self = this;
+                if (self._promise) { self._promise = self._promise.then(function (data) { callback(data); return data; }); }
+                return self;
+            },
+
+            /*********************************************************************/
+
+            /**
+             * TODO DOC
+             *
+             * @method _assert
+             * @param {Object} values
+             * @param {Function} resolver
+             * @returns {Promise}
+             * @private
+             */
+            _assert: {
+                enumerable: false,
+                value: function (values, resolver) {
+                    assertArgument(isObject(values), 1, 'Object');
+                    assertArgument(isFunction(resolver), 2, 'Function');
+                    var self = this, error = null;
+                    forOwn(values, function (value, key) { error = self['_assert' + capitalize(key)](value) || error; return !error; });
+                    resolver(error);
+                }
+            },
+
+            /**
+             * Insert the `snippet` on the specified `point`.
+             *
+             * @method _insertSnippet
+             * @param {string} point
+             * @param {Function} snippet
+             * @returns {Object}
+             * @private
+             */
+            _insertSnippet: {
+                enumerable: false,
+                value: function (point, snippet) {
+                    assertArgument(isString(point, true), 1, 'string');
+                    assertArgument(isFunction(snippet), 2, 'Function');
+                    var self = this;
+                    push(self._snippets[point] = self._snippets[point] || [], snippet);
+                    return self;
+                }
+            },
+
+            /**
+             * Insert the specified `snippets`.
+             *
+             * @method _insertSnippets
+             * @param {Object} snippets
+             * @returns {Object}
+             * @private
+             */
+            _insertSnippets: {
+                enumerable: false,
+                value: function (snippets) {
+                    assertArgument(isObject(snippets), 1, 'Object');
+                    var self = this;
+                    forOwn(snippets, function (snippet, point) { self._insertSnippet(point, snippet); });
+                    return self;
+                }
+            },
+
+            /**
+             * Returns the list of snippets on the specified `point`.
+             *
+             * @method _insertedSnippets
+             * @param {string} point
+             * @returns {Array}
+             * @private
+             */
+            _insertedSnippets: {
+                enumerable: false,
+                value: function (point) {
+                    assertArgument(isString(point, true), 1, 'string');
+                    return (this._snippets[point] && concat([], this._snippets[point])) || [];
+                }
+            },
+
+            /**
+             * Invokes the snippets on the specified `point`.
+             *
+             * @method _invokeSnippets
+             * @param {string} point
+             * @param {Array} [args]
+             * @param {Function} [callback]
+             * @returns {Object}
+             * @private
+             */
+            _invokeSnippets: {
+                enumerable: false,
+                value: function (point, args, callback) {
+                    assertArgument(isString(point, true), 1, 'string');
+                    assertArgument(isVoid(args) || isArrayable(args), 2, 'Arrayable');
+                    assertArgument(isVoid(callback) || isFunction(callback), 3, 'Function');
+                    var self = this, start = function (next) { next.apply(null, concat([null], args, [self])); };
+                    waterfall(concat([start], self._snippets[point] || []), callback);
+                    return self;
+                }
+            },
+
+            /**
+             * Removes the `snippet` from the specified `point`.
+             *
+             * @method _removeSnippet
+             * @param {string} point
+             * @param {Function} snippet
+             * @returns {Object}
+             * @private
+             */
+            _removeSnippet: {
+                enumerable: false,
+                value: function (point, snippet) {
+                    assertArgument(isString(point, true), 1, 'string');
+                    assertArgument(isFunction(snippet), 2, 'Function');
+                    var self = this;
+                    if (self._snippets[point]) { pull(self._snippets[point], snippet); }
+                    return self;
+                }
+            },
+
+            /**
+             * Removes all the snippets from the specified `point`.
+             *
+             * @method _removeSnippets
+             * @param {string} point
+             * @returns {Object}
+             * @private
+             */
+            _removeSnippets: {
+                enumerable: false,
+                value: function (point) {
+                    assertArgument(isString(point, true), 1, 'string');
+                    var self = this;
+                    if (self._snippets[point]) { flush(self._snippets[point]); }
+                    return self;
+                }
             },
 
             /*********************************************************************/
@@ -182,47 +251,36 @@
              * @type Object
              */
             options: {
-                set: function (val) { return assign(this.options || {}, val); },
-                then: function (post) { var self = this; forOwn(post.plugins || {}, function (func, group) { self.addPlugin(group, func); delete post.plugins[group]; }); }
+                set: function (val) { return assign(this.options || {}, val); }
             },
 
             /**
              * TODO DOC
              *
-             * @property plugins
-             * @type Object
-             */
-            plugins: {
-                set: function (val) { return assign(this.plugins || {}, val); }
-            },
-
-            /**
-             * TODO DOC
-             *
-             * @property promise
+             * @property _snippets
              * @type Object
              * @private
              */
-            promise: {
+            _snippets: {
                 enumerable: false,
-                validate: function (val) { return isObject(val) || isVoid(val); }
+                set: function (val) { return assign(this._snippets || {}, val); }
             },
 
             /**
              * TODO DOC
              *
-             * @property resolver
-             * @type Function
+             * @property _promise
+             * @type Object
+             * @private
              */
-            resolver: {
-                validate: function (val) { return isFunction(val) || isVoid(val); }
+            _promise: {
+                enumerable: false,
+                validate: function (val) { return isObject(val) || isVoid(val); }
             }
         });
 
-        // Setting (specified properties)
-        defineProperties(Constructor, opt);
-
-        return Constructor;
+        // Defining (custom)
+        return defineProperties(Constructor, opt);
     };
 
     // CUSTOMERROR
@@ -465,7 +523,7 @@
         // Function
         function next() {
             var args = slice(arguments);
-            delay(function () { cb.apply(undefined, args); });
+            delay(function () { cb.apply(null, args); });
         }
 
         // Doing
@@ -627,9 +685,9 @@
             value: value(opt, 'value'),
             writable: value(opt, 'writable', true)
         } : {
-            get: isGetter ? opt.get : function () { return value(this, '_' + name); },
+            get: isGetter ? opt.get : function () { return value(this, name + '_'); },
             set: isGetter ? opt.set : function (val) {
-                var self = this, key = '_' + name, pre = self[key], post = opt.set.call(self, val);
+                var self = this, key = name + '_', pre = self[key], post = opt.set.call(self, val);
                 if (!opt.validate.call(self, post)) { throw new InvalidError(name); }
                 if (!has(self, key)) { Object.defineProperty(self, key, {configurable: true, enumerable: opt.enumerable, writable: true, value: post}); } else { self[key] = post; }
                 if (opt.sealed) { seal(post); }
@@ -1309,11 +1367,6 @@
         return lodash.invoke.apply(lodash, concat([collection, methodName], slice(arguments, 2)));
     };
 
-    // ISALPHANUMERIC
-    exp.isAlphanumeric = isAlphanumeric = function isAlphanumeric(value, notEmpty) {
-        return isFinite(value) || isString(value, notEmpty);
-    };
-
     // ISANY
     exp.isAny = isAny = function isAny(value) {
         return !isNullable(value);
@@ -1405,7 +1458,7 @@
 
     // ISEMPTY
     exp.isEmpty = isEmpty = function isEmpty(value) {
-        return isNullable(value) || isArrayable(value, false) || isElement(value, false) || isObject(value, false);
+        return isNullable(value) || isArrayable(value, false) || isObject(value, false) || isElement(value, false);
     };
 
     // ISENUMERABLE
@@ -1490,6 +1543,11 @@
     // ISINFINITE
     exp.isInfinite = isInfinite = function isInfinite(value) {
         return value === Infinity || value === -Infinity;
+    };
+
+    // ISINPUT
+    exp.isInput = isInput = function isInput(value, notEmpty) {
+        return isFinite(value) || isString(value, notEmpty);
     };
 
     // ISINSTANCE
@@ -1624,11 +1682,6 @@
         return isBoolean(value) || isFinite(value) || isString(value);
     };
 
-    // ISREADABLE
-    exp.isReadable = isReadable = function isReadable(value, notEmpty) {
-        return isString(value) && readableRegex.test(value) && (isVoid(notEmpty) || xnor(value.length, notEmpty));
-    };
-
     // ISREGEXP
     exp.isRegExp = isRegExp = function isRegExp(value) {
         return lodash.isRegExp(value);
@@ -1677,6 +1730,11 @@
     // ISUPPERCASE
     exp.isUpperCase = isUpperCase = function isUpperCase(value, notEmpty) {
         return isString(value) && upperCaseRegex.test(value) && (isVoid(notEmpty) || xnor(value.length, notEmpty));
+    };
+
+    // ISUUID
+    exp.isUuid = isUuid = function isKeyCase(value, notEmpty) {
+        return isString(value) && uuidRegex.test(value) && (isVoid(notEmpty) || xnor(value.length, notEmpty));
     };
 
     // ISVOID
@@ -1897,7 +1955,7 @@
     // OMIT
     exp.omit = omit = function omit(object, predicate, thisArg) {
         assertArgument(isObject(object), 1, 'Object');
-        assertArgument(isArrayable(predicate) || isFunction(predicate), 2, 'Arrayable or Function');
+        assertArgument(isString(predicate) || isArrayable(predicate) || isFunction(predicate), 2, 'Arrayable, Function or string');
         return lodash.omit(object, predicate, thisArg);
     };
 
@@ -2036,7 +2094,7 @@
     // PICK
     exp.pick = pick = function pick(object, predicate, thisArg) {
         assertArgument(isObject(object), 1, 'Object');
-        assertArgument(isArrayable(predicate) || isFunction(predicate), 2, 'Arrayable or Function');
+        assertArgument(isString(predicate) || isArrayable(predicate) || isFunction(predicate), 2, 'Arrayable, Function or string');
         return lodash.pick(object, predicate, thisArg);
     };
 
@@ -2120,9 +2178,6 @@
         assertArgument(isVoid(string) || isString(string), 1, 'string');
         return string ? lodash.capitalize(lodash.snakeCase(lodash.trim(string)).replace(/_/g, ' ')) : '';
     };
-
-    // READABLEREGEX
-    exp.readableRegex = readableRegex = /^[A-Z]\s{0,1}(([a-z])+\s{1}|([0-9])+\s{1})*[a-z0-9]$|^$/;
 
     // REDIRECT
     exp.redirect = redirect = function redirect(url, hash) {
@@ -2769,6 +2824,15 @@
     // UPPERCASEREGEX
     exp.upperCaseRegex = upperCaseRegex = /^[^\sa-z]+[^\sa-z]*$|^$/;
 
+    // UUID
+    exp.uuid = uuid = function uuid(generator) {
+        assertArgument(isVoid(generator) || isFunction(generator), 1, 'Function');
+        return UUID.v4(generator && {rng: generator});
+    };
+
+    // UUIDREGEX
+    exp.uuidRegex = uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$|^$/;
+
     // VALUE
     exp.value = value = function value(object, key, defaultValue) {
         assertArgument(isObject(object), 1, 'Object');
@@ -2813,7 +2877,7 @@
             for (i = i + 1; i < fns.length; i += 1) { if (isFunction(fns[i])) { break; } }
             for (j = i + 1; j < fns.length; j += 1) { if (isFunction(fns[j])) { break; } }
             err = args.splice(0, 1, fns[j] ? next : cb)[0];
-            (!err && fns[i] ? fns[i] : cb).apply(undefined, err ? [err] : args);
+            (!err && fns[i] ? fns[i] : cb).apply(null, err ? [err] : args);
         }
 
         // Doing

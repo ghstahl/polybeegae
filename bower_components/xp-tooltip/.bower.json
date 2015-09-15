@@ -1,7 +1,7 @@
 {
   "name": "xp-tooltip",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-tooltip.html",
   "description": "A custom element used to create a tooltip",
   "homepage": "http://expandjs.com/elements/xp-tooltip",
@@ -20,18 +20,18 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "xp-overlay": "ExpandJS/xp-overlay#0.9.8",
-    "xp-referral-behavior": "ExpandJS/xp-referral-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "xp-overlay": "ExpandJS/xp-overlay#0.9.9",
+    "xp-referral-behavior": "ExpandJS/xp-referral-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "7fcf57c37bf5b9537ba340ac3bb76248839b0840"
+    "tag": "v0.9.9",
+    "commit": "d181e219b0a370e82737d4aabeb6fd2463a442e6"
   },
   "_source": "git://github.com/ExpandJS/xp-tooltip.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/xp-tooltip"
 }

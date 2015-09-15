@@ -1,7 +1,7 @@
 {
   "name": "mat-toast",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "mat-toast.html",
   "description": "A custom element used to display a Material Design toast",
   "homepage": "http://expandjs.com/elements/mat-toast",
@@ -22,22 +22,22 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "mat-typography": "ExpandJS/mat-typography#0.9.8",
-    "xp-toast-behavior": "ExpandJS/xp-toast-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "mat-typography": "ExpandJS/mat-typography#0.9.9",
+    "xp-toast-behavior": "ExpandJS/xp-toast-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
   "devDependencies": {
-    "mat-button": "ExpandJS/mat-button#0.9.8",
-    "mat-demo": "ExpandJS/mat-demo#0.9.8"
+    "mat-button": "ExpandJS/mat-button#0.9.9",
+    "mat-demo": "ExpandJS/mat-demo#0.9.9"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "e158623ee150ca1c36f19338ab66e7a4dfc3cea1"
+    "tag": "v0.9.9",
+    "commit": "dd5800d38470b27a8692f491d21fc6806ad8ed9a"
   },
   "_source": "git://github.com/ExpandJS/mat-toast.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/mat-toast"
 }

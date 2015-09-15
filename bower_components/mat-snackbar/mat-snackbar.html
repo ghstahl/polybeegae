@@ -7,7 +7,30 @@ The complete set of contributors may be found at https://expandjs.github.io/CONT
 -->
 
 <!--
-An element used to display a Material Design snackbar.
+An element used to display a [Material Design snackbar](http://www.google.com/design/spec/components/snackbars-toasts.html).
+
+It should be used to send feedback to the user about a specific operation.
+
+```html
+<mat-snackbar label="Your draft has been discarded."></mat-snackbar>
+```
+
+The snackbar also provides an `action` button.
+
+```html
+<mat-snackbar label="Connection timed out. Showing limited messages." action-label="Retry"></mat-snackbar>
+```
+
+---
+
+## Styling
+
+The actions's color can be changed accordingly to the
+[Material Design palette](http://www.google.com/design/spec/style/color.html#color-color-palette).
+
+```html
+<mat-snackbar label="Archived" action-label="Undo" action-color="yellow"></mat-snackbar>
+```
 
 @element mat-snackbar
 @description A custom element used to display a Material Design snackbar
@@ -20,11 +43,11 @@ An element used to display a Material Design snackbar.
 @behavior xp-toast-behavior /bower_components/xp-toast-behavior/xp-toast-behavior.html
 
 @dependency polymer Polymer/polymer#^1.1.0
-@dependency expandjs ExpandJS/expandjs#0.9.8
-@dependency mat-typography ExpandJS/mat-typography#0.9.8
-@dependency xp-toast-behavior ExpandJS/xp-toast-behavior#0.9.8
+@dependency expandjs ExpandJS/expandjs#0.9.9
+@dependency mat-typography ExpandJS/mat-typography#0.9.9
+@dependency xp-toast-behavior ExpandJS/xp-toast-behavior#0.9.9
 
-@devDependency mat-demo ExpandJS/mat-demo#0.9.8
+@devDependency mat-demo ExpandJS/mat-demo#0.9.9
 -->
 
 <link rel="import" href="../polymer/polymer.html">

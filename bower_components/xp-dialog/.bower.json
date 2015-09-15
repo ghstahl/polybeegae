@@ -1,7 +1,7 @@
 {
   "name": "xp-dialog",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-dialog.html",
   "description": "A custom element used to create a dialog box",
   "homepage": "http://expandjs.com/elements/xp-dialog",
@@ -20,18 +20,18 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "xp-overlay-behavior": "ExpandJS/xp-overlay-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "xp-overlay-behavior": "ExpandJS/xp-overlay-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "ecf300486bd69eb84efcdda13a0a437a52457773"
+    "tag": "v0.9.9",
+    "commit": "c9f40a0af7b5f14cc04b360b7877a74a50930e10"
   },
   "_source": "git://github.com/ExpandJS/xp-dialog.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/xp-dialog"
 }

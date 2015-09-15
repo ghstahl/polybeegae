@@ -1,7 +1,7 @@
 {
   "name": "xp-pressed-behavior",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-pressed-behavior.html",
   "description": "A behavior used to add press capabilities on the context element",
   "homepage": "http://expandjs.com/elements/xp-pressed-behavior",
@@ -20,18 +20,18 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "xp-focused-behavior": "ExpandJS/xp-focused-behavior#0.9.8",
-    "xp-targeter-behavior": "ExpandJS/xp-targeter-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "xp-focused-behavior": "ExpandJS/xp-focused-behavior#0.9.9",
+    "xp-targeter-behavior": "ExpandJS/xp-targeter-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "cc4c50b6276f3af3179410083b888d2af5b22ea4"
+    "tag": "v0.9.9",
+    "commit": "5344d416d5c923a8ba879a5713a08f8631d7cdcd"
   },
   "_source": "git://github.com/ExpandJS/xp-pressed-behavior.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/xp-pressed-behavior"
 }

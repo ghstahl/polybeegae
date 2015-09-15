@@ -1,7 +1,7 @@
 {
   "name": "xp-embedded-behavior",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-embedded-behavior.html",
   "description": "A behavior used to recognize whether the context element is inside an iframe or not",
   "homepage": "http://expandjs.com/elements/xp-embedded-behavior",
@@ -20,7 +20,7 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   }
 }

@@ -1,6 +1,7 @@
 {
   "name": "pingo-abstract-section-behavior",
   "version": "0.0.1",
+  "main": "pingo-abstract-section-behavior.html",
   "authors": [
     "Herb Stahl"
   ],

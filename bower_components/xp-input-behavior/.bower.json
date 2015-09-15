@@ -1,7 +1,7 @@
 {
   "name": "xp-input-behavior",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-input-behavior.html",
   "description": "A behavior used to add input capabilities on the context element",
   "homepage": "http://expandjs.com/elements/xp-input-behavior",
@@ -20,17 +20,17 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "xp-adapter-behavior": "ExpandJS/xp-adapter-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "xp-adapter-behavior": "ExpandJS/xp-adapter-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "c9c8a9b6c03a1bfc9bc95ef06728a9ccde647dc5"
+    "tag": "v0.9.9",
+    "commit": "a9e9c76a7c8cd0262b01bd6d36117feef3aa5aed"
   },
   "_source": "git://github.com/ExpandJS/xp-input-behavior.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/xp-input-behavior"
 }

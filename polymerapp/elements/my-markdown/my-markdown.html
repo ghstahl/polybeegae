@@ -1,11 +1,11 @@
-<link rel="import" href="../content-loader/content-md-loader.html">
+<link rel="import" href="../../../bower_components/pingo-content-md-loader-iron-ajax-localstorage/pingo-content-md-loader-iron-ajax-localstorage.html">
 
 <dom-module id="my-markdown">
     <style>
 
     </style>
     <template>
-        <content-md-loader-iron-ajax-localstorage id="mdContent"></content-md-loader-iron-ajax-localstorage>
+        <pingo-content-md-loader-iron-ajax-localstorage id="mdContent"></pingo-content-md-loader-iron-ajax-localstorage>
         <!-- <content-md-loader id="mdContent"></content-md-loader> -->
     </template>
     <script>
@@ -22,7 +22,7 @@
                 _locationChanged: function (newValue, oldValue) {
                     if (newValue !== null) {
                         console.log("_locationChanged:" + newValue);
-                        this.$.mdContent.filePath = this.route_record.customData.dataUrl;
+                        this.$.mdContent.url = this.route_record.customData.dataUrl;
                     }
                 },
                 ready: function () {

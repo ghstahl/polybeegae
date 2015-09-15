@@ -1,7 +1,7 @@
 {
   "name": "mat-option",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "mat-option.html",
   "description": "A custom element used to display a Material Design option",
   "homepage": "http://expandjs.com/elements/mat-option",
@@ -23,23 +23,23 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "mat-icon": "ExpandJS/mat-icon#0.9.8",
-    "mat-icons": "ExpandJS/mat-icons#0.9.8",
-    "mat-ink": "ExpandJS/mat-ink#0.9.8",
-    "mat-ripple": "ExpandJS/mat-ripple#0.9.8",
-    "xp-anchor-behavior": "ExpandJS/xp-anchor-behavior#0.9.8",
-    "xp-pressed-behavior": "ExpandJS/xp-pressed-behavior#0.9.8",
-    "xp-referral-behavior": "ExpandJS/xp-referral-behavior#0.9.8",
-    "polymer": "Polymer/polymer#^1.1.0"
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "mat-icon": "ExpandJS/mat-icon#0.9.9",
+    "mat-icons": "ExpandJS/mat-icons#0.9.9",
+    "mat-ink": "ExpandJS/mat-ink#0.9.9",
+    "mat-ripple": "ExpandJS/mat-ripple#0.9.9",
+    "xp-anchor-behavior": "ExpandJS/xp-anchor-behavior#0.9.9",
+    "xp-pressed-behavior": "ExpandJS/xp-pressed-behavior#0.9.9",
+    "xp-referral-behavior": "ExpandJS/xp-referral-behavior#0.9.9",
+    "polymer": "Polymer/polymer#^1.0.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "4f60c662a21931b2bfce6bb71a2e760e00405646"
+    "tag": "v0.9.9",
+    "commit": "c41d3dee1d8d0abe0340da761dbc49f1a6a9d449"
   },
   "_source": "git://github.com/ExpandJS/mat-option.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/mat-option"
 }

@@ -1,7 +1,7 @@
 {
   "name": "xp-window",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-window.html",
   "description": "A custom element used to get information about the current browser window",
   "homepage": "http://expandjs.com/elements/xp-window",
@@ -20,16 +20,16 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "340627b4f71e51b84249b5e5f9c2a199a39bed40"
+    "tag": "v0.9.9",
+    "commit": "ea009e230ba7ad11e52beb1971aa79dffae113eb"
   },
   "_source": "git://github.com/ExpandJS/xp-window.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/xp-window"
 }

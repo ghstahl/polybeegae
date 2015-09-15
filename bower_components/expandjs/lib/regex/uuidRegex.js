@@ -11,10 +11,10 @@
     "use strict";
 
     /**
-     * The readable validation regex.
+     * The uuid validation regex.
      *
-     * @object readableRegex
+     * @object uuidRegex
      */
-    module.exports = /^[A-Z]\s{0,1}(([a-z])+\s{1}|([0-9])+\s{1})*[a-z0-9]$|^$/;
+    module.exports = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$|^$/;
 
 }());

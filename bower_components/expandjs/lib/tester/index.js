@@ -1,5 +1,4 @@
 module.exports = {
-    isAlphanumeric: require("./isAlphanumeric"),
     isAny: require("./isAny"),
     isArguments: require("./isArguments"),
     isArray: require("./isArray"),
@@ -34,6 +33,7 @@ module.exports = {
     isHex: require("./isHex"),
     isIndex: require("./isIndex"),
     isInfinite: require("./isInfinite"),
+    isInput: require("./isInput"),
     isInstance: require("./isInstance"),
     isInt: require("./isInt"),
     isInvalid: require("./isInvalid"),
@@ -59,7 +59,6 @@ module.exports = {
     isPredicate: require("./isPredicate"),
     isPrevented: require("./isPrevented"),
     isPrimitive: require("./isPrimitive"),
-    isReadable: require("./isReadable"),
     isRegExp: require("./isRegExp"),
     isSelector: require("./isSelector"),
     isShady: require("./isShady"),
@@ -70,6 +69,7 @@ module.exports = {
     isTrue: require("./isTrue"),
     isUniq: require("./isUniq"),
     isUpperCase: require("./isUpperCase"),
+    isUuid: require("./isUuid"),
     isVoid: require("./isVoid"),
     isWithin: require("./isWithin")
 };

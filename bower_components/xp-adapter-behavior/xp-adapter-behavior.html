@@ -17,7 +17,7 @@ This behavior is used to add adapting capabilities on the context element.
 @repository https://github.com/ExpandJS/xp-adapter-behavior
 
 @dependency polymer Polymer/polymer#^1.1.0
-@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency expandjs ExpandJS/expandjs#0.9.9
 -->
 
 <link rel="import" href="../polymer/polymer.html">
@@ -30,21 +30,13 @@ This behavior is used to add adapting capabilities on the context element.
          * Set the adaptee.
          *
          * @method _adapt
-         * @param {Element | Object} [adaptee]
-         * @returns {Element | Object}
+         * @param {*} adaptee
+         * @returns {*}
          * @private
          */
         _adapt: function (adaptee) {
-
-            // Asserting
-            XP.assertArgument(XP.isVoid(adaptee) || XP.isElement(adaptee) || XP.isObject(adaptee), 1, 'Element or Object');
-
-            // Vars
             var self = this;
-
-            // Setting
-            self._setAdaptee(adaptee || null);
-
+            self._setAdaptee(adaptee);
             return self.adaptee;
         },
 

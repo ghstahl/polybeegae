@@ -11,18 +11,19 @@
     "use strict";
 
     // Vars
-    var filter     = require('./filter'),
+    var XP         = global.XP || require('expandjs'),
+        XPEmitter  = global.XPEmitter || require('xp-emitter'),
+
+        filter     = require('./filter'),
         sanitize   = require('./sanitize'),
         validate   = require('./validate'),
-        XP         = global.XP || require('expandjs'),
-        XPEmitter = global.XPEmitter || require('xp-emitter'),
 
-        filterFn   = function (item) { return XP.has(item, 'input') || XP.has(item, 'options'); },
-        mapFn      = function (item, handle) { item = XP.assign({handle: handle}, item); XP.withdraw(item, 'method'); return item; },
+        filterer   = function (item) { return XP.has(item, 'input') || XP.has(item, 'options'); },
+        mapper     = function (item, handle) { item = XP.assign({handle: handle}, item); XP.withdraw(item, 'method'); return item; },
 
         types      = XP.freeze(XP.keys(validate.types)),
-        sanitizers = XP.freeze(XP.filter(XP.map(sanitize.sanitizers, mapFn), filterFn)),
-        validators = XP.freeze(XP.filter(XP.map(validate.validators, mapFn), filterFn));
+        sanitizers = XP.freeze(XP.filter(XP.map(sanitize.sanitizers, mapper), filterer)),
+        validators = XP.freeze(XP.filter(XP.map(validate.validators, mapper), filterer));
 
     /*********************************************************************/
 
@@ -38,22 +39,13 @@
         // EXTENDS
         extends: XPEmitter,
 
-        // OPTIONS
-        options: {
-            id: '',
-            fields: null,
-            strict: false,
-            useful: false
-        },
-
         /*********************************************************************/
 
         /**
          * @constructs
          * @param {Object} options
-         *   @param {string} options.id
          *   @param {Object} [options.fields]
-         *   @param {boolean} [options.strict = false]
+         *   @param {boolean} [options.loose = false]
          *   @param {boolean} [options.useful = false]
          */
         initialize: function (options) {
@@ -66,16 +58,15 @@
 
             // Setting
             self.options = options;
-            self.id      = self.options.id;
             self.fields  = self.options.fields || {};
-            self.strict  = self.options.strict;
-            self.useful  = self.options.useful;
+            self.loose   = self.options.loose || false;
+            self.useful  = self.options.useful || false;
         },
 
         /*********************************************************************/
 
         /**
-         * Filters the target
+         * Filters the target.
          *
          * @method filter
          * @param {Object} target
@@ -86,12 +77,15 @@
             promise: true,
             value: function (target, resolver) {
                 var self = this;
-                XP.attempt(function (next) { next(null, filter(self._ensure(target, 'target'), self.fields, self.options)); }, resolver);
+                XP.waterfall([
+                    function (next) { next((!XP.isObject(target) && new XP.ValidationError('target', 'Object')) || null); },
+                    function (next) { XP.attempt(function (next) { next(null, filter(target, self.fields, self.options)); }, next); }
+                ], resolver);
             }
         },
 
         /**
-         * Sanitizes the target
+         * Sanitizes the target.
          *
          * @method sanitize
          * @param {Object} target
@@ -102,12 +96,15 @@
             promise: true,
             value: function (target, resolver) {
                 var self = this;
-                XP.attempt(function (next) { next(null, sanitize(self._ensure(target, 'target'), self.fields, self.options)); }, resolver);
+                XP.waterfall([
+                    function (next) { next((!XP.isObject(target) && new XP.ValidationError('target', 'Object')) || null); },
+                    function (next) { XP.attempt(function (next) { next(null, sanitize(target, self.fields, self.options)); }, next); }
+                ], resolver);
             }
         },
 
         /**
-         * Validates the target
+         * Validates the target.
          *
          * @method validate
          * @param {Object} target
@@ -118,31 +115,10 @@
             promise: true,
             value: function (target, resolver) {
                 var self = this;
-                XP.attempt(function (next) { next(null, validate(self._ensure(target, 'target'), self.fields, self.options)); }, resolver);
-            }
-        },
-
-        /*********************************************************************/
-
-        /**
-         * Used internally
-         *
-         * @method _ensure
-         * @param {*} target
-         * @param {string} [name]
-         * @returns {*}
-         * @private
-         */
-        _ensure: {
-            enumerable: false,
-            value: function (target, name) {
-                var self = this;
-                switch (name) {
-                case 'target':
-                    return XP.isObject(target = JSON.parse(XP.toJSON(target, self.options.useful))) ? target : {};
-                default:
-                    return target;
-                }
+                XP.waterfall([
+                    function (next) { next((!XP.isObject(target) && new XP.ValidationError('target', 'Object')) || null); },
+                    function (next) { XP.attempt(function (next) { next(null, validate(target, self.fields, self.options)); }, next); }
+                ], resolver);
             }
         },
 
@@ -155,19 +131,17 @@
          * @type Object
          */
         fields: {
-            set: function (val) { return XP.assign(val, XP.zipObject(this.id, {type: 'string'})); },
             validate: function (val) { return XP.isObject(val); }
         },
 
         /**
          * TODO DOC
          *
-         * @property id
-         * @type string
+         * @property loose
+         * @type boolean
          */
-        id: {
-            set: function (val) { return this.id || val; },
-            validate: function (val) { return XP.isString(val, true); }
+        loose: {
+            set: function (val) { return !!val; }
         },
 
         /**
@@ -181,16 +155,6 @@
         sanitizers: {
             'static': true,
             get: function () { return sanitizers; }
-        },
-
-        /**
-         * TODO DOC
-         *
-         * @property strict
-         * @type boolean
-         */
-        strict: {
-            set: function (val) { return !!val; }
         },
 
         /**
