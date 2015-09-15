@@ -167,6 +167,10 @@
     Polymer({
         is: "the-app",
         properties: {
+            cacheBuster: {
+                type: String,
+                value: "abcd"
+            },
             routeAjaxResponse: {
                 type: Object,
                 observer: 'onRouteAjaxResonse'
@@ -180,7 +184,9 @@
             routeAjaxUrl: {
                 type: String
             },
-            routeParams: {},
+            routeParams: {
+
+            },
             sidebarMenuData: {
                 type: Object,
                 notify: true
@@ -308,6 +314,7 @@
                     }
                     fullPath = fullPath + record.href;
                     record.identifier = fullPath;
+                    record.cacheBuster = thisElement.cacheBuster;
 
                     page(record.href, function () {
                         thisElement.onPageHandler(record, thisElement);
@@ -328,22 +335,13 @@
         ready: function (e) {
             this.routeAjaxUrl = "/json/sidebar-menu.json";
 
+            this.routeParams = {
+                cbHash: this.cacheBuster
+            };
 
             this.$.myIronAjax.dataUrl = this.routeAjaxUrl;
 
-            this._observer = new MutationObserver(function (mutations) {
-                mutations.forEach(function (mutation) {
-                    console.log(mutation);
-                });
-            });
-            var config = {
-                attributes: true,
-                attributeOldValue: true,
-                childList: true,
-                characterData: true,
-                subtree: true
-            };
-            this._observer.observe(this.$.mainToolbar, config);
+
             console.log("the-app is ready");
         }
     });

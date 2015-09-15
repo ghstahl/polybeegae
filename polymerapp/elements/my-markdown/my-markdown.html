@@ -21,6 +21,11 @@
                 _locationChanged: function (newValue, oldValue) {
                     if (newValue !== null) {
                         console.log("_locationChanged:" + newValue);
+                        if (this.route_record.cacheBuster) {
+                            this.$.mdContent.params = {
+                                cbHash: this.route_record.cacheBuster
+                            }
+                        }
                         this.$.mdContent.filePath = this.route_record.customData.dataUrl;
                     }
                 },
