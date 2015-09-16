@@ -1,5 +1,6 @@
 <link rel="import" href="../../../bower_components/pingo-abstract-section-behavior/pingo-abstract-section-behavior.html">
-<link rel="import" href="my-markdown.html">
+<link rel="import" href="../../../bower_components/pingo-content-md-loader-iron-ajax-localstorage/pingo-content-md-loader-iron-ajax-localstorage.html">
+
 
 <dom-module id="my-abstract-markdown">
 
@@ -8,7 +9,7 @@
     </style>
     <template>
         <paper-material elevation="1">
-            <my-markdown id="markdown_section_id" route_record={{route_record}}></my-markdown>
+            <pingo-content-md-loader-iron-ajax-localstorage id="_mdContent"></pingo-content-md-loader-iron-ajax-localstorage>
         </paper-material>
 
         <paper-material id="paperDisqus" elevation="1">
@@ -33,7 +34,18 @@
                     }
                 },
                 _routeRecordChanged: function (value) {
-                    console.log("_routeRecordChanged hit:" + value.dataRoute);
+                    if (value !== null) {
+                        var params = {};
+                        if (this.route_record.customData.params)
+                            params = this.route_record.customData.params;
+
+                        if (this.route_record.cacheBuster) {
+                            params.cbHash = this.route_record.cacheBuster;
+                        }
+                        this.$._mdContent.params = params;
+                        this.$._mdContent.url = this.route_record.customData.url;
+                    }
+
                 },
                 Activate: function () {
 
