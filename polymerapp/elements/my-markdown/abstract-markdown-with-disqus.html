@@ -1,8 +1,8 @@
 <link rel="import" href="../../../bower_components/pingo-abstract-section-behavior/pingo-abstract-section-behavior.html">
 <link rel="import" href="../../../bower_components/pingo-content-md-loader-iron-ajax-localstorage/pingo-content-md-loader-iron-ajax-localstorage.html">
+<link rel="import" href="../disqus-comments/disqus-comments.html">
 
-
-<dom-module id="my-abstract-markdown">
+<dom-module id="abstract-markdown-with-disqus">
 
     <style>
 
@@ -12,11 +12,14 @@
             <pingo-content-md-loader-iron-ajax-localstorage id="_mdContent"></pingo-content-md-loader-iron-ajax-localstorage>
         </paper-material>
 
+        <paper-material id="paperDisqus" elevation="1">
+            <disqus-comments id="myMarkdownDisqusId" shortname="myscotch" identifier={{identifier}} url={{identifier}} title={{title}} https=true></disqus-comments>
+        </paper-material>
     </template>
     <script>
         (function () {
             Polymer({
-                is: 'my-abstract-markdown',
+                is: 'abstract-markdown-with-disqus',
                 behaviors: [PingoAbstractSectionBehavior],
                 properties: {
                     identifier: {
@@ -46,14 +49,18 @@
                 },
                 Activate: function () {
 
-                    if (this.route_record) {}
+                    if (this.route_record) {
+                        this.identifier = this.route_record.identifier;
+                        this.title = this.route_record.label;
+                        this.$.myMarkdownDisqusId.reset();
+                    }
                 },
                 _onActivated: function () {
                     this.Activate();
                 },
                 ready: function () {
 
-                    console.log("my-abstract-markdown ready");
+                    console.log("abstract-markdown-with-disqus ready");
                 }
             });
         })();
