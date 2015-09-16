@@ -83,7 +83,7 @@
                 <paper-toolbar id="drawerToolbar">
                     <span class="app-name">Menu</span>
                 </paper-toolbar>
-                <my-sidebar-local menu_data={{sidebarMenuData}} route_selected={{route_selected}}></my-sidebar-local>
+                <pingo-sidebar menu_data={{sidebarMenuData}} route_selected={{route_selected}}></pingo-sidebar>
             </paper-scroll-header-panel>
             <paper-header-panel id="mainPaperHeaderPanel" main mode="waterfall-tall" on-content-scroll="scrollHandler">
                 <!-- Main Toolbar -->
@@ -169,11 +169,7 @@
                 type: Object,
                 observer: 'onRouteAjaxResonse'
             },
-            myIronAjaxLastResponse: {
-                type: Object,
-                notify: true,
-                observer: '_myIronAjaxLastResponseChanged'
-            },
+
 
             routeAjaxUrl: {
                 type: String
@@ -277,9 +273,7 @@
             this.section_selected = record.section;
 
         },
-        _myIronAjaxLastResponseChanged: function (path) {
-            console.log("_myIronAjaxLastResponseChanged:");
-        },
+
         /*---------------------------------------------------------------*/
         onRouteAjaxResonse: function (path) {
             this.section_element_map["markdown-section"] = this.$.markdown_section_id;

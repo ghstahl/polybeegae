@@ -31,7 +31,7 @@
                         "name": "susan"
                     }
                 },
-				{
+                {
                     "polymerElement": "my-abstract-markdown",
                     "label": "Contact",
                     "href": "/contact",
@@ -42,7 +42,7 @@
                         "url": "/static/contact/index.md"
                     }
                 },
-				{
+                {
                     "polymerElement": "my-abstract-markdown",
                     "label": "About",
                     "href": "/about",
@@ -52,7 +52,7 @@
                     "customData": {
                         "url": "/static/about/index.md"
                     }
-                } 
+                }
             ]
         },
         {
@@ -72,7 +72,7 @@
                     }
                 },
                 {
-                    "polymerElement": "my-abstract-markdown",
+                    "polymerElement": "abstract-markdown-with-disqus",
                     "DISQUS": true,
                     "label": "Los Angeles",
                     "href": "/product/LosAngeles",
@@ -90,7 +90,7 @@
             "title": "Secondary",
             "menuItems": [
                 {
-                    "polymerElement": "my-abstract-markdown",
+                    "polymerElement": "abstract-markdown-with-disqus",
                     "label": "Atlanta",
                     "href": "/static/Atlanta",
                     "icon": "home",

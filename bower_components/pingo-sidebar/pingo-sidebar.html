@@ -1,7 +1,39 @@
-<link rel="import" href="../../../bower_components/mat-divider/mat-divider.html">
-<link rel="import" href="../../../bower_components/mat-subheader/mat-subheader.html">
+<link rel="import" href="../mat-divider/mat-divider.html">
+<link rel="import" href="../mat-subheader/mat-subheader.html">
 
-<dom-module id="my-sidebar-local">
+<!--
+
+if we see a titel, we preceed it with a divider.
+if nothing, its just menu items.
+This is based on the page.js work that came in the polymer starter kit.
+
+example
+
+menu_data object:
+
+{ 
+    "title": "Products",
+    "menuItems": [
+        {
+            "label": "Plants",
+            "href": "/product/plants",
+            "icon": "home",
+            "dataRoute": "plants",
+            ...
+        },
+        {
+            "label": "Los Angeles",
+            "href": "/product/LosAngeles",
+            "icon": "home",
+            "dataRoute": "los angeles",
+             ...
+        }
+    ]
+}
+
+-->
+
+<dom-module id="pingo-sidebar">
     <style>
 
     </style>
@@ -14,13 +46,10 @@
                     <mat-subheader label="{{item.title}}"></mat-subheader>
                 </template>
                 <template is="dom-repeat" items="{{item.menuItems}}">
-
-
                     <a data-route$="{{item.dataRoute}}" href="{{item.href}}">
                         <iron-icon icon="{{item.icon}}"></iron-icon>
                         <span>{{item.label}}</span>
                     </a>
-
                 </template>
             </template>
         </paper-menu>
@@ -30,7 +59,7 @@
     <script>
         (function () {
             Polymer({
-                is: 'my-sidebar-local',
+                is: 'pingo-sidebar',
 
                 properties: {
                     route_selected: {
@@ -45,8 +74,9 @@
                 },
 
                 ready: function () {
-                    console.log("my-sidebar-local is ready");
+                    console.log("pingo-sidebar-local is ready");
                 },
+				
                 onMenuSelect: function () {
                     var drawerPanel = document.querySelector('#paperDrawerPanel');
                     if (drawerPanel !== null) {
