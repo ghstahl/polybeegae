@@ -20,9 +20,9 @@ This behavior is used to add selection capabilities on the context element.
 @behavior xp-targeter-behavior /bower_components/xp-targeter-behavior/xp-targeter-behavior.html
 
 @dependency polymer Polymer/polymer#^1.1.0
-@dependency expandjs ExpandJS/expandjs#0.9.8
-@dependency xp-finder-behavior ExpandJS/xp-finder-behavior#0.9.8
-@dependency xp-targeter-behavior ExpandJS/xp-targeter-behavior#0.9.8
+@dependency expandjs ExpandJS/expandjs#0.9.9
+@dependency xp-finder-behavior ExpandJS/xp-finder-behavior#0.9.9
+@dependency xp-targeter-behavior ExpandJS/xp-targeter-behavior#0.9.9
 -->
 
 <link rel="import" href="../polymer/polymer.html">
@@ -343,8 +343,8 @@ This behavior is used to add selection capabilities on the context element.
             if (!event.detail.value) { return; }
 
             // Selecting
-            if (XP.isAlphanumeric(self.defaultSelected)) { self.select(self.indexAttribute ? self.defaultSelected : XP.toIndex(self.defaultSelected, true)); return; }
-            if (XP.isAlphanumeric(self.selected)) { self.select(self.selected); }
+            if (XP.isInput(self.defaultSelected)) { self.select(self.indexAttribute ? self.defaultSelected : XP.toIndex(self.defaultSelected, true)); return; }
+            if (XP.isInput(self.selected)) { self.select(self.selected); }
         },
 
         // HANDLER
@@ -374,7 +374,7 @@ This behavior is used to add selection capabilities on the context element.
                 target = self.findTarget();
 
             // Setting
-            if (!self.selecting) { self._setSelection(self.multi ? self.overwrite('selection', XP.map(self.selected, function (identity) { return self.findItem(identity); })) : (XP.isAlphanumeric(self.selected) && self.findItem(self.selected)) || null); }
+            if (!self.selecting) { self._setSelection(self.multi ? self.overwrite('selection', XP.map(self.selected, function (identity) { return self.findItem(identity); })) : (XP.isInput(self.selected) && self.findItem(self.selected)) || null); }
 
             // Propagating
             if (target) { target.selected = self.selected; }

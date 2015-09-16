@@ -1,7 +1,7 @@
 {
   "name": "mat-divider",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "mat-divider.html",
   "description": "A custom element used to display a Material Design divider",
   "homepage": "http://expandjs.com/elements/mat-divider",
@@ -22,22 +22,21 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "mat-ink": "ExpandJS/mat-ink#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "mat-ink": "ExpandJS/mat-ink#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
   "devDependencies": {
-    "mat-demo": "ExpandJS/mat-demo#0.9.8",
-    "mat-option": "ExpandJS/mat-option#0.9.8"
+    "mat-demo": "ExpandJS/mat-demo#0.9.9",
+    "mat-option": "ExpandJS/mat-option#0.9.9"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "0818554b970b114b1f7f5c8c4d553c9bf55458be"
+    "tag": "v0.9.9",
+    "commit": "9e634ebafab1d693497a01edaaa842267d893e03"
   },
   "_source": "git://github.com/expandjs/mat-divider.git",
   "_target": "~0.9.8",
-  "_originalSource": "expandjs/mat-divider",
-  "_direct": true
+  "_originalSource": "expandjs/mat-divider"
 }

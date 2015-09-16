@@ -18,11 +18,11 @@ It should be used in conjunction with [mat-header-panel](http://expandjs.com/ele
 </mat-header-panel>
 ```
 
-If used inside a [mat-shell](http://expandjs.com/elements/mat-shell), and a drawer is also present,
+If used inside a [mat-drawer-panel](http://expandjs.com/elements/mat-drawer-panel), and a drawer is also present,
 the header will automatically create a *burger icon*, that will act as a toggle mechanism for the drawer.
 
 ```html
-<mat-shell>
+<mat-drawer-panel>
 
     <mat-drawer>...</mat-drawer>
 
@@ -31,7 +31,7 @@ the header will automatically create a *burger icon*, that will act as a toggle 
         <mat-content>...</mat-content>
     </mat-header-panel>
 
-</mat-shell>
+</mat-drawer-panel>
 ```
 
 The header's contents can also be customized by adding any additional tags into the extended section of the header.
@@ -54,18 +54,18 @@ The header's contents can also be customized by adding any additional tags into 
 @demo http://expandjs.com/demo/mat-header-panel
 
 @dependency polymer Polymer/polymer#^1.1.0
-@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency expandjs ExpandJS/expandjs#0.9.9
 @dependency iron-flex-layout PolymerElements/iron-flex-layout#^1.0.0
-@dependency mat-divider ExpandJS/mat-divider#0.9.8
-@dependency mat-icon-button ExpandJS/mat-icon-button#0.9.8
-@dependency mat-icons ExpandJS/mat-icons#0.9.8
-@dependency mat-paper ExpandJS/mat-paper#0.9.8
+@dependency mat-divider ExpandJS/mat-divider#0.9.9
+@dependency mat-icon-button ExpandJS/mat-icon-button#0.9.9
+@dependency mat-icons ExpandJS/mat-icons#0.9.9
+@dependency mat-paper ExpandJS/mat-paper#0.9.9
 
-@devDependency mat-content ExpandJS/mat-content#0.9.8
-@devDependency mat-demo ExpandJS/mat-demo#0.9.8
-@devDependency mat-menu ExpandJS/mat-menu#0.9.8
-@devDependency mat-option ExpandJS/mat-option#0.9.8
-@devDependency mat-toolbar ExpandJS/mat-toolbar#0.9.8
+@devDependency mat-content ExpandJS/mat-content#0.9.9
+@devDependency mat-demo ExpandJS/mat-demo#0.9.9
+@devDependency mat-menu ExpandJS/mat-menu#0.9.9
+@devDependency mat-option ExpandJS/mat-option#0.9.9
+@devDependency mat-toolbar ExpandJS/mat-toolbar#0.9.9
 -->
 
 <link rel="import" href="../polymer/polymer.html">
@@ -122,7 +122,10 @@ The header's contents can also be customized by adding any additional tags into 
             }
 
             :host #matHeaderNav {
+                height: 24px;
                 margin: 4px 24px 4px -8px;
+                padding: 8px;
+                width: 24px;
             }
 
             :host(:not([nav])) #matHeaderNav {
@@ -364,17 +367,17 @@ The header's contents can also be customized by adding any additional tags into 
             attached: function () {
 
                 // Vars
-                var self   = this,
-                    panel  = XP.findParentElement(Polymer.dom(self), 'mat-header-panel'),
-                    drawer = XP.findParentElement(Polymer.dom(self), '[drawer=""]'),
-                    shell  = XP.findParentElement(Polymer.dom(self), 'mat-shell');
+                var self        = this,
+                    drawer      = XP.findParentElement(Polymer.dom(self), '[drawer=""]'),
+                    drawerPanel = XP.findParentElement(Polymer.dom(self), 'mat-drawer-panel'),
+                    headerPanel = XP.findParentElement(Polymer.dom(self), 'mat-header-panel');
 
                 // Setting
-                self._setDrawer((!drawer && shell && shell.drawer) || null);
-                self._setPanel(panel);
+                self._setDrawer((!drawer && drawerPanel && drawerPanel.drawer) || null);
+                self._setPanel(headerPanel);
 
                 // Delaying
-                XP.delay(self._setDrawer.bind(self, (!drawer && shell && shell.drawer) || null), 2, true);
+                XP.delay(self._setDrawer.bind(self, (!drawer && drawerPanel && drawerPanel.drawer) || null), 2, true);
 
                 // Mutating
                 self.mutated();

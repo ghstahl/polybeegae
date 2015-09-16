@@ -10,32 +10,36 @@
 (function () {
     "use strict";
 
-    var isVoid        = require('../tester/isVoid'),
-        isString      = require('../tester/isString'),
-        readableRegex = require('../regex/readableRegex'),
-        xnor          = require('../operator/xnor');
+    var isFinite = require('../tester/isFinite'),
+        isString = require('../tester/isString');
 
     /**
-     * Checks if `value` is readable.
+     * Checks if `value` is input. (`number`, `string`)
      *
      * ```js
-     * XP.isReadable('Hello world');
+     * XP.isInput('Hello world');
      * // => true
      *
-     * XP.isReadable('Hello   world');
+     * XP.isInput(0);
+     * // => true
+     *
+     * XP.isInput(false);
      * // => false
      *
-     * XP.isReadable('_Hello_world_');
+     * XP.isInput(null);
+     * // => false
+     *
+     * XP.isInput([]);
      * // => false
      * ```
      *
-     * @function isReadable
+     * @function isInput
      * @param {*} value The value to check.
      * @param {boolean} [notEmpty] Specifies if `value` must be not empty.
      * @returns {boolean} Returns `true` or `false` accordingly to the check.
      */
-    module.exports = function isReadable(value, notEmpty) {
-        return isString(value) && readableRegex.test(value) && (isVoid(notEmpty) || xnor(value.length, notEmpty));
+    module.exports = function isInput(value, notEmpty) {
+        return isFinite(value) || isString(value, notEmpty);
     };
 
 }());

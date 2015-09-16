@@ -1,7 +1,7 @@
 {
   "name": "xp-icon",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-icon.html",
   "description": "A custom element able to display an icon",
   "homepage": "http://expandjs.com/elements/xp-icon",
@@ -20,17 +20,17 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "xp-iconset": "ExpandJS/xp-iconset#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "xp-iconset": "ExpandJS/xp-iconset#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "e12b17ce0b666d6d4e341bc04b06558a498acd55"
+    "tag": "v0.9.9",
+    "commit": "12df567596f701ac86754a2e57d27e525e7eb738"
   },
   "_source": "git://github.com/ExpandJS/xp-icon.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/xp-icon"
 }

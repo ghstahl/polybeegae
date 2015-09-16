@@ -27,12 +27,9 @@
      */
     exp = module.exports = function (target, fields, options, name) {
 
-        // Checking
-        if (!XP.isObject(fields)) { return target; }
-
         // Restricting
         XP.forOwn(target, function (val, key) {
-            if (options.strict && !fields[key]) { delete target[key]; }
+            if (!options.loose && !fields[key]) { delete target[key]; }
         });
 
         // Sanitizing
@@ -70,11 +67,11 @@
             XP[field.map ? 'forOwn' : 'forEach'](step, function (value, index) {
                 step[index] = exp.sanitizeValue(value, field, index, name + '[' + index + ']');
                 if (XP.isObject(step[index]) && (field.fields || field.type === 'recursive')) {
-                    step[index] = exp(step[index], field.fields || fields, XP.assign({}, options, {strict: field.strict}), name + '[' + index + ']');
+                    step[index] = exp(step[index], field.fields || fields, XP.assign({}, options, {loose: field.loose}), name + '[' + index + ']');
                 }
             });
         } else if (XP.isObject(step) && (field.fields || field.type === 'recursive')) {
-            step = exp(step, field.fields || fields, XP.assign({}, options, {strict: field.strict}), name);
+            step = exp(step, field.fields || fields, XP.assign({}, options, {loose: field.loose}), name);
         }
 
         return step;
@@ -94,32 +91,23 @@
         // Setting
         value = XP.isDefined(value) ? value : null;
 
-        // Checking
-        if (!XP.isObject(field)) { return value; }
+        // Vars
+        var key = (XP.isVoid(index) && ((field.map && 'map') || (field.multi && 'multi'))) || 'type',
+            val = exp.sanitizers[key].method(value, field[key], name);
 
-        // Sanitizing (type)
-        if (field.map && XP.isVoid(index)) {
-            value = exp.sanitizers.map.method(value, field.map, name);
-        } else if (field.multi && XP.isVoid(index)) {
-            value = exp.sanitizers.multi.method(value, field.multi, name);
-        } else {
-            value = exp.sanitizers.type.method(value, field.type, name);
-        }
-
-        // Sanitizing (other)
-        XP.forOwn(field, function (val, key) {
-            if (exp.sanitizers[key] && !XP.includes(['map', 'multi', 'type'], key)) {
-                value = exp.sanitizers[key].method(value, field[key], name);
-            }
+        // Sanitizing
+        XP.forOwn(field, function (sub, key) {
+            if (!exp.sanitizers[key] || key === 'map' || key === 'multi' || key === 'type') { return; }
+            val = exp.sanitizers[key].method(val, sub, name);
         });
 
-        return value;
+        return val;
     };
 
     /*********************************************************************/
 
     /**
-     * TODO DOC
+     * The available sanitizers.
      *
      * @property sanitizers
      * @type Object
@@ -134,7 +122,7 @@
          * @returns {*}
          */
         map: {method: function (target, bool) {
-            return (bool && XP.toObject(target, true)) || target;
+            return XP.isVoid(target) && bool ? {} : target;
         }},
 
         /**
@@ -145,7 +133,7 @@
          * @returns {*}
          */
         multi: {method: function (target, bool) {
-            return (bool && XP.toArray(target, true)) || target;
+            return XP.isVoid(target) && bool ? [] : target;
         }},
 
         /**
@@ -156,7 +144,7 @@
          * @returns {*}
          */
         type: {method: function (target, type) {
-            return type === 'boolean' ? !!target : target;
+            return XP.isVoid(target) && type === 'boolean' ? false : target;
         }}
     };
 

@@ -1,7 +1,7 @@
 {
   "name": "xp-doc-viewer",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-doc-viewer.html",
   "description": "A custom element used to parse and diaplay the documentation of an HTML or Javascript file",
   "homepage": "http://expandjs.com/elements/xp-doc-viewer",
@@ -14,19 +14,19 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "xp-adapter-behavior": "ExpandJS/xp-adapter-behavior#0.9.8",
-    "xp-doc-page": "ExpandJS/xp-doc-page#0.9.8",
-    "xp-doc-parser": "ExpandJS/xp-doc-parser#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "xp-adapter-behavior": "ExpandJS/xp-adapter-behavior#0.9.9",
+    "xp-doc-page": "ExpandJS/xp-doc-page#0.9.9",
+    "xp-doc-parser": "ExpandJS/xp-doc-parser#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "47d105ec82ae3851ced5eb9917987ba3c897d936"
+    "tag": "v0.9.9",
+    "commit": "7a019b5ecf392fbe329f42a6df938f551b450432"
   },
   "_source": "git://github.com/ExpandJS/xp-doc-viewer.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/xp-doc-viewer"
 }

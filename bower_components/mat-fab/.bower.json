@@ -1,7 +1,7 @@
 {
   "name": "mat-fab",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "mat-fab.html",
   "description": "A custom element used to display a material floating button",
   "homepage": "http://expandjs.com/elements/mat-fab",
@@ -23,29 +23,29 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "mat-icon": "ExpandJS/mat-icon#0.9.8",
-    "mat-paper": "ExpandJS/mat-paper#0.9.8",
-    "mat-ripple": "ExpandJS/mat-ripple#0.9.8",
-    "xp-anchor-behavior": "ExpandJS/xp-anchor-behavior#0.9.8",
-    "xp-pressed-behavior": "ExpandJS/xp-pressed-behavior#0.9.8",
-    "xp-referral-behavior": "ExpandJS/xp-referral-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "mat-icon": "ExpandJS/mat-icon#0.9.9",
+    "mat-paper": "ExpandJS/mat-paper#0.9.9",
+    "mat-ripple": "ExpandJS/mat-ripple#0.9.9",
+    "xp-anchor-behavior": "ExpandJS/xp-anchor-behavior#0.9.9",
+    "xp-pressed-behavior": "ExpandJS/xp-pressed-behavior#0.9.9",
+    "xp-referral-behavior": "ExpandJS/xp-referral-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0"
   },
   "devDependencies": {
-    "mat-content": "ExpandJS/mat-content#0.9.8",
-    "mat-demo": "ExpandJS/mat-demo#0.9.8",
-    "mat-header-panel": "ExpandJS/mat-header-panel#0.9.8",
-    "mat-icons": "ExpandJS/mat-icons#0.9.8"
+    "mat-content": "ExpandJS/mat-content#0.9.9",
+    "mat-demo": "ExpandJS/mat-demo#0.9.9",
+    "mat-header-panel": "ExpandJS/mat-header-panel#0.9.9",
+    "mat-icons": "ExpandJS/mat-icons#0.9.9"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "ab7cebfaae6160593129e90dba5b759fc41db022"
+    "tag": "v0.9.9",
+    "commit": "ebbbeeaef44b73124c42f1d1b697a9ebe3bd7989"
   },
   "_source": "git://github.com/ExpandJS/mat-fab.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/mat-fab"
 }

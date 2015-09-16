@@ -1,7 +1,7 @@
 {
   "name": "mat-editor",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "mat-editor.html",
   "description": "A custom element used to display a Material Design code editor",
   "homepage": "http://expandjs.com/elements/mat-editor",
@@ -24,16 +24,16 @@
   ],
   "dependencies": {
     "codemirror": "Codemirror/codemirror#^5.0.0",
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "mat-icon-button": "ExpandJS/mat-icon-button#0.9.8",
-    "mat-icons": "ExpandJS/mat-icons#0.9.8",
-    "mat-label": "ExpandJS/mat-label#0.9.8",
-    "mat-paper": "ExpandJS/mat-paper#0.9.8",
-    "xp-input-behavior": "ExpandJS/xp-input-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "mat-icon-button": "ExpandJS/mat-icon-button#0.9.9",
+    "mat-icons": "ExpandJS/mat-icons#0.9.9",
+    "mat-label": "ExpandJS/mat-label#0.9.9",
+    "mat-paper": "ExpandJS/mat-paper#0.9.9",
+    "xp-input-behavior": "ExpandJS/xp-input-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0"
   },
   "devDependencies": {
-    "mat-demo": "ExpandJS/mat-demo#0.9.8"
+    "mat-demo": "ExpandJS/mat-demo#0.9.9"
   }
 }

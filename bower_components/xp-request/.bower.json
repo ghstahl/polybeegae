@@ -1,7 +1,7 @@
 {
   "name": "xp-request",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-request.html",
   "description": "This element is used to perform XHR requests",
   "homepage": "http://expandjs.com/elements/xp-request",
@@ -21,18 +21,18 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "xp-adapter-behavior": "ExpandJS/xp-adapter-behavior#0.9.8",
-    "xp-emitter": "ExpandJS/xp-emitter#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "xp-adapter-behavior": "ExpandJS/xp-adapter-behavior#0.9.9",
+    "xp-emitter": "ExpandJS/xp-emitter#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "8a1d2756b221d86892a96fdada03e62386a9c8d2"
+    "tag": "v0.9.9",
+    "commit": "8ff96ea0216c3346e967ad8a87bc4aaf4fc26f01"
   },
   "_source": "git://github.com/ExpandJS/xp-request.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/xp-request"
 }

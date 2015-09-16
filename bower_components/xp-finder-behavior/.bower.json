@@ -1,7 +1,7 @@
 {
   "name": "xp-finder-behavior",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-finder-behavior.html",
   "description": "A behavior used to add find capabilities on the context element",
   "homepage": "http://expandjs.com/elements/xp-finder-behavior",
@@ -20,17 +20,17 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "xp-array-behavior": "ExpandJS/xp-array-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "xp-array-behavior": "ExpandJS/xp-array-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "90b23007555c5dd827051559ea50fdd6b6f92adb"
+    "tag": "v0.9.9",
+    "commit": "53b883b62d213cd4c7fe7093e00f7e1febc4d475"
   },
   "_source": "git://github.com/ExpandJS/xp-finder-behavior.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/xp-finder-behavior"
 }

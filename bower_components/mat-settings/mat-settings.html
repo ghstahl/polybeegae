@@ -34,8 +34,8 @@ to explicitly write it every time.
 @behavior xp-shared-behavior /bower_components/xp-shared-behavior/xp-shared-behavior.html
 
 @dependency polymer Polymer/polymer#^1.1.0
-@dependency expandjs ExpandJS/expandjs#0.9.8
-@dependency xp-shared-behavior ExpandJS/xp-shared-behavior#0.9.8
+@dependency expandjs ExpandJS/expandjs#0.9.9
+@dependency xp-shared-behavior ExpandJS/xp-shared-behavior#0.9.9
 -->
 
 <link rel="import" href="/bower_components/polymer/polymer.html">
@@ -88,6 +88,7 @@ to explicitly write it every time.
              */
             theme: {
                 notify: true,
+                observer: '_themeChanged',
                 reflectToAttribute: true,
                 type: String,
                 value: 'light'
@@ -103,6 +104,7 @@ to explicitly write it every time.
              */
             timeoutToast: {
                 notify: true,
+                observer: '_timeoutToastChanged',
                 reflectToAttribute: true,
                 type: Number,
                 value: 3000
@@ -111,9 +113,14 @@ to explicitly write it every time.
 
         /*********************************************************************/
 
-        // LISTENER
-        attributeChanged: function (name) {
-            if (XP.has(this.shared, name)) { this.share(name, this[name]); }
+        // OBSERVER
+        _themeChanged: function (post) {
+            this.share('theme', post);
+        },
+
+        // OBSERVER
+        _timeoutToastChanged: function (post) {
+            this.share('timeoutToast', post);
         }
     });
 </script>

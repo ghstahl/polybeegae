@@ -1,7 +1,7 @@
 {
   "name": "xp-i18n-behavior",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-i18n-behavior.html",
   "description": "A behavior used to add localization capabilities to an element",
   "homepage": "http://expandjs.com/elements/xp-i18n-behavior",
@@ -20,16 +20,16 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "a3504d61aad18621c83f3ff5844554fbf73220fc"
+    "tag": "v0.9.9",
+    "commit": "5dff767dfc9f909f8d69158a9562ff78392ae050"
   },
   "_source": "git://github.com/ExpandJS/xp-i18n-behavior.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/xp-i18n-behavior"
 }

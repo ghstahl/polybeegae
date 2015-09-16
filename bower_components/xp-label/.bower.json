@@ -1,7 +1,7 @@
 {
   "name": "xp-label",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-label.html",
   "description": "A custom element used to add shadow traverse capabilities on an HTML label",
   "homepage": "http://expandjs.com/elements/xp-label",
@@ -20,16 +20,16 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "9b0a762b08f397c189df4dade505cd8b66b92a0f"
+    "tag": "v0.9.9",
+    "commit": "fe5ccfd53b90ae3d400bc292158f31f685625512"
   },
   "_source": "git://github.com/ExpandJS/xp-label.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/xp-label"
 }

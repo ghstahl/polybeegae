@@ -1,7 +1,7 @@
 {
   "name": "xp-focused-behavior",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-focused-behavior.html",
   "description": "A behavior used to add focus capabilities on the context element",
   "homepage": "http://expandjs.com/elements/xp-focused-behavior",
@@ -20,16 +20,16 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "e2c80c71683ab687d5b84625f8e15438769ca19b"
+    "tag": "v0.9.9",
+    "commit": "1b6e0f9c535b3a5e1eea17bba14a6cee410ab82e"
   },
   "_source": "git://github.com/ExpandJS/xp-focused-behavior.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/xp-focused-behavior"
 }

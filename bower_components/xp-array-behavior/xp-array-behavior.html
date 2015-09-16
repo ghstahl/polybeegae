@@ -17,7 +17,7 @@ A behavior used to improve Polymer's array mutation API on the context element.
 @repository https://github.com/ExpandJS/xp-array-behavior
 
 @dependency polymer Polymer/polymer#^1.1.0
-@dependency expandjs ExpandJS/expandjs#0.9.8
+@dependency expandjs ExpandJS/expandjs#0.9.9
 -->
 
 <link rel="import" href="../polymer/polymer.html">
@@ -36,10 +36,18 @@ A behavior used to improve Polymer's array mutation API on the context element.
          * @returns {*}
          */
         append: function (array, value) {
+
+            // Asserting
             XP.assertArgument(XP.isString(array, true), 1, 'string');
             XP.assertOption(XP.isArray(this[array]), array, 'Array');
-            var self = this, includes = XP.includes(self[array], value);
+
+            // Vars
+            var self     = this,
+                includes = XP.includes(self[array], value);
+
+            // Appending
             if (!includes) { self.push(array, value); }
+
             return value;
         },
 
@@ -53,11 +61,19 @@ A behavior used to improve Polymer's array mutation API on the context element.
          * @returns {Array}
          */
         overwrite: function (array, other) {
+
+            // Asserting
             XP.assertArgument(XP.isString(array, true), 1, 'string');
             XP.assertArgument(XP.isArrayable(other), 2, 'Arrayable');
             XP.assertOption(XP.isArray(this[array]), array, 'Array');
-            var self = this, differs = self[array].length !== other.length || XP.mapOne(self[array], function (val, i) { if (val !== other[i]) { return true; } });
+
+            // Vars
+            var self    = this,
+                differs = self[array].length !== other.length || XP.mapOne(self[array], function (val, i) { if (val !== other[i]) { return true; } });
+
+            // Overwriting
             if (differs) { self.splice.apply(self, XP.concat([array, 0, self[array].length], other)); }
+
             return self[array];
         },
 
@@ -70,10 +86,17 @@ A behavior used to improve Polymer's array mutation API on the context element.
          * @returns {Array}
          */
         pull: function (array, value) {
+
+            // Asserting
             XP.assertArgument(XP.isString(array, true), 1, 'string');
             XP.assertOption(XP.isArray(this[array]), array, 'Array');
+
+            // Vars
             var self = this;
+
+            // Pulling
             XP.forEachRight(self[array], function (val, i) { if (value === val) { self.splice(array, i, 1); } });
+
             return self[array];
         },
 
@@ -86,9 +109,13 @@ A behavior used to improve Polymer's array mutation API on the context element.
          * @returns {*}
          */
         pullAt: function (array, index) {
+
+            // Asserting
             XP.assertArgument(XP.isString(array, true), 1, 'string');
             XP.assertArgument(XP.isVoid(index) || XP.isIndex(index), 2, 'number');
             XP.assertOption(XP.isArray(this[array]), array, 'Array');
+
+            // Pulling
             return index < this[array].length ? this.splice(array, index, 1)[0] : undefined;
         }
     };

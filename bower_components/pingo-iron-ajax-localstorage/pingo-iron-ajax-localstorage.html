@@ -1,27 +1,25 @@
-<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../iron-localstorage/iron-localstorage.html">
 
-<dom-module id="my-iron-ajax">
+<dom-module id="pingo-iron-ajax-localstorage">
     <style>
 
     </style>
     <template>
-        <iron-localstorage id="ironLocalStorageId" name={{dataUrl}} value="{{_localStorageValue}}" on-iron-localstorage-load-empty="initializeDefaultValue"></iron-localstorage>
+        <iron-localstorage id="ironLocalStorageId" name={{localStorageKey}} value="{{_localStorageValue}}" on-iron-localstorage-load-empty="initializeDefaultValue"></iron-localstorage>
         <iron-ajax id="ironAjaxId" params="{{params}}" on-response="handleResponse" handle-as={{handleAs}} last-response="{{_ajaxResponse}}">
         </iron-ajax>
-
     </template>
 
     <script>
         (function () {
             Polymer({
-                is: 'my-iron-ajax',
-
+                is: 'pingo-iron-ajax-localstorage',
                 properties: {
-                    dataUrl: {
+                    url: {
                         type: String,
                         value: null,
-                        observer: '_dataUrlChanged'
+                        observer: '_urlChanged'
                     },
                     handleAs: {
                         type: String,
@@ -39,46 +37,47 @@
                         type: Object
                     },
                     params: {
-
+                    },
+                    localStorageKey: {
+                        type: Object,
+                        value: '76558193-ee40-40e3-8a91-bcde7a8db8dc', // this is a canary.  If I see it, I have a problem.
+                        notify: true,
+                        readOnly: true
                     }
                 },
                 initializeDefaultValue: function (ev) {
-                    this.localStorageValue = null
+                    this._localStorageValue = null
                 },
-                _dataUrlChanged: function (newValue, oldValue) {
+                _urlChanged: function (newValue, oldValue) {
                     if (newValue !== null) {
-                        this.$.ironAjaxId.auto = false;
-                        this.$.ironAjaxId.url = this.dataUrl;
-                        this.$.ironAjaxId.params = this.params;
 
-                        this.$.ironLocalStorageId.name = this.$.ironAjaxId.requestUrl;
+                        this.$.ironAjaxId.url = this.url;
+
+                        this._setLocalStorageKey(this.$.ironAjaxId.requestUrl);
                         // hmm, are you in the local storage?
                         this.$.ironLocalStorageId.reload();
                         if (this._localStorageValue) {
                             this._setLastResponse(this._localStorageValue);
                         } else {
-                            this.$.ironAjaxId.url = this.dataUrl;
-                            this.$.ironAjaxId.auto = true;
+                            this.$.ironAjaxId.url = this.url;
+                            this.$.ironAjaxId.generateRequest();
                         }
                     }
                 },
                 _ajaxResponseChanged: function (newValue, oldValue) {
                     if (newValue !== null) {
-                        console.log("my-iron-ajax _ajaxResponseChanged " + newValue);
+                        console.log("pingo-iron-ajax-localstorage _ajaxResponseChanged " + newValue);
                         this._localStorageValue = newValue;
                         // commit this to local storage
                         this._setLastResponse(newValue);
                     }
                 },
                 ready: function () {
-                    this.$.ironAjaxId.auto = false;
-                    console.log("my-iron-ajax is ready");
+                    console.log("pingo-iron-ajax-localstorage is ready");
                 },
                 handleResponse: function (request) {
-                    console.log(" my-iron-ajax response recieved");
-
+                    console.log(" pingo-iron-ajax-localstorage response recieved");
                 }
-
             });
         })();
     </script>

@@ -1,0 +1,35 @@
+{
+  "name": "pingo-content-md-loader-iron-ajax-localstorage",
+  "main": "pingo-content-md-loader-iron-ajax-localstorage.html",
+  "authors": [
+    "Herb Stahl"
+  ],
+  "description": "a helper to fetch markdown data via ajax, and put it into localstorage for subsequent requests",
+  "keywords": [
+    "Polymer",
+    "web-components"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ghstahl/pingo-content-md-loader-iron-ajax-localstorage",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "pingo-iron-ajax-localstorage": "ghstahl/pingo-iron-ajax-localstorage",
+    "polymer": "~1.1.3"
+  },
+  "_release": "48e3ef3bdc",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "48e3ef3bdc47d5aa91af523c2306ece1697bead4"
+  },
+  "_source": "git://github.com/ghstahl/pingo-content-md-loader-iron-ajax-localstorage.git",
+  "_target": "*",
+  "_originalSource": "ghstahl/pingo-content-md-loader-iron-ajax-localstorage",
+  "_direct": true
+}

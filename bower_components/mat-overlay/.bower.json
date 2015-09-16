@@ -1,7 +1,7 @@
 {
   "name": "mat-overlay",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "mat-overlay.html",
   "description": "A custom element used to display a Material Design overlay",
   "homepage": "http://expandjs.com/elements/mat-overlay",
@@ -21,20 +21,20 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "mat-paper": "ExpandJS/mat-paper#0.9.8",
-    "xp-adapter-behavior": "ExpandJS/xp-adapter-behavior#0.9.8",
-    "xp-overlay": "ExpandJS/xp-overlay#0.9.8",
-    "xp-targeter-behavior": "ExpandJS/xp-targeter-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "mat-paper": "ExpandJS/mat-paper#0.9.9",
+    "xp-adapter-behavior": "ExpandJS/xp-adapter-behavior#0.9.9",
+    "xp-overlay": "ExpandJS/xp-overlay#0.9.9",
+    "xp-targeter-behavior": "ExpandJS/xp-targeter-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "b575a451705aa5d5a6f3eda0abae022a2ce521a3"
+    "tag": "v0.9.9",
+    "commit": "af575465ee267dd62f0986bada376cb494a77606"
   },
   "_source": "git://github.com/ExpandJS/mat-overlay.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/mat-overlay"
 }

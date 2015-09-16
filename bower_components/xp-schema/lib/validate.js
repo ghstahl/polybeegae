@@ -17,7 +17,7 @@
     /*********************************************************************/
 
     /**
-     * Validates the target
+     * Validates the target.
      *
      * @param {Object} target
      * @param {Object} fields
@@ -26,9 +26,6 @@
      * @returns {Object}
      */
     exp = module.exports = function (target, fields, options, name) {
-
-        // Checking
-        if (!XP.isObject(fields)) { return target; }
 
         // Validating
         XP.forOwn(fields, function (field, key) {
@@ -39,7 +36,7 @@
     };
 
     /**
-     * Validates the step
+     * Validates the step.
      *
      * @param {*} step
      * @param {Object} [field]
@@ -75,7 +72,7 @@
     };
 
     /**
-     * Validates the value
+     * Validates the value.
      *
      * @param {*} value
      * @param {Object} [field]
@@ -85,29 +82,20 @@
      */
     exp.validateValue = function (value, field, index, name) {
 
-        // Vars
-        var err;
-
         // Setting
         value = XP.isDefined(value) ? value : null;
 
-        // Checking
-        if (!XP.isObject(field)) { return value; }
+        // Vars
+        var key = (XP.isVoid(index) && ((field.map && 'map') || (field.multi && 'multi'))) || 'type',
+            err = exp.validators[key].method(value, field[key], name);
 
-        // Validating (type)
-        if (field.map && XP.isVoid(index)) {
-            if (XP.isError(err = exp.validators.map.method(value, field.map, name))) { throw err; }
-        } else if (field.multi && XP.isVoid(index)) {
-            if (XP.isError(err = exp.validators.multi.method(value, field.multi, name))) { throw err; }
-        } else {
-            if (XP.isError(err = exp.validators.type.method(value, field.type, name))) { throw err; }
-        }
+        // Throwing
+        if (err) { throw err; }
 
-        // Validating (other)
-        XP.forOwn(field, function (val, key) {
-            if (exp.validators[key] && !XP.includes(['map', 'multi', 'type'], key)) {
-                if (XP.isError(err = exp.validators[key].method(value, field[key], name))) { throw err; }
-            }
+        // Validating
+        XP.forOwn(field, function (sub, key) {
+            if (!exp.validators[key] || key === 'map' || key === 'multi' || key === 'type') { return; }
+            if (err = exp.validators[key].method(value, sub, name)) { throw err; }
         });
 
         return value;
@@ -116,7 +104,7 @@
     /*********************************************************************/
 
     /**
-     * TODO DOC
+     * The available patterns.
      *
      * @property patterns
      * @type Object
@@ -127,15 +115,15 @@
         kebabCase: XP.kebabCaseRegex,
         keyCase: XP.keyCaseRegex,
         lowerCase: XP.lowerCaseRegex,
-        readable: XP.readableRegex,
         snakeCase: XP.snakeCaseRegex,
         startCase: XP.startCaseRegex,
         trim: XP.trimRegex,
-        upperCase: XP.upperCaseRegex
+        upperCase: XP.upperCaseRegex,
+        uuid: XP.uuidRegex
     };
 
     /**
-     * TODO DOC
+     * The available types.
      *
      * @property types
      * @type Object
@@ -143,6 +131,7 @@
     exp.types = {
         any: XP.isAny,
         boolean: XP.isBoolean,
+        input: XP.isInput,
         number: XP.isFinite,
         object: XP.isObject,
         recursive: XP.isObject,
@@ -150,36 +139,12 @@
     };
 
     /**
-     * TODO DOC
+     * The available validators.
      *
      * @property validators
      * @type Object
      */
     exp.validators = {
-
-        /**
-         * Returns error if target is not array (based on bool)
-         *
-         * @param {*} target
-         * @param {boolean} bool
-         * @param {string} [name]
-         * @returns {boolean | Error | null}
-         */
-        multi: {input: 'checkbox', method: function (target, bool, name) {
-            return XP.xor(bool, XP.isArray(target)) ? new XP.ValidationError(name || 'target', 'should be a multi') : null;
-        }},
-
-        /**
-         * Returns error if target is not an map (based on bool)
-         *
-         * @param {*} target
-         * @param {boolean} bool
-         * @param {string} [name]
-         * @returns {boolean | Error | null}
-         */
-        map: {input: 'checkbox', multi: true, method: function (target, bool, name) {
-            return XP.xor(bool, XP.isObject(target)) ? new XP.ValidationError(name || 'target', 'should be an map') : null;
-        }},
 
         /**
          * Returns error if target is gte than max
@@ -190,7 +155,7 @@
          * @returns {boolean | Error | null}
          */
         exclusiveMaximum: {input: 'number', type: 'number', method: function (target, max, name) {
-            return !XP.isFinite(target) || !XP.isFinite(max) ? false : (target >= max ? new XP.ValidationError(name || 'target', 'should be less than ' + max) : null);
+            return !XP.isFinite(target) || !XP.isFinite(max) ? false : (target >= max ? new XP.ValidationError(name || 'target', 'less than ' + max) : null);
         }},
 
         /**
@@ -202,7 +167,19 @@
          * @returns {boolean | Error | null}
          */
         exclusiveMinimum: {input: 'number', type: 'number', method: function (target, min, name) {
-            return !XP.isFinite(target) || !XP.isFinite(min) ? false : (target <= min ? new XP.ValidationError(name || 'target', 'should be greater than ' + min) : null);
+            return !XP.isFinite(target) || !XP.isFinite(min) ? false : (target <= min ? new XP.ValidationError(name || 'target', 'greater than ' + min) : null);
+        }},
+
+        /**
+         * Returns error if target is not an map (based on bool)
+         *
+         * @param {*} target
+         * @param {boolean} bool
+         * @param {string} [name]
+         * @returns {boolean | Error | null}
+         */
+        map: {input: 'checkbox', multi: true, method: function (target, bool, name) {
+            return XP.xor(bool, XP.isObject(target)) ? new XP.ValidationError(name || 'target', 'a map') : null;
         }},
 
         /**
@@ -214,7 +191,7 @@
          * @returns {boolean | Error | null}
          */
         maximum: {input: 'number', type: 'number', method: function (target, max, name) {
-            return !XP.isFinite(target) || !XP.isFinite(max) ? false : (target > max ? new XP.ValidationError(name || 'target', 'should be a maximum of ' + max) : null);
+            return !XP.isFinite(target) || !XP.isFinite(max) ? false : (target > max ? new XP.ValidationError(name || 'target', 'a maximum of ' + max) : null);
         }},
 
         /**
@@ -226,7 +203,7 @@
          * @returns {boolean | Error | null}
          */
         maxItems: {attributes: {min: 1}, input: 'number', multi: true, method: function (target, max, name) {
-            return !XP.isArray(target) || !XP.isFinite(max) || max < 1 ? false : (target.length > max ? new XP.ValidationError(name || 'target', 'should be a maximum of ' + max + ' items') : null);
+            return !XP.isArray(target) || !XP.isFinite(max) || max < 1 ? false : (target.length > max ? new XP.ValidationError(name || 'target', 'a maximum of ' + max + ' items') : null);
         }},
 
         /**
@@ -238,7 +215,7 @@
          * @returns {boolean | Error | null}
          */
         maxLength: {attributes: {min: 1}, input: 'number', type: 'string', method: function (target, max, name) {
-            return !XP.isString(target) || !XP.isFinite(max) || max < 1 ? false : (target.length > max ? new XP.ValidationError(name || 'target', 'should be a maximum of ' + max + ' chars') : null);
+            return !XP.isString(target) || !XP.isFinite(max) || max < 1 ? false : (target.length > max ? new XP.ValidationError(name || 'target', 'a maximum of ' + max + ' chars') : null);
         }},
 
         /**
@@ -250,7 +227,7 @@
          * @returns {boolean | Error|null}
          */
         minimum: {input: 'number', type: 'number', method: function (target, min, name) {
-            return !XP.isFinite(target) || !XP.isFinite(min) ? false : (target < min ? new XP.ValidationError(name || 'target', 'should be a minimum of ' + min) : null);
+            return !XP.isFinite(target) || !XP.isFinite(min) ? false : (target < min ? new XP.ValidationError(name || 'target', 'a minimum of ' + min) : null);
         }},
 
         /**
@@ -262,7 +239,7 @@
          * @returns {boolean | Error | null}
          */
         minItems: {attributes: {min: 1}, input: 'number', multi: true, method: function (target, min, name) {
-            return !XP.isArray(target) || !XP.isFinite(min) ? false : (target.length < min ? new XP.ValidationError(name || 'target', 'should be a minimum of ' + min + ' items') : null);
+            return !XP.isArray(target) || !XP.isFinite(min) ? false : (target.length < min ? new XP.ValidationError(name || 'target', 'a minimum of ' + min + ' items') : null);
         }},
 
         /**
@@ -274,7 +251,19 @@
          * @returns {boolean | Error|null}
          */
         minLength: {attributes: {min: 1}, input: 'number', type: 'string', method: function (target, min, name) {
-            return !XP.isString(target) || !XP.isFinite(min) ? false : (target.length < min ? new XP.ValidationError(name || 'target', 'should be a minimum of ' + min + ' chars') : null);
+            return !XP.isString(target) || !XP.isFinite(min) ? false : (target.length < min ? new XP.ValidationError(name || 'target', 'a minimum of ' + min + ' chars') : null);
+        }},
+
+        /**
+         * Returns error if target is not array (based on bool)
+         *
+         * @param {*} target
+         * @param {boolean} bool
+         * @param {string} [name]
+         * @returns {boolean | Error | null}
+         */
+        multi: {input: 'checkbox', method: function (target, bool, name) {
+            return XP.xor(bool, XP.isArray(target)) ? new XP.ValidationError(name || 'target', 'multi') : null;
         }},
 
         /**
@@ -286,7 +275,7 @@
          * @returns {boolean | Error | null}
          */
         multipleOf: {input: 'number', type: 'number', method: function (target, val, name) {
-            return !XP.isFinite(target) || !XP.isFinite(val) ? false : (target % val !== 0 ? new XP.ValidationError(name || 'target', 'should be divisible by ' + val) : null);
+            return !XP.isFinite(target) || !XP.isFinite(val) ? false : (target % val !== 0 ? new XP.ValidationError(name || 'target', 'divisible by ' + val) : null);
         }},
 
         /**
@@ -324,7 +313,7 @@
          * @returns {boolean | Error|null}
          */
         type: {attributes: {required: true}, options: XP.keys(exp.types), method: function (target, type, name) {
-            return XP.has(exp.types, type || 'any') && !exp.types[type || 'any'](target) && !XP.isNull(target) ? new XP.ArgumentError(name, type || 'any') : null;
+            return XP.has(exp.types, type || 'any') && !exp.types[type || 'any'](target) && !XP.isNull(target) ? new XP.ValidationError(name || 'target', type || 'any') : null;
         }},
 
         /**

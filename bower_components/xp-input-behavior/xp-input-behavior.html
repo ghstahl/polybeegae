@@ -19,8 +19,8 @@ This behavior is used to add input capabilities on a custom element.
 @behavior xp-adapter-behavior /bower_components/xp-adapter-behavior/xp-adapter-behavior.html
 
 @dependency polymer Polymer/polymer#^1.1.0
-@dependency expandjs ExpandJS/expandjs#0.9.8
-@dependency xp-adapter-behavior ExpandJS/xp-adapter-behavior#0.9.8
+@dependency expandjs ExpandJS/expandjs#0.9.9
+@dependency xp-adapter-behavior ExpandJS/xp-adapter-behavior#0.9.9
 -->
 
 <link rel="import" href="../polymer/polymer.html">
@@ -214,7 +214,7 @@ This behavior is used to add input capabilities on a custom element.
             var self = this, from = XP.isPrimitive(value) ? value : null;
             if (self.primitive === 'boolean') { return XP.toBoolean(from); }
             if (self.primitive === 'number') { return XP.toNumber(from); }
-            return XP.toString(from);
+            return XP.toString(from) || null;
         },
 
         /**
@@ -256,6 +256,19 @@ This behavior is used to add input capabilities on a custom element.
             var self = this;
             self.updateValidation();
             self.fire('xp-input-validation', {firer: self, model: self.model});
+            return self;
+        },
+
+        /**
+         * Updates the element's model.
+         *
+         * @method _updateModel
+         * @returns {Element}
+         * @private
+         */
+        _updateModel: function (value) {
+            var self = this;
+            self.model = self._toModel(value);
             return self;
         },
 
@@ -593,17 +606,16 @@ This behavior is used to add input capabilities on a custom element.
             var self = this;
 
             // Checking
-            if (!self.adaptee || self.primitive !== 'boolean') { return; }
+            if (self.primitive !== 'boolean') { return; }
 
-            // Setting
-            self._setChanged(self.initial.checked !== post);
-            self.model = self.changed ? self._toModel(post) : self.initial.model;
+            // Updating
+            self._updateModel(post);
 
             // Committing
-            self._commitTo();
+            if (self.adaptee) { self._commitTo(); }
 
             // Validating
-            self._validate();
+            if (self.adaptee) { self._validate(); }
 
             // Firing
             self.fire('xp-input-change', {firer: self, isChanged: self.changed, model: self.model});
@@ -637,13 +649,16 @@ This behavior is used to add input capabilities on a custom element.
         },
 
         // OBSERVER
-        _modelChanged: function () {
+        _modelChanged: function (post) {
 
             // Vars
             var self = this;
 
+            // Setting
+            if (XP.isDefined(self.initial.model)) { self._setChanged(post !== self.initial.model); }
+
             // Casting
-            self[self.primitive === 'boolean' ? 'checked' : 'value'] = self._toValue(self.model);
+            self[self.primitive === 'boolean' ? 'checked' : 'value'] = self._toValue(post);
         },
 
         // OBSERVER
@@ -666,24 +681,25 @@ This behavior is used to add input capabilities on a custom element.
             var self = this;
 
             // Checking
-            if (!self.adaptee || self.primitive === 'boolean') { return; }
+            if (self.primitive === 'boolean') { return; }
 
             // Sanitizing
-            self._sanitize();
+            if (self.adaptee) { self._sanitize(); }
 
             // Checking
             if (self.value !== post) { return; }
 
+            // Updating
+            self._updateModel(post);
+
             // Setting
-            self._setChanged(self.initial.value !== post);
             self._setEmpty(!self.value);
-            self.model = self.changed ? self._toModel(post) : self.initial.model;
 
             // Committing
-            self._commitTo();
+            if (self.adaptee) { self._commitTo(); }
 
             // Validating
-            self._validate();
+            if (self.adaptee) { self._validate(); }
 
             // Firing
             self.fire('xp-input-change', {firer: self, isChanged: self.changed, model: self.model});
@@ -722,8 +738,7 @@ This behavior is used to add input capabilities on a custom element.
             var self = this;
 
             // Checking
-            if (self._index === Polymer.XPInputBehavior._index) { return; }
-            if (self._index === Polymer.XPInputBehavior._index) { return; }
+            if (self._index === Polymer.XPInputBehaviorImp._index) { return; }
 
             // Disconnecting
             if (self.indexObserver) { self.indexObserver.disconnect(); }
@@ -742,17 +757,15 @@ This behavior is used to add input capabilities on a custom element.
         ready: function () {
 
             // Vars
-            var self     = this,
-                property = self.primitive === 'boolean' ? 'checked' : 'value';
+            var self = this;
 
             // Delaying
             XP.delay(function () {
 
                 // Setting
-                self.set('initial.checked', self.checked = self.model && self.primitive === 'boolean' ? true : self.checked || false);
-                self.set('initial.value', self.value = self.model && self.primitive !== 'boolean' ? self._toValue(self.model) : self.value || '');
-                self.set('initial.model', self.model = self[property] ? self._toModel(self[property]) : (XP.isDefined(self.model) ? self.model : null));
-                self._setEmpty(self.primitive !== 'boolean' && !self.value);
+                self.set('initial.checked', self.checked = (self.primitive === 'boolean' && (self._toValue(self.model) || self.checked)) || false);
+                self.set('initial.value', self.value = (self.primitive !== 'boolean' && (self._toValue(self.model) || self.value)) || '');
+                self.set('initial.model', self.model);
 
                 // Adapting
                 self._adapt();

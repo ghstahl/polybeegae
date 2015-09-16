@@ -32,6 +32,9 @@
     "paper-menu": "polymerelements/paper-menu#~1.1.0",
     "paper-scroll-header-panel": "polymerelements/paper-scroll-header-panel#~1.0.8",
     "paper-toast": "polymerelements/paper-toast#~1.0.0",
+    "pingo-abstract-section-behavior": "ghstahl/pingo-abstract-section-behavior",
+    "pingo-content-md-loader-iron-ajax-localstorage": "ghstahl/pingo-content-md-loader-iron-ajax-localstorage",
+    "pingo-iron-ajax-localstorage": "ghstahl/pingo-iron-ajax-localstorage",
     "polymer": "Polymer/polymer#~1.1.2",
     "polymer-themes": "~1.0.1",
     "xp-elements": "expandjs/xp-elements#~0.9.8"

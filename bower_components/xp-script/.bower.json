@@ -1,7 +1,7 @@
 {
   "name": "xp-script",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "xp-script.html",
   "description": "A custom element used to load scripts asynchronously",
   "homepage": "http://expandjs.com/elements/xp-script",
@@ -20,17 +20,17 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "xp-shared-behavior": "ExpandJS/xp-shared-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "xp-shared-behavior": "ExpandJS/xp-shared-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "25bf6adde1a64ba9061f8429238e75e7318a7672"
+    "tag": "v0.9.9",
+    "commit": "d5f9b0b14d03ea2759d6774b54d3135da011b001"
   },
   "_source": "git://github.com/ExpandJS/xp-script.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/xp-script"
 }

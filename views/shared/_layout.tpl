@@ -42,7 +42,7 @@
 
 <body fullbreed unresolved>
     <template is="dom-bind" id="app">
-        <the-app></the-app>
+        <the-app cache-buster="herb"></the-app>
     </template>
     <!-- build:js scripts/app.js -->
     <script src="polymerapp/scripts/app.js"></script>

@@ -1,7 +1,7 @@
 {
   "name": "mat-palette",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "mat-palette.html",
   "description": "A custom element used to add support for material palettes",
   "homepage": "http://expandjs.com/elements/mat-palette",
@@ -23,7 +23,7 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "polymer": "Polymer/polymer#^1.1.0"
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "polymer": "Polymer/polymer#^1.0.0"
   }
 }

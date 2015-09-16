@@ -1,7 +1,7 @@
 {
   "name": "mat-icon-button",
   "license": "BSD-3-Clause",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "mat-icon-button.html",
   "description": "A custom element used to display a Material Design icon button",
   "homepage": "http://expandjs.com/elements/mat-icon-button",
@@ -23,26 +23,26 @@
     "**/.*"
   ],
   "dependencies": {
-    "expandjs": "ExpandJS/expandjs#0.9.8",
-    "mat-icon": "ExpandJS/mat-icon#0.9.8",
-    "mat-ripple": "ExpandJS/mat-ripple#0.9.8",
-    "xp-anchor-behavior": "ExpandJS/xp-anchor-behavior#0.9.8",
-    "xp-pressed-behavior": "ExpandJS/xp-pressed-behavior#0.9.8",
-    "xp-referral-behavior": "ExpandJS/xp-referral-behavior#0.9.8",
+    "expandjs": "ExpandJS/expandjs#0.9.9",
+    "mat-icon": "ExpandJS/mat-icon#0.9.9",
+    "mat-ripple": "ExpandJS/mat-ripple#0.9.9",
+    "xp-anchor-behavior": "ExpandJS/xp-anchor-behavior#0.9.9",
+    "xp-pressed-behavior": "ExpandJS/xp-pressed-behavior#0.9.9",
+    "xp-referral-behavior": "ExpandJS/xp-referral-behavior#0.9.9",
     "polymer": "Polymer/polymer#^1.1.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0"
   },
   "devDependencies": {
-    "mat-demo": "ExpandJS/mat-demo#0.9.8",
-    "mat-icons": "ExpandJS/mat-icons#0.9.8"
+    "mat-demo": "ExpandJS/mat-demo#0.9.9",
+    "mat-icons": "ExpandJS/mat-icons#0.9.9"
   },
-  "_release": "0.9.8",
+  "_release": "0.9.9",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.8",
-    "commit": "1f8ef08a4a406bc74baeee5a14cd6e182275f61e"
+    "tag": "v0.9.9",
+    "commit": "34166263e4fe38d38abefa47bdaaa10a80b7dc21"
   },
   "_source": "git://github.com/ExpandJS/mat-icon-button.git",
-  "_target": "0.9.8",
+  "_target": "0.9.9",
   "_originalSource": "ExpandJS/mat-icon-button"
 }

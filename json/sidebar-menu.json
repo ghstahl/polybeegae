@@ -95,7 +95,7 @@
                     "dataRoute": "Atlanta",
                     "section": "abstract-section",
                     "customData": {
-                        "dataUrl": "/static/Atlanta/index.md?1234"
+                        "dataUrl": "/static/Atlanta/index.md"
                     }
                 }
 

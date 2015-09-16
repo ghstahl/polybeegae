@@ -37,7 +37,7 @@
      * @returns {boolean} Returns `true` or `false` accordingly to the check.
      */
     module.exports = function isEmpty(value) {
-        return isNullable(value) || isArrayable(value, false) || isElement(value, false) || isObject(value, false);
+        return isNullable(value) || isArrayable(value, false) || isObject(value, false) || isElement(value, false);
     };
 
 }());

@@ -1,0 +1,32 @@
+<link rel="import" href="../pingo-iron-ajax-localstorage/pingo-iron-ajax-localstorage.html">
+
+<dom-module id="pingo-content-md-loader-iron-ajax-localstorage">
+    <template>
+        <pingo-iron-ajax-localstorage id="ironAjaxLocalstorage" params="{{params}}" handle-as="text" last-response="{{ajaxResponse}}"></pingo-iron-ajax-localstorage>
+        <marked-element id="content"></marked-element>
+    </template>
+    <script>
+        Polymer({
+            is: "pingo-content-md-loader-iron-ajax-localstorage",
+            properties: {
+                ajaxResponse: {
+                    type: Object,
+                    observer: '_onAjaxResponse'
+                },
+                url: {
+                    type: String,
+                    observer: '_urlChanged'
+                },
+				params:{}
+            },
+            _onAjaxResponse: function (path) {
+                this.$.content.markdown = path;
+            },
+            _urlChanged: function (path) {
+                if (this.url) {
+                    this.$.ironAjaxLocalstorage.url = this.url;
+                }
+            }
+        });
+    </script>
+</dom-module>
