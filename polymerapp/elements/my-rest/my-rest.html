@@ -48,6 +48,7 @@
                 },
                 handleClick: function () {
                     this.$.ironAjaxId.url = this.url;
+                    this.ajaxResponse = "";
                     this.$.ironAjaxId.generateRequest();
 
                 },
@@ -55,6 +56,9 @@
                     if (newValue !== null) {
                         this.ajaxResponse = JSON.stringify(newValue);
                     }
+                },
+                handleResponse: function (request) {
+                    console.log("my-rest response recieved");
                 }
             });
         })();
