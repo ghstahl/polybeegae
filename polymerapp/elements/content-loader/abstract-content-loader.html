@@ -1,0 +1,92 @@
+<link rel="import" href="../../../bower_components/pingo-abstract-section-behavior/pingo-abstract-section-behavior.html">
+
+<dom-module id="abstract-content-loader">
+
+    <style>
+
+    </style>
+    <template>
+        <div id="_acd"></div>
+    </template>
+    <script>
+        (function () {
+            Polymer({
+                is: 'abstract-content-loader',
+                behaviors: [PingoAbstractSectionBehavior],
+                properties: {
+                    abstract_section_element_map: {
+                        type: Array,
+                        value: []
+                    },
+                    identifier: {
+                        type: String,
+                        value: '',
+                        notify: true
+                    },
+                    title: {
+                        type: String,
+                        value: '',
+                        notify: true
+                    }
+                },
+                _insertPE: function (polymerElement, route_record) {
+
+                    var targetDiv = this.$._acd;
+                    var polyDom = Polymer.dom(targetDiv);
+                    var children = polyDom.childNodes;
+                    while (children.length != 0) {
+                        polyDom.removeChild(children[0]);
+                        children = polyDom.childNodes;
+                    }
+                    polymerElement.route_record = route_record;
+                    polyDom.appendChild(polymerElement);
+                    //polymerElement.TouchActivated();
+
+
+                },
+                _routeRecordChanged: function (value) {
+                    if (value !== null) {
+                        var thisElement = this;
+                        var peMap = this.abstract_section_element_map;
+                        var requestedPE = this.route_record.customData.polymerElement;
+                        var route_record = value;
+
+                        var polymerElement = peMap[requestedPE];
+                        if (!polymerElement) {
+                            var link = this.importHref(this.route_record.customData.url,
+                                function (e) {
+                                    // e.target.import is the import document.
+                                    polymerElement = document.createElement(requestedPE);
+                                    if (!polymerElement) {
+                                        // ERROR
+                                    } else {
+                                        peMap[requestedPE] = polymerElement;
+                                        thisElement._insertPE(polymerElement, route_record);
+                                    }
+                                },
+                                function (e) {
+                                    console.log("error");
+                                }
+                            );
+                        } else {
+                            thisElement._insertPE(polymerElement, route_record);
+                        }
+                    }
+
+                },
+                Activate: function () {
+
+                    if (this.route_record) {}
+                },
+                _onActivated: function () {
+                    this.Activate();
+                },
+                ready: function () {
+
+                    console.log("abstract-content-loader ready");
+                }
+            });
+        })();
+    </script>
+
+</dom-module>

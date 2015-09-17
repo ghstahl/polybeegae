@@ -115,6 +115,9 @@
                 <div class="content">
                     <iron-pages attr-for-selected="selected-attribute" selected="{{section_selected}}">
 
+                        <!-------------------------------------------------------->
+                        <!-- Section: Home                                      -->
+                        <!-------------------------------------------------------->
                         <section selected-attribute="home">
                             <paper-material elevation="1">
                                 <my-greeting></my-greeting>
@@ -129,6 +132,9 @@
                             </paper-material>
                         </section>
 
+                        <!-------------------------------------------------------->
+                        <!-- Section: Users                                     -->
+                        <!-------------------------------------------------------->
                         <section selected-attribute="users">
                             <paper-material elevation="1">
                                 <h2 class="paper-font-display2">Users</h2>
@@ -137,15 +143,21 @@
                             </paper-material>
                         </section>
 
+                        <!-------------------------------------------------------->
+                        <!-- Section: User Info                                 -->
+                        <!-------------------------------------------------------->
                         <section selected-attribute="user-info">
                             <paper-material elevation="1">
-                                <h2 class="paper-font-display2">
-                User:<span>{{params.name}}</span>
-                </h2>
+                                <h2 class="paper-font-display2">User:
+                                    <span>{{params.name}}</span>
+                                </h2>
                                 <div>This is <span>{{params.name}}</span>'s section</div>
                             </paper-material>
                         </section>
 
+                        <!-------------------------------------------------------->
+                        <!-- Section: Abstract                                  -->
+                        <!-------------------------------------------------------->
                         <section selected-attribute="abstract-section">
                             <div id="abstract_section_id"></div>
                         </section>
