@@ -48,20 +48,24 @@
                     if (value !== null) {
                         var thisElement = this;
                         var peMap = this.abstract_section_element_map;
-                        var requestedPE = this.route_record.customData.polymerElement;
+                        var peKey = this.route_record.customData.url; //key name
                         var route_record = value;
 
-                        var polymerElement = peMap[requestedPE];
+                        var polymerElement = peMap[peKey];
                         if (!polymerElement) {
                             var link = this.importHref(this.route_record.customData.url,
                                 function (e) {
-                                    // e.target.import is the import document.
-                                    polymerElement = document.createElement(requestedPE);
-                                    if (!polymerElement) {
-                                        // ERROR
-                                    } else {
-                                        peMap[requestedPE] = polymerElement;
-                                        thisElement._insertPE(polymerElement, route_record);
+                                    var domModule = e.target.import.getElementsByTagName('dom-module');
+                                    if (domModule) {
+                                        var elementId = domModule[0].id;
+
+                                        polymerElement = document.createElement(elementId);
+                                        if (!polymerElement) {
+                                            // ERROR
+                                        } else {
+                                            peMap[peKey] = polymerElement;
+                                            thisElement._insertPE(polymerElement, route_record);
+                                        }
                                     }
                                 },
                                 function (e) {

@@ -1,7 +1,5 @@
 {
-    "app_config": {
-
-    },
+    "app_config": {},
     "page_routes": [
         {
             "route": "/markdown/*",
@@ -61,7 +59,6 @@
             "menuItems": [
                 {
                     "polymerElement": "my-plants",
-
                     "label": "Plants",
                     "href": "/product/plants",
                     "icon": "home",
@@ -99,8 +96,29 @@
                     "customData": {
                         "url": "/static/Atlanta/index.md"
                     }
+                },
+                {
+                    "polymerElement": "abstract-content-loader",
+                    "label": "Greetings2",
+                    "href": "/Welcome/Greetings2",
+                    "icon": "home",
+                    "dataRoute": "Greetings2",
+                    "section": "abstract-section",
+                    "customData": {
+                        "url": "/polymerapp/elements/my-greeting/my-greeting2.html"
+                    }
+                },
+                {
+                    "polymerElement": "abstract-content-loader",
+                    "label": "Greetings3",
+                    "href": "/Welcome/Greetings3",
+                    "icon": "home",
+                    "dataRoute": "Greetings3",
+                    "section": "abstract-section",
+                    "customData": {
+                        "url": "/polymerapp/elements/my-greeting/my-greeting3.html"
+                    }
                 }
-
             ]
         }
     ]
