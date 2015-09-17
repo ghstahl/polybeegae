@@ -98,7 +98,7 @@
                     }
                 },
                 {
-                    "polymerElement": "abstract-content-loader",
+                    "polymerElement": "pingo-abstract-content-loader",
                     "label": "Greetings2",
                     "href": "/Welcome/Greetings2",
                     "icon": "home",
@@ -109,7 +109,7 @@
                     }
                 },
                 {
-                    "polymerElement": "abstract-content-loader",
+                    "polymerElement": "pingo-abstract-content-loader",
                     "label": "Greetings3",
                     "href": "/Welcome/Greetings3",
                     "icon": "home",

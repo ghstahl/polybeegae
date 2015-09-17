@@ -1,6 +1,6 @@
-<link rel="import" href="../../../bower_components/pingo-abstract-section-behavior/pingo-abstract-section-behavior.html">
+<link rel="import" href="../pingo-abstract-section-behavior/pingo-abstract-section-behavior.html">
 
-<dom-module id="abstract-content-loader">
+<dom-module id="pingo-abstract-content-loader">
 
     <style>
 
@@ -11,7 +11,7 @@
     <script>
         (function () {
             Polymer({
-                is: 'abstract-content-loader',
+                is: 'pingo-abstract-content-loader',
                 behaviors: [PingoAbstractSectionBehavior],
                 properties: {
                     abstract_section_element_map: {
@@ -87,7 +87,7 @@
                 },
                 ready: function () {
 
-                    console.log("abstract-content-loader ready");
+                    console.log("pingo-abstract-content-loader ready");
                 }
             });
         })();

@@ -1,0 +1,35 @@
+{
+  "name": "pingo-abstract-content-loader",
+  "main": "pingo-abstract-content-loader.html",
+  "authors": [
+    "Herb Stahl"
+  ],
+  "description": "a helper to fetch markdown data via ajax, and put it into localstorage for subsequent requests",
+  "keywords": [
+    "Polymer",
+    "web-components"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ghstahl/pingo-abstract-content-loader",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "pingo-abstract-section-behavior": "ghstahl/pingo-abstract-section-behavior",
+    "polymer": "~1.1.3"
+  },
+  "_release": "7b9c77c4c1",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "7b9c77c4c131997133f472f69edff29c49a7207e"
+  },
+  "_source": "git://github.com/ghstahl/pingo-abstract-content-loader.git",
+  "_target": "*",
+  "_originalSource": "ghstahl/pingo-abstract-content-loader",
+  "_direct": true
+}
