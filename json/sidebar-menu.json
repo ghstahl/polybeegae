@@ -118,6 +118,17 @@
                     "customData": {
                         "url": "/polymerapp/elements/my-greeting/my-greeting3.html"
                     }
+                },
+                {
+                    "polymerElement": "pingo-abstract-content-loader",
+                    "label": "MyRest",
+                    "href": "/Welcome/MyRest",
+                    "icon": "home",
+                    "dataRoute": "MyRest",
+                    "section": "abstract-section",
+                    "customData": {
+                        "url": "/polymerapp/elements/my-rest/my-rest.html"
+                    }
                 }
             ]
         }
