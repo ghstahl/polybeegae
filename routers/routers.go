@@ -13,11 +13,11 @@ func init() {
 			beegae.NSRouter("/:objectId", &controllers.ObjectController{}, "get:Get;delete:Delete")))
 	beegae.AddNamespace(v1NS)
 	/*
-	   beegae.Router("/v1/object",&controllers.ObjectController{},"*:GetAll")
-	       beegae.Router("/v1/object",&controllers.ObjectController{},"post:Post")
-	       beegae.Router("/v1/object/:objectId",&controllers.ObjectController{},"get:Get")
-	       beegae.Router("/v1/object",&controllers.ObjectController{},"put:Put")
-	       beegae.Router("/v1/object/:objectId",&controllers.ObjectController{},"delete:Delete")
+   beegae.Router("/v1/object",&controllers.ObjectController{},"get:GetAll")
+   beegae.Router("/v1/object",&controllers.ObjectController{},"post:Post")
+   beegae.Router("/v1/object/:objectId",&controllers.ObjectController{},"get:Get")
+   beegae.Router("/v1/object",&controllers.ObjectController{},"put:Put")
+   beegae.Router("/v1/object/:objectId",&controllers.ObjectController{},"delete:Delete")
 	*/
 	beegae.Router("/_session_gc", &controllers.GCController{})
 	beegae.Router("/", &controllers.MainController{})

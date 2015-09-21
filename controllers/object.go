@@ -20,10 +20,14 @@ type ObjectController struct {
 // @Failure 403 body is empty
 // @router /v1/object/ [post]
 func (o *ObjectController) Post() {
-	var ob models.Object
+    	r := o.Ctx.Request
+	c := appengine.NewContext(r)
+   c.Infof("ObjectController Post")
+	var ob models.Product
 	json.Unmarshal(o.Ctx.Input.RequestBody, &ob)
-	objectid := models.AddOne(ob)
-	o.Data["json"] = map[string]string{"ObjectId": objectid}
+
+     c.Infof("%v",ob)
+	o.Data["json"] = ob
 	o.ServeJson()
 }
 
