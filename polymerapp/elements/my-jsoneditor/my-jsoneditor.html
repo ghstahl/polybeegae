@@ -1,0 +1,61 @@
+<link rel="import" href="../pingo-abstract-section-behavior/pingo-abstract-section-behavior.html">
+
+<dom-module id="my-jsoneditor">
+
+    <style>
+
+    </style>
+    <template>
+        <paper-material>
+            <div id="editor_holder"></div>
+        </paper-material>
+    </template>
+    <script src="../../../bower_components/json-editor/dist/jsoneditor.js"></script>
+    <script>
+        (function () {
+            Polymer({
+                is: 'my-jsoneditor',
+                properties: {},
+                ready: function () {
+                    this._editor = new JSONEditor(this.$.editor_holder, {
+                        schema: {
+                            type: "object",
+                            title: "Plant",
+                            properties: {
+                                Name: {
+                                    type: "string",
+                                },
+                                ImageUrl: {
+                                    type: "string",
+                                },
+                                Height: {
+                                    type: "string",
+                                    enum: [
+                                            "4 - 6 inches",
+                                            "6 - 8 inches"
+                                          ]
+                                },
+                                HardinessZone: {
+                                    type: "string",
+                                    enum: [
+                                            "4 - 9",
+                                            "7 - 9"
+                                          ]
+                                },
+                                Class: {
+                                    type: "string",
+                                    enum: [
+                                            "Fruit Crops",
+                                            "Hardy Perennials"
+                                          ]
+                                }
+                            }
+                        }
+                    });
+                    console.log("my-jsoneditor ready");
+                }
+            });
+        })();
+    </script>
+
+</dom-module>

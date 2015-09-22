@@ -4,7 +4,9 @@ import (
 	"appengine"
 	"encoding/json"
 	"github.com/astaxie/beegae"
-	"models"
+    "fmt"
+    "models"
+    "net/http"
 	"stores"
 )
 
@@ -20,10 +22,24 @@ type ObjectController struct {
 // @Failure 403 body is empty
 // @router /v1/object/ [post]
 func (o *ObjectController) Post() {
-	var ob models.Object
-	json.Unmarshal(o.Ctx.Input.RequestBody, &ob)
-	objectid := models.AddOne(ob)
-	o.Data["json"] = map[string]string{"ObjectId": objectid}
+    fmt.Println("ObjectController POST")
+    r := o.Ctx.Request
+	w := o.Ctx.ResponseWriter
+	c := appengine.NewContext(r)
+	c.Infof("ObjectController GetAll")
+    
+    var prod models.Product
+	json.Unmarshal(o.Ctx.Input.RequestBody, &prod)
+    res2B, _ := json.Marshal(prod)
+    fmt.Println(string(res2B))
+    
+    
+    err := productStore.InsertProduct(c, prod)
+    if(err != nil){
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
+    
+	o.Data["json"] = prod
 	o.ServeJson()
 }
 
@@ -68,6 +84,8 @@ func (o *ObjectController) Get() {
 // @Failure 403 :objectId is empty
 // @router /v1/object/ [get]
 func (o *ObjectController) GetAll() {
+        fmt.Println("ObjectController GetAll")
+
 	r := o.Ctx.Request
 	c := appengine.NewContext(r)
 	c.Infof("ObjectController GetAll")

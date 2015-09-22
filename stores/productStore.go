@@ -24,7 +24,7 @@ func productKey(c appengine.Context) *datastore.Key {
 	return datastore.NewKey(c, "Product", "default_products", 0, nil)
 }
 
-func InsertProduct(c appengine.Context, prod models.Product, w http.ResponseWriter) {
+func InsertProduct(c appengine.Context, prod models.Product) ( error) {
 
 	// We set the same parent key on every Greeting entity to ensure each Greeting
 	// is in the same entity group. Queries across the single entity group
@@ -32,10 +32,8 @@ func InsertProduct(c appengine.Context, prod models.Product, w http.ResponseWrit
 	// should be limited to ~1/second.
 	key := datastore.NewIncompleteKey(c, "Product", productKey(c))
 	_, err := datastore.Put(c, key, &prod)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	 
+    return err;
 }
 
 func datastoreGetAllClassesFromProds(c appengine.Context) []T {
@@ -148,7 +146,10 @@ func EnsureData(w http.ResponseWriter, c appengine.Context) {
 		prod.PlugSize = "72"
 		prod.PriceEach = "$.68"
 
-		InsertProduct(c, *prod, w)
+        err := InsertProduct(c, *prod)
+        if(err != nil){
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+        }
 
 		prod = new(models.Product)
 		prod.Height = "6 - 8 inches"
@@ -162,7 +163,10 @@ func EnsureData(w http.ResponseWriter, c appengine.Context) {
 		prod.PlugSize = "72"
 		prod.PriceEach = "$.68"
 
-		InsertProduct(c, *prod, w)
+		err = InsertProduct(c, *prod)
+        if(err != nil){
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+        }
 
 		prod = new(models.Product)
 		prod.Height = "9 - 12 inches"
@@ -178,7 +182,10 @@ func EnsureData(w http.ResponseWriter, c appengine.Context) {
 		prod.Royalty = "$.16"
 		prod.Colors = "Vibrant Yellow"
 		prod.PatentStatus = "USPPAF"
-		InsertProduct(c, *prod, w)
+		err = InsertProduct(c, *prod)
+        if(err != nil){
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+        }
 
 		prod = new(models.Product)
 		prod.Height = "12 inches"
@@ -194,7 +201,10 @@ func EnsureData(w http.ResponseWriter, c appengine.Context) {
 		prod.Royalty = "$.08"
 		prod.Colors = "Deep Red"
 		prod.PatentStatus = "USPPAF"
-		InsertProduct(c, *prod, w)
+		err = InsertProduct(c, *prod)
+        if(err != nil){
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+        }
 	}
 
 }

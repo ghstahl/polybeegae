@@ -129,6 +129,17 @@
                     "customData": {
                         "url": "/polymerapp/elements/my-rest/my-rest.html"
                     }
+                },
+                {
+                    "polymerElement": "pingo-abstract-content-loader",
+                    "label": "MyJsonEditor",
+                    "href": "/Welcome/MyJsonEditor",
+                    "icon": "home",
+                    "dataRoute": "MyJsonEditor",
+                    "section": "abstract-section",
+                    "customData": {
+                        "url": "/polymerapp/elements/my-jsoneditor/my-jsoneditor.html"
+                    }
                 }
             ]
         }
