@@ -14,23 +14,24 @@
             <template is="dom-repeat" items="{{_toArray(jsonEditorData.schema.properties)}}">
                 <my-jsoneditor-item item={{item}}></my-jsoneditor-item>
             </template>
-
-            <div id="editor_holder"></div>
+            <mat-raised-button label="Click me!" on-click="handleClick"></mat-raised-button>
         </paper-material>
-        <mat-raised-button label="Click me!" on-click="handleClick"></mat-raised-button>
+
         <paper-material elevation="1">
             <x-json id="myjson" data={{jsonEditorData.value.schema.properties}}></x-json>
         </paper-material>
     </template>
-    <script src="../../../bower_components/json-editor/dist/jsoneditor.js"></script>
     <script>
         (function () {
             Polymer({
                 is: 'my-jsoneditor',
                 properties: {
+                    _arrayData: {
+                        type: Array,
+                        observer: '_jsonEditorDataChanged',
+                    },
                     jsonEditorData: {
                         type: Object,
-                        observer: '_jsonEditorDataChanged',
                         value: {
                             schema: {
 
@@ -55,33 +56,29 @@
                     }
 
                 },
-                observers: ['_valueChanged(jsonEditorData.*)'],
+                observers: ['_valueChanged(_arrayData.*)'],
                 _valueChanged: function (changeRecord) {
-                    console.log('changed: ' + changeRecord.path);
+                    console.log('_arrayData changed: ' + changeRecord.path);
                 },
                 handleClick: function () {
-                    this.$.myjson.data = this.jsonEditorData.schema.properties;
+                    this.$.myjson.data = this._arrayData;
                 },
-                _isSame: function (a, b) {
-                    return a === b
-                },
+
                 _toArray: function (obj) {
-                    return Object.keys(obj).map(function (key) {
+                    var thisElement = this;
+                    this._arrayData = Object.keys(obj).map(function (key) {
                         return {
                             name: key,
                             value: obj[key]
                         };
                     });
+                    return this._arrayData;
                 },
+
                 _jsonEditorDataChanged: function (newValue, oldValue) {
-                    if (newValue !== null) {
-                        this.$.myjson.data = newValue;
-                    }
+                    console.log('_jsonEditorDataChanged changed: ' + newValue);
                 },
                 ready: function () {
-                    //  this.$.myjson.data = this.jsonEditorData;
-
-                    this._editor = new JSONEditor(this.$.editor_holder, this.jsonEditorData);
                     console.log("my-jsoneditor ready");
                 }
             });
