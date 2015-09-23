@@ -28,11 +28,13 @@
     "paper-drawer-panel": "polymerelements/paper-drawer-panel#~1.0.3",
     "paper-header-panel": "polymerelements/paper-header-panel#~1.0.5",
     "paper-icon-button": "polymerelements/paper-icon-button#~1.0.3",
+    "paper-input": "polymerelements/paper-input#~1.0.14",
     "paper-item": "polymerelements/paper-item#~1.0.2",
     "paper-material": "polymerelements/paper-material#~1.0.2",
     "paper-menu": "polymerelements/paper-menu#~1.1.0",
     "paper-scroll-header-panel": "polymerelements/paper-scroll-header-panel#~1.0.8",
     "paper-toast": "polymerelements/paper-toast#~1.0.0",
+    "paper-toggle-button": "polymerelements/paper-toggle-button#~1.0.8",
     "pingo-abstract-content-loader": "ghstahl/pingo-abstract-content-loader",
     "pingo-abstract-section-behavior": "ghstahl/pingo-abstract-section-behavior",
     "pingo-content-md-loader-iron-ajax-localstorage": "ghstahl/pingo-content-md-loader-iron-ajax-localstorage",
@@ -40,6 +42,7 @@
     "pingo-sidebar": "ghstahl/pingo-sidebar",
     "polymer": "Polymer/polymer#~1.1.2",
     "polymer-themes": "~1.0.1",
+    "x-json": "~0.2.3",
     "xp-elements": "expandjs/xp-elements#~0.9.8"
   }
 }

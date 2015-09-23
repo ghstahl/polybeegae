@@ -1,0 +1,32 @@
+{
+  "name": "x-json",
+  "version": "0.2.3",
+  "authors": [
+    "Christopher Luna <dev@christopher-luna.com>"
+  ],
+  "main": "dist/x-json.html",
+  "description": "Custom element to display a (formatted and prettified) JSON",
+  "keywords": [
+    "json",
+    "pretty-print",
+    "prettyprint",
+    "web-components"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "*/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "homepage": "https://github.com/chris-l/x-json",
+  "_release": "0.2.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.2.3",
+    "commit": "1f1252917eea30cbf43a4dd01d2070462e046ae9"
+  },
+  "_source": "git://github.com/chris-l/x-json.git",
+  "_target": "~0.2.3",
+  "_originalSource": "x-json",
+  "_direct": true
+}

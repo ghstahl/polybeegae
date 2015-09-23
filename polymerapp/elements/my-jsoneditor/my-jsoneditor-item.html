@@ -1,0 +1,58 @@
+<link rel="import" href="../../../bower_components/paper-toggle-button/paper-toggle-button.html">
+
+<dom-module id="my-jsoneditor-item">
+
+    <style is="custom-style">
+        .line {
+            margin-bottom: 40px;
+        }
+        
+        .line span {
+            margin-left: 24px;
+        }
+    </style>
+    <template>
+
+        <template is="dom-if" if="{{_isSame(item.value.type,'string')}} ">
+            <paper-input label={{item.name}} value={{item.value.value}}></paper-input>
+        </template>
+
+        <template is="dom-if" if="{{_isSame(item.value.type,'boolean')}} ">
+            <div class="line">
+                <paper-toggle-button checked={{item.value.value}}></paper-toggle-button><span>{{item.name}}</span><span>{{computeBooleanToString(item.value.value)}}</span></div>
+        </template>
+
+
+    </template>
+    <script>
+        (function () {
+            Polymer({
+                is: 'my-jsoneditor-item',
+                properties: {
+                    item: {
+                        type: Object,
+                        notify: true
+                    }
+                },
+                observers: ['_valueChanged(item.*)'],
+                _valueChanged: function (changeRecord) {
+                    this.fire('itemChanged', {
+                        path: changeRecord.path
+                    });
+                    console.log('changed: ' + changeRecord.path);
+                },
+                _isSame: function (a, b) {
+                    return a === b
+                },
+                computeBooleanToString: function (a) {
+                    return a === true ? 'true' : 'false';
+                },
+
+                ready: function () {
+                    console.log("my-jsoneditor-item ready");
+                }
+            });
+        })();
+    </script>
+
+</dom-module>

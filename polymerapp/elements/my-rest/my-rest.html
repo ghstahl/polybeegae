@@ -1,30 +1,24 @@
+<link rel="import" href="../../../bower_components/x-json/dist/x-json.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/mat-raised-button/mat-raised-button.html">
 <dom-module id="my-rest">
     <style>
-        :host {
-            display: block;
-        }
-        
-        @media (max-width: 600px) {
-            h1.paper-font-display1 {
-                font-size: 24px;
-            }
-        }
+
     </style>
     <template>
 
         <iron-ajax id="ironAjaxId" params="{{params}}" on-response="handleResponse" handle-as="json" last-response="{{_ajaxResponse}}">
         </iron-ajax>
 
+        <paper-material elevation="1">
+            <paper-input id="tag-input" on-focusout="_focusOut" error-message="{{emptyErrorMessage}}" label="CORS Test Url" on-keydown="_keyDown" value="{{url::input}}"></paper-input>
+            <mat-raised-button label="Click me!" on-click="handleClick"></mat-raised-button>
 
-        <h1 class="paper-font-display1"><span>{{url}}</span></h1>
-        <span class="paper-font-body2">Update text to change the url.</span>
-        <!-- Listens for "input" event and sets greeting to <input>.value -->
-        <input class="paper-font-body2" value="{{url::input}}">
+        </paper-material>
 
-        <button on-click="handleClick">Kick Me</button>
-        </br>
-        <span>{{ajaxResponse}}</span>
-
+        <paper-material elevation="1">
+            <x-json id="myjson"></x-json>
+        </paper-material>
     </template>
 
     <script>
@@ -40,21 +34,17 @@
                     },
                     _ajaxResponse: {
                         observer: '_ajaxResponseChanged'
-                    },
-                    ajaxResponse: {
-                        type: String,
-                        notify: true
                     }
                 },
                 handleClick: function () {
                     this.$.ironAjaxId.url = this.url;
-                    this.ajaxResponse = "";
+                    this.$.myjson.data = null;
                     this.$.ironAjaxId.generateRequest();
 
                 },
                 _ajaxResponseChanged: function (newValue, oldValue) {
                     if (newValue !== null) {
-                        this.ajaxResponse = JSON.stringify(newValue);
+                        this.$.myjson.data = newValue;
                     }
                 },
                 handleResponse: function (request) {

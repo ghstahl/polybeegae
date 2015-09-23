@@ -1,4 +1,7 @@
-<link rel="import" href="../pingo-abstract-section-behavior/pingo-abstract-section-behavior.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/x-json/src/x-json.html">
+<link rel="import" href="../../../bower_components/mat-raised-button/mat-raised-button.html">
+<link rel="import" href="./my-jsoneditor-item.html">
 
 <dom-module id="my-jsoneditor">
 
@@ -7,7 +10,16 @@
     </style>
     <template>
         <paper-material>
+            <h1 class="paper-font-display1"><span>{{jsonEditorData.schema.title}}</span></h1>
+            <template is="dom-repeat" items="{{_toArray(jsonEditorData.schema.properties)}}">
+                <my-jsoneditor-item item={{item}}></my-jsoneditor-item>
+            </template>
+
             <div id="editor_holder"></div>
+        </paper-material>
+        <mat-raised-button label="Click me!" on-click="handleClick"></mat-raised-button>
+        <paper-material elevation="1">
+            <x-json id="myjson" data={{jsonEditorData.value.schema.properties}}></x-json>
         </paper-material>
     </template>
     <script src="../../../bower_components/json-editor/dist/jsoneditor.js"></script>
@@ -15,43 +27,61 @@
         (function () {
             Polymer({
                 is: 'my-jsoneditor',
-                properties: {},
-                ready: function () {
-                    this._editor = new JSONEditor(this.$.editor_holder, {
-                        schema: {
-                            type: "object",
-                            title: "Plant",
-                            properties: {
-                                Name: {
-                                    type: "string",
-                                },
-                                ImageUrl: {
-                                    type: "string",
-                                },
-                                Height: {
-                                    type: "string",
-                                    enum: [
-                                            "4 - 6 inches",
-                                            "6 - 8 inches"
-                                          ]
-                                },
-                                HardinessZone: {
-                                    type: "string",
-                                    enum: [
-                                            "4 - 9",
-                                            "7 - 9"
-                                          ]
-                                },
-                                Class: {
-                                    type: "string",
-                                    enum: [
-                                            "Fruit Crops",
-                                            "Hardy Perennials"
-                                          ]
+                properties: {
+                    jsonEditorData: {
+                        type: Object,
+                        observer: '_jsonEditorDataChanged',
+                        value: {
+                            schema: {
+
+                                type: "object",
+                                title: "Plant",
+                                properties: {
+                                    Name: {
+                                        type: "string",
+                                        value: ""
+                                    },
+                                    ImageUrl: {
+                                        type: "string",
+                                        value: ""
+                                    },
+                                    Enabled: {
+                                        type: "boolean",
+                                        value: true
+                                    }
                                 }
                             }
                         }
+                    }
+
+                },
+                observers: ['_valueChanged(jsonEditorData.*)'],
+                _valueChanged: function (changeRecord) {
+                    console.log('changed: ' + changeRecord.path);
+                },
+                handleClick: function () {
+                    this.$.myjson.data = this.jsonEditorData.schema.properties;
+                },
+                _isSame: function (a, b) {
+                    return a === b
+                },
+                _toArray: function (obj) {
+                    return Object.keys(obj).map(function (key) {
+                        return {
+                            name: key,
+                            value: obj[key]
+                        };
                     });
+                },
+                _jsonEditorDataChanged: function (newValue, oldValue) {
+                    if (newValue !== null) {
+                        this.$.myjson.data = newValue;
+                    }
+                },
+                ready: function () {
+                    //  this.$.myjson.data = this.jsonEditorData;
+
+                    this._editor = new JSONEditor(this.$.editor_holder, this.jsonEditorData);
                     console.log("my-jsoneditor ready");
                 }
             });
