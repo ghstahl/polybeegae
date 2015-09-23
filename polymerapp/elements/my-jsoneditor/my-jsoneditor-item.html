@@ -19,7 +19,10 @@
 
         <template is="dom-if" if="{{_isSame(item.value.type,'boolean')}} ">
             <div class="line">
-                <paper-toggle-button checked={{item.value.value}}></paper-toggle-button><span>{{item.name}}</span><span>{{computeBooleanToString(item.value.value)}}</span></div>
+                <paper-toggle-button checked={{item.value.value}}></paper-toggle-button>
+                <span>{{item.name}}</span>
+                <span>{{computeBooleanToString(item.value.value)}}</span>
+            </div>
         </template>
 
 
@@ -31,12 +34,13 @@
                 properties: {
                     item: {
                         type: Object,
-                        notify: true
+                        notify: true,
+                        reflectToAttribute: true
                     }
                 },
                 observers: ['_valueChanged(item.*)'],
                 _valueChanged: function (changeRecord) {
-                    this.fire('itemChanged', {
+                    this.fire('item-dirty', {
                         path: changeRecord.path
                     });
                     console.log('changed: ' + changeRecord.path);
