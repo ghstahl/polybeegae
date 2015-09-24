@@ -11,10 +11,10 @@
     <template>
         <paper-material>
             <h1 class="paper-font-display1"><span>{{jsonEditorData.schema.title}}</span></h1>
-            <template is="dom-repeat" items="{{_toArray(jsonEditorData.schema.properties)}}">
-                <my-jsoneditor-item item={{item}}></my-jsoneditor-item>
+            <template id="_my_jsonEditor" is="dom-repeat" items="{{_toArray(jsonEditorData.schema.properties)}}">
+                <my-jsoneditor-item id={{item.value.id}} item={{item}}></my-jsoneditor-item>
             </template>
-            <mat-raised-button label="Click me!" on-click="handleClick"></mat-raised-button>
+            <mat-raised-button disabled={{_isClean}} label="Click me!" on-click="handleClick"></mat-raised-button>
         </paper-material>
 
         <paper-material elevation="1">
@@ -26,10 +26,23 @@
             Polymer({
                 is: 'my-jsoneditor',
                 properties: {
-                    _arrayData: {
-                        type: Array,
-                        observer: '_jsonEditorDataChanged',
+                    _isClean: {
+                        type: Boolean,
+                        readOnly: true,
+                        notify: true,
+                        value: true
                     },
+                    _dirtyCount: {
+                        type: Number,
+                        notify: false,
+                        readOnly: true,
+                        value: 0
+                    },
+                    _arrayData: {
+                        type: Array
+                    },
+
+
                     jsonEditorData: {
                         type: Object,
                         value: {
@@ -56,6 +69,33 @@
                     }
 
                 },
+                _dirtyEventEvaluator: function (e) {
+                    this._evaluateIsClean(e.detail.dirty);
+                    console.log("dirty count:" + this._dirtyCount)
+                    console.log("dirty _isClean:" + this._isClean)
+                },
+                _evaluateIsClean: function (dirty) {
+                    if (dirty) {
+                        this._incrementDirtyCount();
+                    } else {
+                        this._decrementDirtyCount();
+                    }
+
+                    if (this._dirtyCount > 0 && this._isClean) {
+                        this._set_isClean(false);
+                    }
+
+                    if (this._dirtyCount === 0 && !this._isClean) {
+                        this._set_isClean(true);
+                    }
+                },
+                _incrementDirtyCount: function () {
+                    this._set_dirtyCount(this._dirtyCount + 1);
+                },
+                _decrementDirtyCount: function () {
+                    this._set_dirtyCount(this._dirtyCount - 1);
+                },
+
                 observers: ['_valueChanged(_arrayData.*)'],
                 _valueChanged: function (changeRecord) {
                     console.log('_arrayData changed: ' + changeRecord.path);
@@ -65,20 +105,26 @@
                 },
 
                 _toArray: function (obj) {
+                    var index = 0;
                     var thisElement = this;
                     this._arrayData = Object.keys(obj).map(function (key) {
+                        var id = "item_" + index;
+                        ++index;
+                        var val = obj[key];
+                        val.id = id;
                         return {
                             name: key,
-                            value: obj[key]
+                            value: val
                         };
                     });
                     return this._arrayData;
                 },
 
-                _jsonEditorDataChanged: function (newValue, oldValue) {
-                    console.log('_jsonEditorDataChanged changed: ' + newValue);
-                },
+
                 ready: function () {
+                    var thisElement = this;
+                    this.addEventListener('item-dirty', this._dirtyEventEvaluator);
+
                     console.log("my-jsoneditor ready");
                 }
             });

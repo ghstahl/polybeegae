@@ -31,18 +31,65 @@
         (function () {
             Polymer({
                 is: 'my-jsoneditor-item',
+
+                // Properties
+                /////////////////////////////////////////////////////////
                 properties: {
                     item: {
                         type: Object,
-                        notify: true
+                        notify: true,
+                        observer: '_newItemObserved',
+                    },
+
+                    // Read-Only Properties
+                    /////////////////////////////////////////////////////////
+                    _item_immutable: {
+                        type: Object,
+                        readOnly: true
+                    },
+                    _item_dirty: {
+                        type: Boolean,
+                        readOnly: true,
+                        value: false
                     }
                 },
+                // Methods
+                /////////////////////////////////////////////////////////
+                _newItemObserved: function (newValue, oldValue) {
+                    if (oldValue === undefined) {
+                        // move out of item to working set.
+                        this._set_item_immutable(JSON.parse(JSON.stringify(newValue)));
+                        this._set_item_dirty(false);
+                    }
+                },
+                reset: function () {
+                    this.item = this._item_immutable;
+                },
+                // Observers
+                /////////////////////////////////////////////////////////
                 observers: ['_valueChanged(item.*)'],
+                // Smart check. only fire if we change state.
                 _valueChanged: function (changeRecord) {
-                    this.fire('item-dirty', {
-                        path: changeRecord.path
-                    });
-                    console.log('changed: ' + changeRecord.path);
+                    var thisElement = this;
+                    if (thisElement._isDirtyValidation() && this._item_dirty === false) {
+                        this._set_item_dirty(true);
+                        this.fire('item-dirty', {
+                            dirty: thisElement._item_dirty,
+                            source: thisElement
+                        });
+                    } else if (!thisElement._isDirtyValidation() && this._item_dirty === true) {
+                        this._set_item_dirty(false);
+                        this.fire('item-dirty', {
+                            dirty: thisElement._item_dirty,
+                            source: thisElement
+                        });
+                    }
+                },
+                // Utility Methods
+                /////////////////////////////////////////////////////////
+                _isDirtyValidation: function () {
+                    var dirty = this._item_immutable.value.value !== this.item.value.value;
+                    return dirty;
                 },
                 _isSame: function (a, b) {
                     return a === b
