@@ -80,6 +80,7 @@
                     this._set_immutableJsonEditorData(JSON.parse(JSON.stringify(newValue)));
                 },
                 _dirtyEventEvaluator: function (e) {
+                    e.stopImmediatePropagation();
                     this._dirtyItems[e.detail.source.id] = e.detail.dirty;
                     for (var dirtyItem in this._dirtyItems) {
                         console.log("dirty item:" + dirtyItem + ":" + this._dirtyItems[dirtyItem]);
