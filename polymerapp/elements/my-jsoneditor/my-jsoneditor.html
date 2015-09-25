@@ -15,6 +15,7 @@
                 <my-jsoneditor-item id={{item.value.id}} item={{item}}></my-jsoneditor-item>
             </template>
             <mat-raised-button disabled={{_isClean}} label="Click me!" on-click="handleClick"></mat-raised-button>
+            <mat-raised-button disabled={{_isClean}} label="Reset!" on-click="handleResetClick"></mat-raised-button>
         </paper-material>
 
         <paper-material elevation="1">
@@ -43,8 +44,13 @@
                     },
 
 
+                    _immutableJsonEditorData: {
+                        type: Object,
+                        readOnly: true
+                    },
                     jsonEditorData: {
                         type: Object,
+                        observer: '_newItemObserved',
                         value: {
                             schema: {
 
@@ -68,6 +74,11 @@
                         }
                     }
 
+                },
+                // Methods
+                /////////////////////////////////////////////////////////
+                _newItemObserved: function (newValue, oldValue) {
+                    this._set_immutableJsonEditorData(JSON.parse(JSON.stringify(newValue)));
                 },
                 _dirtyEventEvaluator: function (e) {
                     this._evaluateIsClean(e.detail.dirty);
@@ -103,7 +114,11 @@
                 handleClick: function () {
                     this.$.myjson.data = this._arrayData;
                 },
-
+                handleResetClick: function () {
+                    this._set_isClean(true);
+                    this._set_dirtyCount(0);
+                    this.jsonEditorData = this._immutableJsonEditorData;
+                },
                 _toArray: function (obj) {
                     var index = 0;
                     var thisElement = this;
