@@ -9,6 +9,7 @@
 
     </style>
     <template>
+        <app-globals id="appGlobals"></app-globals>
         <paper-material>
             <h1 class="paper-font-display1"><span>{{jsonEditorData.schema.title}}</span></h1>
             <template id="_my_jsonEditor" is="dom-repeat" items="{{_toArray(jsonEditorData.schema.properties)}}">
@@ -133,6 +134,7 @@
                 ready: function () {
                     var thisElement = this;
                     this.addEventListener('item-dirty', this._dirtyEventEvaluator);
+                    var data = this.$.appGlobals.data;
 
                     console.log("my-jsoneditor ready");
                 }
