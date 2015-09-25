@@ -33,14 +33,13 @@
                         notify: true,
                         value: true
                     },
-                    _dirtyCount: {
-                        type: Number,
-                        notify: false,
-                        readOnly: true,
-                        value: 0
-                    },
                     _arrayData: {
                         type: Array
+                    },
+                    _dirtyItems: {
+                        type: Object,
+                        notify: false,
+                        value: {}
                     },
 
 
@@ -81,30 +80,24 @@
                     this._set_immutableJsonEditorData(JSON.parse(JSON.stringify(newValue)));
                 },
                 _dirtyEventEvaluator: function (e) {
-                    this._evaluateIsClean(e.detail.dirty);
+                    this._dirtyItems[e.detail.source.id] = e.detail.dirty;
+                    for (var dirtyItem in this._dirtyItems) {
+                        console.log("dirty item:" + dirtyItem + ":" + this._dirtyItems[dirtyItem]);
+                    }
+
+                    this._evaluateIsClean();
                     console.log("dirty count:" + this._dirtyCount)
                     console.log("dirty _isClean:" + this._isClean)
                 },
-                _evaluateIsClean: function (dirty) {
-                    if (dirty) {
-                        this._incrementDirtyCount();
-                    } else {
-                        this._decrementDirtyCount();
+                _evaluateIsClean: function () {
+                    var dirty = false;
+                    for (var dirtyItem in this._dirtyItems) {
+                        if (this._dirtyItems[dirtyItem]) {
+                            dirty = true;
+                            break;
+                        }
                     }
-
-                    if (this._dirtyCount > 0 && this._isClean) {
-                        this._set_isClean(false);
-                    }
-
-                    if (this._dirtyCount === 0 && !this._isClean) {
-                        this._set_isClean(true);
-                    }
-                },
-                _incrementDirtyCount: function () {
-                    this._set_dirtyCount(this._dirtyCount + 1);
-                },
-                _decrementDirtyCount: function () {
-                    this._set_dirtyCount(this._dirtyCount - 1);
+                    this._set_isClean(!dirty);
                 },
 
                 observers: ['_valueChanged(_arrayData.*)'],
@@ -115,9 +108,9 @@
                     this.$.myjson.data = this._arrayData;
                 },
                 handleResetClick: function () {
+                    this._dirtyItems = {};
                     this._set_isClean(true);
-                    this._set_dirtyCount(0);
-                    this.jsonEditorData = this._immutableJsonEditorData;
+                    this.set('jsonEditorData', this._immutableJsonEditorData);
                 },
                 _toArray: function (obj) {
                     var index = 0;
