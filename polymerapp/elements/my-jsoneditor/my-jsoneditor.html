@@ -1,19 +1,31 @@
 <link rel="import" href="../../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../../bower_components/x-json/src/x-json.html">
 <link rel="import" href="../../../bower_components/mat-raised-button/mat-raised-button.html">
+<link rel="import" href="../../../bower_components/mat-toast/mat-toast.html">
+
 <link rel="import" href="./my-jsoneditor-item.html">
 
 <dom-module id="my-jsoneditor">
 
     <style>
-
+        mat-toast {
+            background-color: #ff7043;
+            color: #4d2214;
+        }
+        
+        #toastd1 {
+            background-color: red
+        }
     </style>
     <template>
         <paper-material>
+            <mat-toast id="toast1" label="Invalid Data..."></mat-toast>
             <h1 class="paper-font-display1"><span>{{jsonEditorData.schema.title}}</span></h1>
-            <template id="_my_jsonEditor" is="dom-repeat" items="{{_toArray(jsonEditorData.schema.properties)}}">
-                <my-jsoneditor-item id={{item.value.id}} item={{item}} paper-element-templates={{paperElementTemplates}}></my-jsoneditor-item>
-            </template>
+            <div id="_my_jsonEditor">
+                <template is="dom-repeat" items="{{_toArray(jsonEditorData.schema.properties)}}">
+                    <my-jsoneditor-item id={{item.value.id}} item={{item}} paper-element-templates={{paperElementTemplates}}></my-jsoneditor-item>
+                </template>
+            </div>
             <mat-raised-button disabled={{_isClean}} label="Click me!" on-click="handleClick"></mat-raised-button>
             <mat-raised-button disabled={{_isClean}} label="Reset!" on-click="handleResetClick"></mat-raised-button>
         </paper-material>
@@ -62,16 +74,20 @@
                                     Name: {
                                         template: "template1",
                                         type: "string",
-                                        value: ""
+                                        value: "",
+                                        required: true
+
                                     },
                                     ImageUrl: {
                                         template: "template1",
                                         type: "string",
-                                        value: ""
+                                        value: "",
+                                        required: true
                                     },
                                     Enabled: {
                                         type: "boolean",
-                                        value: true
+                                        value: true,
+                                        required: true
                                     }
                                 }
                             }
@@ -111,6 +127,10 @@
                     console.log('_arrayData changed: ' + changeRecord.path);
                 },
                 handleClick: function () {
+                    var valid = this.validate();
+                    if (!valid) {
+                        this.$.toast1.show();
+                    }
                     this.$.myjson.data = this._arrayData;
                 },
                 handleResetClick: function () {
@@ -133,7 +153,24 @@
                     });
                     return this._arrayData;
                 },
-
+                /**
+                 * Validates the input element and sets an error style if needed.
+                 *
+                 * @return {boolean}
+                 */
+                validate: function () {
+                    var valid = true;
+                    var rootElement = this.$._my_jsonEditor;
+                    var editorItems = rootElement.getElementsByTagName('my-jsoneditor-item');
+                    if (editorItems) {
+                        for (var i = 0, length = editorItems.length; i < length; i++) {
+                            var item = editorItems[i];
+                            if (item.validate() === false)
+                                valid = false;
+                        }
+                    }
+                    return valid;
+                },
 
                 ready: function () {
                     var thisElement = this;

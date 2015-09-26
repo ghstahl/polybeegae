@@ -3,7 +3,7 @@
         "paperElementTemplates": {
             "paperInput": {
                 "template1": {
-                    "allowedPattern": "a"
+                    "allowedPattern": "[a-zA-Z]"
                 }
             }
         }

@@ -13,11 +13,11 @@
     </style>
     <template>
 
-        <template is="dom-if" if="{{_isSame(item.value.type,'string')}} ">
-            <paper-input label={{item.name}} value={{item.value.value}} allowed-pattern={{computeAllowedPattern(item.value)}}></paper-input>
+        <template is="dom-if" if="{{_isSame(item.value.type,'string')}}">
+            <paper-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} allowed-pattern={{computeAllowedPattern(item.value)}} required={{item.value.required}} prevent-invalid-input auto-validate error-message="Invalid input!" placeholder="{{placeholder}}"></paper-input>
         </template>
 
-        <template is="dom-if" if="{{_isSame(item.value.type,'boolean')}} ">
+        <template is="dom-if" if="{{_isSame(item.value.type,'boolean')}}">
             <div class="line">
                 <paper-toggle-button checked={{item.value.value}}></paper-toggle-button>
                 <span>{{item.name}}</span>
@@ -60,16 +60,46 @@
                     readonly: {
                         type: Boolean,
                         value: true
+                    },
+                    placeholder: {
+                        type: String,
+                        notify: true
+                    },
+                    required: {
+                        type: Boolean,
+                        notify: true,
+                        value: false
                     }
                 },
                 // Methods
                 /////////////////////////////////////////////////////////
-                _newItemObserved: function (newValue, oldValue) {
-                    if (oldValue === undefined) {
-                        // move out of item to working set.
-                        this._set_item_immutable(JSON.parse(JSON.stringify(newValue)));
-                        this._set_item_dirty(false);
+                /**
+                 * Validates the input element and sets an error style if needed.
+                 *
+                 * @return {boolean}
+                 */
+                validate: function () {
+                    switch (this.item.value.type) {
+                    case "string":
+                        // need to get the element by $$ because it is dynamicaly added so no hash
+                        //https://www.polymer-project.org/1.0/docs/devguide/local-dom.html
+                        var id = "#" + this.computedId(this.item);
+                        var el = this.$$(id);
+                        return el.validate();
+                        break;
+                    default:
+                        return true;
                     }
+                },
+                computedId: function (item) {
+                    return "_id" + item.name;
+                },
+                _newItemObserved: function (newValue, oldValue) {
+                    // move out of item to working set.
+                    this._set_item_immutable(JSON.parse(JSON.stringify(newValue)));
+                    this._set_item_dirty(false);
+                    this.placeholder = this.item.value.required ? "required" : null;
+                    this.required = this.item.value.required;
                 },
                 reset: function () {
                     this.item = this._item_immutable;
