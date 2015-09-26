@@ -14,7 +14,7 @@
     <template>
 
         <template is="dom-if" if="{{_isSame(item.value.type,'string')}} ">
-            <paper-input label={{item.name}} value={{item.value.value}}></paper-input>
+            <paper-input label={{item.name}} value={{item.value.value}} allowed-pattern={{computeAllowedPattern(item.value)}}></paper-input>
         </template>
 
         <template is="dom-if" if="{{_isSame(item.value.type,'boolean')}} ">
@@ -47,10 +47,19 @@
                         type: Object,
                         readOnly: true
                     },
+                    paperElementTemplates: {
+                        type: Object,
+                        notify: true
+
+                    },
                     _item_dirty: {
                         type: Boolean,
                         readOnly: true,
                         value: false
+                    },
+                    readonly: {
+                        type: Boolean,
+                        value: true
                     }
                 },
                 // Methods
@@ -97,7 +106,10 @@
                 computeBooleanToString: function (a) {
                     return a === true ? 'true' : 'false';
                 },
-
+                computeAllowedPattern: function (a) {
+                    var allowed = this.paperElementTemplates.paperInput[a.template].allowedPattern
+                    return allowed;
+                },
                 ready: function () {
                     console.log("my-jsoneditor-item ready");
                 }

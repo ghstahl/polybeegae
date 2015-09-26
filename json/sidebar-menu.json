@@ -1,5 +1,13 @@
 {
-    "app_config": {},
+    "app_config": {
+        "paperElementTemplates": {
+            "paperInput": {
+                "template1": {
+                    "allowedPattern": "a"
+                }
+            }
+        }
+    },
     "page_routes": [
         {
             "route": "/markdown/*",

@@ -9,11 +9,10 @@
 
     </style>
     <template>
-        <app-globals id="appGlobals"></app-globals>
         <paper-material>
             <h1 class="paper-font-display1"><span>{{jsonEditorData.schema.title}}</span></h1>
             <template id="_my_jsonEditor" is="dom-repeat" items="{{_toArray(jsonEditorData.schema.properties)}}">
-                <my-jsoneditor-item id={{item.value.id}} item={{item}}></my-jsoneditor-item>
+                <my-jsoneditor-item id={{item.value.id}} item={{item}} paper-element-templates={{paperElementTemplates}}></my-jsoneditor-item>
             </template>
             <mat-raised-button disabled={{_isClean}} label="Click me!" on-click="handleClick"></mat-raised-button>
             <mat-raised-button disabled={{_isClean}} label="Reset!" on-click="handleResetClick"></mat-raised-button>
@@ -27,6 +26,7 @@
         (function () {
             Polymer({
                 is: 'my-jsoneditor',
+                behaviors: [GlobalDataBehavior],
                 properties: {
                     _isClean: {
                         type: Boolean,
@@ -42,8 +42,10 @@
                         notify: false,
                         value: {}
                     },
-
-
+                    paperElementTemplates: {
+                        type: Object,
+                        notify: true
+                    },
                     _immutableJsonEditorData: {
                         type: Object,
                         readOnly: true
@@ -58,10 +60,12 @@
                                 title: "Plant",
                                 properties: {
                                     Name: {
+                                        template: "template1",
                                         type: "string",
                                         value: ""
                                     },
                                     ImageUrl: {
+                                        template: "template1",
                                         type: "string",
                                         value: ""
                                     },
@@ -134,7 +138,7 @@
                 ready: function () {
                     var thisElement = this;
                     this.addEventListener('item-dirty', this._dirtyEventEvaluator);
-                    var data = this.$.appGlobals.data;
+                    this.paperElementTemplates = this.globals.data.app_config.paperElementTemplates;
 
                     console.log("my-jsoneditor ready");
                 }
