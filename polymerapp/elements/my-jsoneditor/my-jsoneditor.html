@@ -131,12 +131,23 @@
                     if (!valid) {
                         this.$.toast1.show();
                     }
-                    this.$.myjson.data = this._arrayData;
+                    this.$.myjson.data = this._toPostData(this._arrayData);
                 },
                 handleResetClick: function () {
                     this._dirtyItems = {};
                     this._set_isClean(true);
                     this.set('jsonEditorData', this._immutableJsonEditorData);
+                },
+                _toPostData: function (obj) {
+
+                    var rv = {};
+                    for (var i = 0; i < obj.length; ++i) {
+                        if (obj[i] !== undefined)
+                            rv[obj[i].name] = obj[i].value.value;
+                    }
+                    return rv;
+
+
                 },
                 _toArray: function (obj) {
                     var index = 0;
