@@ -2,6 +2,7 @@
 <link rel="import" href="../../../bower_components/x-json/src/x-json.html">
 <link rel="import" href="../../../bower_components/mat-raised-button/mat-raised-button.html">
 <link rel="import" href="../../../bower_components/mat-toast/mat-toast.html">
+<link rel="import" href="../../../bower_components/marked-element/marked-element.html">
 
 <link rel="import" href="./my-jsoneditor-item.html">
 
@@ -20,7 +21,15 @@
     <template>
         <paper-material>
             <mat-toast id="toast1" label="Invalid Data..."></mat-toast>
-            <h1 class="paper-font-display1"><span>{{jsonEditorData.schema.title}}</span></h1>
+            <template is="dom-if" if="{{_stringExists(jsonEditorData.schema.title)}}">
+                <h1 class="paper-font-display1"><span>{{jsonEditorData.schema.title}}</span></h1>
+            </template>
+            <template is="dom-if" if="{{_stringExists(jsonEditorData.schema.mdDescription)}}">
+                <marked-element id="content" markdown={{jsonEditorData.schema.mdDescription}}></marked-element>
+
+            </template>
+
+
             <div id="_my_jsonEditor">
                 <template is="dom-repeat" items="{{_toArray(jsonEditorData.schema.properties)}}">
                     <my-jsoneditor-item id={{item.value.id}} item={{item}} paper-element-templates={{paperElementTemplates}}></my-jsoneditor-item>
@@ -69,7 +78,8 @@
                             schema: {
 
                                 type: "object",
-                                title: "Plant",
+                                title: "",
+                                mdDescription: "### Question  \nCan you name the countries on which the United States of America has declared war pursuant to the US Constitution?",
                                 properties: {
                                     Name: {
                                         template: "template1",
@@ -88,6 +98,16 @@
                                         type: "boolean",
                                         value: true,
                                         required: true
+                                    },
+                                    RadioGaGa: {
+                                        type: "radio",
+                                        value: "small",
+                                        required: true,
+                                        radioGroup: {
+                                            small: "I am small",
+                                            medium: "I am medium",
+                                            large: "I am large",
+                                        }
                                     }
                                 }
                             }
@@ -97,6 +117,9 @@
                 },
                 // Methods
                 /////////////////////////////////////////////////////////
+                _stringExists: function (val) {
+                    return !S(val).isEmpty();
+                },
                 _newItemObserved: function (newValue, oldValue) {
                     this._set_immutableJsonEditorData(JSON.parse(JSON.stringify(newValue)));
                 },

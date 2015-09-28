@@ -1,0 +1,55 @@
+<link rel="import" href="../../../bower_components/paper-item/all-imports.html">
+<link rel="import" href="../../../bower_components/mat-divider/mat-divider.html">
+
+<dom-module id="pingo-group">
+    <style>
+        .group {}
+        
+        .indent {
+            margin-left: 24px;
+        }
+        
+        paper-item {
+            padding-left: 0px;
+        }
+    </style>
+    <template>
+        <paper-item>
+            <paper-item-body one-line>
+                <div>{{title}}</div>
+                <mat-divider></mat-divider>
+            </paper-item-body>
+        </paper-item>
+        <div class$={{_computeContentBoxClass(indent)}}>
+            <content></content>
+        </div>
+    </template>
+
+    <script>
+        (function () {
+            Polymer({
+                is: 'pingo-group',
+
+                properties: {
+                    title: {
+                        type: String,
+                        notify: true
+                    },
+                    indent: {
+                        type: Boolean,
+                        notify: true,
+                        value: false
+                    }
+                },
+                _computeContentBoxClass: function (indent) {
+                    var cls = 'group';
+                    if (indent) {
+                        cls += ' indent';
+                    }
+                    return cls;
+                }
+            });
+        })();
+    </script>
+
+</dom-module>

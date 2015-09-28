@@ -25,6 +25,7 @@
     "mat-elements": "expandjs/mat-elements#~0.9.8",
     "page": "~1.6.3",
     "paper-button": "polymerelements/paper-button#~1.0.3",
+    "paper-card": "polymerelements/paper-card#~1.0.5",
     "paper-drawer-panel": "polymerelements/paper-drawer-panel#~1.0.3",
     "paper-header-panel": "polymerelements/paper-header-panel#~1.0.5",
     "paper-icon-button": "polymerelements/paper-icon-button#~1.0.3",
@@ -32,6 +33,8 @@
     "paper-item": "polymerelements/paper-item#~1.0.2",
     "paper-material": "polymerelements/paper-material#~1.0.2",
     "paper-menu": "polymerelements/paper-menu#~1.1.0",
+    "paper-radio-button": "polymerelements/paper-radio-button#~1.0.8",
+    "paper-radio-group": "polymerelements/paper-radio-group#~1.0.4",
     "paper-scroll-header-panel": "polymerelements/paper-scroll-header-panel#~1.0.8",
     "paper-toast": "polymerelements/paper-toast#~1.0.0",
     "paper-toggle-button": "polymerelements/paper-toggle-button#~1.0.8",
@@ -42,6 +45,7 @@
     "pingo-sidebar": "ghstahl/pingo-sidebar",
     "polymer": "Polymer/polymer#~1.1.2",
     "polymer-themes": "~1.0.1",
+    "string": "~3.3.0",
     "x-json": "~0.2.3",
     "xp-elements": "expandjs/xp-elements#~0.9.8"
   }
