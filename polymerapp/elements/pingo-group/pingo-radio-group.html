@@ -1,0 +1,71 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-input/iron-input.html">
+<link rel="import" href="pingo-radio-group-validator.html">
+<link rel="import" href="../../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../../bower_components/paper-radio-button/paper-radio-button.html">
+
+<dom-module id="pingo-radio-group">
+    <style>
+        :host {
+            display: block;
+        }
+    </style>
+
+    <template>
+        <pingo-radio-group-validator value={{value}}></pingo-radio-group-validator>
+
+        <paper-radio-group selected={{value}}>
+            <template is="dom-repeat" items="{{_toArray(radioItems)}}" as="radioItem">
+                <paper-radio-button name={{radioItem.name}}>{{radioItem.value}}</paper-radio-button>
+            </template>
+        </paper-radio-group>
+
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'pingo-radio-group',
+
+        behaviors: [Polymer.IronValidatableBehavior],
+
+        properties: {
+            value: {
+                notify: true,
+                type: String
+            },
+            radioValue: {
+                notify: true,
+                type: String
+            },
+            radioItems: {
+                type: Object,
+                notify: true
+            },
+
+            validator: {
+                type: String,
+                value: 'pingo-radio-group-validator'
+            }
+        },
+        observers: ['_computeValue(value)'],
+        _computeValue: function (value) {
+            this.radioValue = value;
+        },
+        _toArray: function (obj) {
+            var index = 0;
+            var thisElement = this;
+            this._arrayData = Object.keys(obj).map(function (key) {
+                var id = "item_" + index;
+                ++index;
+                var val = obj[key];
+                val.id = id;
+                return {
+                    name: key,
+                    value: val
+                };
+            });
+            return this._arrayData;
+        }
+    });
+</script>

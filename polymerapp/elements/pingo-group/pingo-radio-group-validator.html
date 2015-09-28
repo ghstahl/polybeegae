@@ -1,0 +1,19 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-validator-behavior/iron-validator-behavior.html">
+
+<script>
+    Polymer({
+        is: 'pingo-radio-group-validator',
+
+        behaviors: [Polymer.IronValidatorBehavior],
+        properties: {
+            value: {
+                notify: true,
+                type: String
+            }
+        },
+        validate: function (value) {
+            return !S(this.value).isEmpty();
+        }
+    });
+</script>

@@ -1,9 +1,14 @@
 <link rel="import" href="../../../bower_components/paper-item/all-imports.html">
 <link rel="import" href="../../../bower_components/mat-divider/mat-divider.html">
+<link rel="import" href="../../../bower_components/mat-label/mat-label.html">
 
+
+<link rel="import" href="../../../bower_components/paper-styles/paper-styles.html">
 <dom-module id="pingo-group">
     <style>
-        .group {}
+        .group {
+            margin-top: 24px;
+        }
         
         .indent {
             margin-left: 24px;
@@ -12,14 +17,56 @@
         paper-item {
             padding-left: 0px;
         }
+        
+        .underline {
+            position: relative;
+        }
+        
+        .focused-line {
+            height: 2px;
+            -webkit-transform-origin: center center;
+            transform-origin: center center;
+            -webkit-transform: scale3d(0, 1, 1);
+            transform: scale3d(0, 1, 1);
+            background: var(--paper-input-container-focus-color, --default-primary-color);
+            @apply(--paper-input-container-underline-focus);
+        }
+        
+        .underline.is-highlighted .focused-line {
+            -webkit-transform: none;
+            transform: none;
+            -webkit-transition: -webkit-transform 0.25s;
+            transition: transform 0.25s;
+            @apply(--paper-transition-easing);
+        }
+        
+        .underline.is-invalid .focused-line {
+            background: var(--paper-input-container-invalid-color, --google-red-500);
+            -webkit-transform: none;
+            transform: none;
+            -webkit-transition: -webkit-transform 0.25s;
+            transition: transform 0.25s;
+            @apply(--paper-transition-easing);
+        }
+        
+        .unfocused-line {
+            height: 1px;
+            background: var(--paper-input-container-color, --secondary-text-color);
+            @apply(--paper-input-container-underline);
+        }
+        
+        :host([disabled]) .unfocused-line {
+            border-bottom: 1px dashed;
+            border-color: var(--paper-input-container-color, --secondary-text-color);
+            background: transparent;
+            @apply(--paper-input-container-underline-disabled);
+        }
     </style>
     <template>
-        <paper-item>
-            <paper-item-body one-line>
-                <div>{{title}}</div>
-                <mat-divider></mat-divider>
-            </paper-item-body>
-        </paper-item>
+
+        <label class="paper-input">{{title}}</label>
+
+
         <div class$={{_computeContentBoxClass(indent)}}>
             <content></content>
         </div>
@@ -39,12 +86,40 @@
                         type: Boolean,
                         notify: true,
                         value: false
+                    },
+                    /**
+                     * True if the input is invalid. This property is set automatically when the input value
+                     * changes if auto-validating, or when the `iron-input-valid` event is heard from a child.
+                     */
+                    invalid: {
+                        observer: '_invalidChanged',
+                        type: Boolean,
+                        value: false
+                    },
+
+                    /**
+                     * True if the input has focus.
+                     */
+                    focused: {
+                        readOnly: true,
+                        type: Boolean,
+                        value: false,
+                        notify: true
                     }
                 },
                 _computeContentBoxClass: function (indent) {
                     var cls = 'group';
                     if (indent) {
                         cls += ' indent';
+                    }
+                    return cls;
+                },
+                _computeUnderlineClass: function (focused, invalid) {
+                    var cls = 'underline';
+                    if (invalid) {
+                        cls += ' is-invalid';
+                    } else if (focused) {
+                        cls += ' is-highlighted'
                     }
                     return cls;
                 }
