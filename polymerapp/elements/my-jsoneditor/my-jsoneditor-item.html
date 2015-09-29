@@ -1,15 +1,8 @@
 <link rel="import" href="../../../bower_components/paper-toggle-button/paper-toggle-button.html">
-<link rel="import" href="../../../bower_components/paper-radio-button/paper-radio-button.html">
-<link rel="import" href="../../../bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../../../bower_components/paper-input/all-imports.html">
 <link rel="import" href="../../../bower_components/paper-item/all-imports.html">
-<link rel="import" href="../../../bower_components/mat-divider/mat-divider.html">
 
-<link rel="import" href="../pingo-group/pingo-group.html">
-
-<link rel="import" href="../pingo-group/pingo-radio-group.html">
-
-
+<link rel="import" href="../pingo-group/pingo-radio-input.html">
 
 
 <dom-module id="my-jsoneditor-item">
@@ -21,10 +14,6 @@
         
         .line span {
             margin-left: 24px;
-        }
-        
-        paper-radio-button {
-            display: block;
         }
         
         .radioGroup {
@@ -52,14 +41,7 @@
             -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.type,'radio')}}">
 
-            <paper-input-container always-float-label auto-validate attr-for-value="radio-value" invalid="[[invalidRadio]]">
-                <label>Social Security Number</label>
-                <pingo-radio-group class="paper-input-input" id="{{computedId(item)}}" value={{item.value.value}} radio-items={{item.value.radioGroup}} invalid="{{invalidRadio}}"></pingo-radio-group>
-                <paper-input-error>SSN invalid!</paper-input-error>
-
-
-
-            </paper-input-container>
+            <pingo-radio-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} radio-items={{item.value.radioGroup}}></pingo-radio-input>
 
 
         </template>
@@ -85,33 +67,29 @@
                         type: Object,
                         readOnly: true
                     },
+
                     paperElementTemplates: {
                         type: Object,
                         notify: true
 
                     },
+
                     _item_dirty: {
                         type: Boolean,
                         readOnly: true,
                         value: false
                     },
+
                     readonly: {
                         type: Boolean,
                         value: true
                     },
+
                     placeholder: {
                         type: String,
                         notify: true
                     },
-                    /**
-                     * Returns true if the value is invalid. Bind this to both the `<paper-input-container>`'s
-                     * and the input's `invalid` property.
-                     */
-                    invalidRadio: {
-                        type: Boolean,
-                        value: false,
-                        notify: true
-                    },
+
                     required: {
                         type: Boolean,
                         notify: true,
@@ -205,15 +183,6 @@
                         };
                     });
                     return this._arrayData;
-                },
-                _computeUnderlineClass: function (focused, invalid) {
-                    var cls = 'underline';
-                    if (invalid) {
-                        cls += ' is-invalid';
-                    } else if (focused) {
-                        cls += ' is-highlighted'
-                    }
-                    return cls;
                 },
                 ready: function () {
                     console.log("my-jsoneditor-item ready");

@@ -9,6 +9,10 @@
         :host {
             display: block;
         }
+        
+        paper-radio-button {
+            display: block;
+        }
     </style>
 
     <template>
@@ -34,10 +38,6 @@
                 notify: true,
                 type: String
             },
-            radioValue: {
-                notify: true,
-                type: String
-            },
             radioItems: {
                 type: Object,
                 notify: true
@@ -56,10 +56,7 @@
                 value: 'pingo-radio-group-validator'
             }
         },
-        observers: ['_computeValue(value)'],
-        _computeValue: function (value) {
-            this.radioValue = value;
-        },
+
         _toArray: function (obj) {
             var index = 0;
             var thisElement = this;

@@ -1,0 +1,62 @@
+<link rel="import" href="pingo-radio-group.html">
+<link rel="import" href="../../../bower_components/paper-input/all-imports.html">
+<dom-module id="pingo-radio-input">
+    <style>
+
+    </style>
+    <template>
+
+        <paper-input-container always-float-label auto-validate attr-for-value="value" invalid="[[_invalid]]">
+            <label>{{label}}</label>
+            <pingo-radio-group class="paper-input-input" id="_radioGroup" value={{value}} radio-items={{radioItems}} invalid="{{_invalid}}"></pingo-radio-group>
+            <paper-input-error>invalid input!</paper-input-error>
+        </paper-input-container>
+    </template>
+
+    <script>
+        (function () {
+            Polymer({
+                is: 'pingo-radio-input',
+                properties: {
+
+                    label: {
+                        type: String,
+                        notify: true
+                    },
+
+
+                    value: {
+                        type: String,
+                        notify: true
+                    },
+
+                    radioItems: {
+                        type: Object,
+                        notify: true
+                    },
+
+                    /**
+                     * Returns true if the value is invalid. Bind this to both the `<paper-input-container>`'s
+                     * and the input's `invalid` property.
+                     */
+                    _invalid: {
+                        type: Boolean,
+                        value: false,
+                        notify: true
+                    }
+                },
+                // Methods
+                /////////////////////////////////////////////////////////
+                /**
+                 * Validates the input element and sets an error style if needed.
+                 *
+                 * @return {boolean}
+                 */
+                validate: function () {
+                    return this.$._radioGroup.validate();
+                }
+            });
+        })();
+    </script>
+
+</dom-module>
