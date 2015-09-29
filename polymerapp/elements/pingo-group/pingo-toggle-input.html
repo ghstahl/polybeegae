@@ -1,0 +1,56 @@
+<link rel="import" href="pingo-toggle-group.html">
+<dom-module id="pingo-toggle-input">
+    <style>
+
+    </style>
+    <template>
+
+        <paper-input-container always-float-label auto-validate attr-for-value="value" invalid="[[_invalid]]">
+            <label>{{label}}</label>
+            <pingo-toggle-group class="paper-input-input" id="_group" value={{value}} invalid="{{_invalid}}"></pingo-toggle-group>
+            <paper-input-error>invalid input!</paper-input-error>
+        </paper-input-container>
+    </template>
+
+    <script>
+        (function () {
+            Polymer({
+                is: 'pingo-toggle-input',
+                properties: {
+
+                    label: {
+                        type: String,
+                        notify: true
+                    },
+
+
+                    value: {
+                        type: Object,
+                        notify: true
+                    },
+
+                    /**
+                     * Returns true if the value is invalid. Bind this to both the `<paper-input-container>`'s
+                     * and the input's `invalid` property.
+                     */
+                    _invalid: {
+                        type: Boolean,
+                        value: false,
+                        notify: true
+                    }
+                },
+                // Methods
+                /////////////////////////////////////////////////////////
+                /**
+                 * Validates the input element and sets an error style if needed.
+                 *
+                 * @return {boolean}
+                 */
+                validate: function () {
+                    return this.$._group.validate();
+                }
+            });
+        })();
+    </script>
+
+</dom-module>

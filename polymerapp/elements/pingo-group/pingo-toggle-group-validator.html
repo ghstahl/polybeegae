@@ -1,0 +1,28 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-validator-behavior/iron-validator-behavior.html">
+
+<script>
+    Polymer({
+        is: 'pingo-toggle-group-validator',
+
+        behaviors: [Polymer.IronValidatorBehavior],
+        properties: {
+            value: {
+                type: Object
+            },
+            /**
+             * Returns true if the value is invalid. Bind this to both the `<paper-input-container>`'s
+             * and the input's `invalid` property.
+             */
+            invalid: {
+                type: Boolean,
+                value: false,
+                notify: true
+            }
+        },
+        validate: function (value) {
+            this.inValid = false;
+            return true;
+        }
+    });
+</script>

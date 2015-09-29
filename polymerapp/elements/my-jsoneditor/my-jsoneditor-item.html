@@ -3,7 +3,7 @@
 <link rel="import" href="../../../bower_components/paper-item/all-imports.html">
 
 <link rel="import" href="../pingo-group/pingo-radio-input.html">
-
+<link rel="import" href="../pingo-group/pingo-toggle-input.html">
 
 <dom-module id="my-jsoneditor-item">
 
@@ -27,8 +27,9 @@
         <template is="dom-if" if="{{_isSame(item.value.type,'string')}}">
             <paper-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} allowed-pattern={{computeAllowedPattern(item.value)}} required={{item.value.required}} prevent-invalid-input auto-validate error-message="Invalid input!" placeholder="{{placeholder}}"></paper-input>
         </template>
-        <!----------------------------------------------------------------- BOOLEAN Input
-            -------------------------------------------------------------------->
+        <!----------------------------------------------------------------- 
+                BOOLEAN Input
+        -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.type,'boolean')}}">
             <div class="line">
                 <paper-toggle-button checked={{item.value.value}}></paper-toggle-button>
@@ -38,12 +39,15 @@
         </template>
         <!-----------------------------------------------------------------
                 RADIO GROUP Input
-            -------------------------------------------------------------------->
+        -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.type,'radio')}}">
-
             <pingo-radio-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} radio-items={{item.value.radioGroup}}></pingo-radio-input>
-
-
+        </template>
+        <!-----------------------------------------------------------------
+                Toggle GROUP Input
+            -------------------------------------------------------------------->
+        <template is="dom-if" if="{{_isSame(item.value.type,'toggleGroup')}}">
+            <pingo-toggle-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}}></pingo-toggle-input>
         </template>
 
     </template>
@@ -108,6 +112,7 @@
                     switch (this.item.value.type) {
                     case "string":
                     case "radio":
+                    case "toggleGroup":
                         // need to get the element by $$ because it is dynamicaly added so no hash
                         //https://www.polymer-project.org/1.0/docs/devguide/local-dom.html
                         var id = "#" + this.computedId(this.item);
