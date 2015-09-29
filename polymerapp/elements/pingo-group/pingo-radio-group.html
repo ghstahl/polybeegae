@@ -12,7 +12,7 @@
     </style>
 
     <template>
-        <pingo-radio-group-validator value={{value}}></pingo-radio-group-validator>
+        <pingo-radio-group-validator value={{value}} invalid={{invalid}}></pingo-radio-group-validator>
 
         <paper-radio-group selected={{value}}>
             <template is="dom-repeat" items="{{_toArray(radioItems)}}" as="radioItem">
@@ -42,7 +42,15 @@
                 type: Object,
                 notify: true
             },
-
+            /**
+             * Returns true if the value is invalid. Bind this to both the `<paper-input-container>`'s
+             * and the input's `invalid` property.
+             */
+            invalid: {
+                type: Boolean,
+                value: false,
+                notify: true
+            },
             validator: {
                 type: String,
                 value: 'pingo-radio-group-validator'

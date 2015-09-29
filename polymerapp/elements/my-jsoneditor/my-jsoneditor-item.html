@@ -51,9 +51,10 @@
                 RADIO GROUP Input
             -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.type,'radio')}}">
-            <paper-input-container always-float-label auto-validate attr-for-value="radio-value">
+
+            <paper-input-container always-float-label auto-validate attr-for-value="radio-value" invalid="[[invalidRadio]]">
                 <label>Social Security Number</label>
-                <pingo-radio-group class="paper-input-input" id="{{computedId(item)}}" value={{item.value.value}} radio-items={{item.value.radioGroup}}></pingo-radio-group>
+                <pingo-radio-group class="paper-input-input" id="{{computedId(item)}}" value={{item.value.value}} radio-items={{item.value.radioGroup}} invalid="{{invalidRadio}}"></pingo-radio-group>
                 <paper-input-error>SSN invalid!</paper-input-error>
 
 
@@ -102,6 +103,15 @@
                         type: String,
                         notify: true
                     },
+                    /**
+                     * Returns true if the value is invalid. Bind this to both the `<paper-input-container>`'s
+                     * and the input's `invalid` property.
+                     */
+                    invalidRadio: {
+                        type: Boolean,
+                        value: false,
+                        notify: true
+                    },
                     required: {
                         type: Boolean,
                         notify: true,
@@ -129,24 +139,6 @@
                     default:
                         valid = true;
                     }
-                    switch (this.item.value.type) {
-
-                    case "radio":
-                        var valid = true;
-                        var rootElement = this;
-                        var paperInputContainers = rootElement.getElementsByTagName('paper-input-container');
-                        if (paperInputContainers) {
-                            for (var i = 0, length = paperInputContainers.length; i < length; i++) {
-                                var item = paperInputContainers[i];
-                                item._onBlur();
-                            }
-                        }
-                        break;
-                    default:
-                        {}
-                    }
-
-
                     return valid;
 
                 },

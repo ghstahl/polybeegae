@@ -10,10 +10,21 @@
             value: {
                 notify: true,
                 type: String
+            },
+            /**
+             * Returns true if the value is invalid. Bind this to both the `<paper-input-container>`'s
+             * and the input's `invalid` property.
+             */
+            invalid: {
+                type: Boolean,
+                value: false,
+                notify: true
             }
         },
         validate: function (value) {
-            return !S(this.value).isEmpty();
+            var valid = !S(this.value).isEmpty();
+            this.inValid = !valid;
+            return valid;
         }
     });
 </script>
