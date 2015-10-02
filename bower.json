@@ -19,6 +19,7 @@
     "iron-icons": "polymerelements/iron-icons#~1.0.3",
     "iron-localstorage": "polymerelements/iron-localstorage#~1.0.4",
     "iron-pages": "polymerelements/iron-pages#~1.0.3",
+    "iron-signals": "polymerelements/iron-signals#~1.0.2",
     "iron-validator-behavior": "polymerelements/iron-validator-behavior#~1.0.1",
     "json-editor": "jdorn/json-editor#~0.7.22",
     "marked-element": "polymerelements/marked-element#~1.0.2",

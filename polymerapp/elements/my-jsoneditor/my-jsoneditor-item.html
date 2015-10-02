@@ -4,39 +4,24 @@
 
 <link rel="import" href="../pingo-group/pingo-radio-input.html">
 <link rel="import" href="../pingo-group/pingo-toggle-input.html">
+<link rel="import" href="../pingo-group/pingo-toggle.html">
 
 <dom-module id="my-jsoneditor-item">
 
     <style is="custom-style">
-        .line {
-            margin-bottom: 40px;
-        }
-        
-        .line span {
-            margin-left: 24px;
-        }
-        
         .radioGroup {
             margin-left: 40px;
         }
     </style>
     <template>
+
         <!-----------------------------------------------------------------
                 STRING Input
             -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.type,'string')}}">
             <paper-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} allowed-pattern={{computeAllowedPattern(item.value)}} required={{item.value.required}} prevent-invalid-input auto-validate error-message="Invalid input!" placeholder="{{placeholder}}"></paper-input>
         </template>
-        <!----------------------------------------------------------------- 
-                BOOLEAN Input
-        -------------------------------------------------------------------->
-        <template is="dom-if" if="{{_isSame(item.value.type,'boolean')}}">
-            <div class="line">
-                <paper-toggle-button checked={{item.value.value}}></paper-toggle-button>
-                <span>{{item.name}}</span>
-                <span>{{computeBooleanToString(item.value.value)}}</span>
-            </div>
-        </template>
+
         <!-----------------------------------------------------------------
                 RADIO GROUP Input
         -------------------------------------------------------------------->
@@ -47,8 +32,10 @@
                 Toggle GROUP Input
             -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.type,'toggleGroup')}}">
-            <pingo-toggle-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}}></pingo-toggle-input>
+            <pingo-toggle-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} dirty={{dirty}}></pingo-toggle-input>
+            <div>{{dirty}}</div>
         </template>
+
 
     </template>
     <script>
@@ -65,8 +52,13 @@
                         observer: '_newItemObserved',
                     },
 
-                    // Read-Only Properties
-                    /////////////////////////////////////////////////////////
+                    dirty: {
+                        type: Boolean,
+                        notify: true,
+                        value: false,
+                        observer: '_dirtyChanged',
+                    },
+
                     _item_immutable: {
                         type: Object,
                         readOnly: true
@@ -100,8 +92,13 @@
                         value: false
                     }
                 },
+
                 // Methods
                 /////////////////////////////////////////////////////////
+
+                _dirtyChanged: function (newValue, oldValue) {
+                    this._set_item_dirty(this.dirty);
+                },
                 /**
                  * Validates the input element and sets an error style if needed.
                  *
@@ -140,7 +137,7 @@
                 },
                 // Observers
                 /////////////////////////////////////////////////////////
-                observers: ['_valueChanged(item.*)'],
+                observers: ['_valueChanged(item.*)', '_dirtyChanged(dirty.*)'],
                 // Smart check. only fire if we change state.
                 _valueChanged: function (changeRecord) {
                     var thisElement = this;
@@ -167,30 +164,13 @@
                 _isSame: function (a, b) {
                     return a === b
                 },
-                computeBooleanToString: function (a) {
-                    return a === true ? 'true' : 'false';
-                },
                 computeAllowedPattern: function (a) {
                     var allowed = this.paperElementTemplates.paperInput[a.template].allowedPattern
                     return allowed;
                 },
-                _toArray: function (obj) {
-                    var index = 0;
-                    var thisElement = this;
-                    this._arrayData = Object.keys(obj).map(function (key) {
-                        var id = "item_" + index;
-                        ++index;
-                        var val = obj[key];
-                        val.id = id;
-                        return {
-                            name: key,
-                            value: val
-                        };
-                    });
-                    return this._arrayData;
-                },
                 ready: function () {
                     console.log("my-jsoneditor-item ready");
+
                 }
             });
         })();

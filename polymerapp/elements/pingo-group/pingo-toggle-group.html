@@ -26,11 +26,12 @@
     <template>
         <pingo-toggle-group-validator value=[[value]] invalid={{invalid}}></pingo-toggle-group-validator>
 
-        <template is="dom-repeat" items="{{_toArray(value)}}" as="toggleItem">
+        <template is="dom-repeat" items="{{_workingArray}}" as="toggleItem">
             <div class="line">
-                <paper-toggle-button checked={{toggleItem.value}}></paper-toggle-button>
+                <paper-toggle-button checked={{toggleItem.value.checked}}></paper-toggle-button>
                 <span>{{toggleItem.name}}</span>
-                <span>{{computeBooleanToString(toggleItem.value)}}</span>
+                <span>{{computeBooleanToString(toggleItem.value.checked)}}</span>
+                <div _dirty={{_computeDirty(_workingArray,toggleItem,toggleItem.value.checked)}}></div>
             </div>
         </template>
     </template>
@@ -42,7 +43,19 @@
 
         behaviors: [Polymer.IronValidatableBehavior],
 
+        // Properties
+        ///////////////////////////////////////////////////////
         properties: {
+
+            dirty: {
+                type: Boolean,
+                notify: true
+            },
+            toggleItems: {
+                type: Object,
+                notify: true,
+                observer: '_toggleItemsChanged'
+            },
             value: {
                 notify: true,
                 type: Object
@@ -62,6 +75,43 @@
                 value: 'pingo-toggle-group-validator'
             }
         },
+        // Methods
+        ///////////////////////////////////////////////////////
+
+        _computeDirty: function (workingArray, toggleItem, value) {
+            if (toggleItem === undefined)
+                return undefined;
+
+            if (toggleItem.value.original !== value) {
+                // one goes dirty all is dirty.
+                if (this.dirty !== true) {
+                    this.dirty = true;
+                }
+            } else {
+                // went clean, but all have to be clean to be clean.
+                if (this.dirty === true) {
+                    var dirty = false;
+                    // was dirty, set it to not dirty if all are not dirty.
+                    for (var i = 0; i < workingArray.length; i++) {
+                        var item = workingArray[i];
+                        if (item.value.original !== item.value.checked) {
+                            dirty = true;
+                            break;
+                        }
+                    }
+                    if (dirty === false) {
+                        this.dirty = false;
+                    }
+                }
+            }
+
+        },
+        _toggleItemsChanged: function (newValue, oldValue) {
+            if (this.toggleItems !== undefined) {
+                this._workingArray = this._toArray(this.toggleItems);
+
+            }
+        },
         computeBooleanToString: function (a) {
             return a === true ? 'true' : 'false';
         },
@@ -71,8 +121,10 @@
             this._arrayData = Object.keys(obj).map(function (key) {
                 var id = "item_" + index;
                 ++index;
-                var val = obj[key];
+                var val = {};
                 val.id = id;
+                val.original = JSON.parse(JSON.stringify(obj[key]))
+                val.checked = obj[key];
                 return {
                     name: key,
                     value: val

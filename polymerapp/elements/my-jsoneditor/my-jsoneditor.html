@@ -9,6 +9,10 @@
 <dom-module id="my-jsoneditor">
 
     <style>
+        :host {
+            display: block;
+        }
+        
         mat-toast {
             background-color: #ff7043;
             color: #4d2214;
@@ -94,11 +98,7 @@
                                         value: "",
                                         required: true
                                     },
-                                    Enabled: {
-                                        type: "boolean",
-                                        value: true,
-                                        required: true
-                                    },
+
                                     RadioGaGa: {
                                         type: "radio",
                                         value: "",

@@ -1,0 +1,98 @@
+<dom-module id="pingo-toggle">
+    <style>
+        .line {
+            margin-bottom: 40px;
+        }
+        
+        .line span {
+            margin-left: 24px;
+        }
+    </style>
+    <template>
+
+
+        <div class="line">
+            <paper-toggle-button checked={{_working.data}}></paper-toggle-button>
+            <span>{{_working.label}}</span>
+            <span>{{computeBooleanToString(_working.data)}}</span>
+        </div>
+
+        <template is="dom-repeat" items="{{_toArray(_notWorking)}}">
+            <div class="line">
+                <paper-toggle-button checked={{item.value.data}}></paper-toggle-button>
+                <span>{{item.name}}</span>
+                <span>{{computeBooleanToString(item.value.data)}}</span>
+            </div>
+        </template>
+
+
+    </template>
+
+    <script>
+        (function () {
+            Polymer({
+                is: 'pingo-toggle',
+                properties: {
+
+                    _working: {
+                        type: Object,
+                        notify: true,
+                        value: {
+                            label: "Working Toggle",
+                            data: true
+                        }
+                    },
+                    _notWorking: {
+                        type: Object,
+                        notify: true,
+                        value: {
+                            a: {
+                                data: true
+                            },
+                            b: {
+                                data: true
+                            }
+                        }
+                    },
+                },
+                _newItemObserved: function (newValue, oldValue) {
+                    this._value = JSON.parse(JSON.stringify(newValue));
+                },
+                // Observers
+                /////////////////////////////////////////////////////////
+                observers: ['_notWorkingValueChanged(_notWorking.*)', '_workingValueChanged(_working.*)'],
+                // Smart check. only fire if we change state.
+                _workingValueChanged: function (changeRecord) {
+                    var thisElement = this;
+                    console.log("Working" + changeRecord.path);
+
+                },
+                _notWorkingValueChanged: function (changeRecord) {
+                    var thisElement = this;
+                    console.log("notWorking:" + changeRecord.path);
+
+                },
+                computeBooleanToString: function (a) {
+                    return a === true ? 'true' : 'false';
+                },
+                _toArray: function (obj) {
+                    var index = 0;
+                    var thisElement = this;
+                    this._arrayData = Object.keys(obj).map(function (key) {
+                        var id = "item_" + index;
+                        ++index;
+                        var val = {};
+                        val.data = obj[key];
+                        val.id = id;
+                        return {
+                            name: key,
+                            value: val
+                        };
+                    });
+                    return this._arrayData;
+                }
+            });
+        })();
+    </script>
+
+</dom-module>
