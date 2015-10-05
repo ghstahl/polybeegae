@@ -30,7 +30,7 @@
                 <paper-toggle-button checked={{item.value.workingData.checked}}></paper-toggle-button>
                 <span>{{item.name}}</span>
                 <span>{{computeBooleanToString(item.value.workingData.checked)}}</span>
-                <div _dirty={{_computeDirty(_workingArray,item,item.value.workingData.checked)}}></div>
+                <div _dirty={{_computeDirty(item,item.value.workingData.checked)}}></div>
             </div>
         </template>
     </template>
@@ -81,11 +81,12 @@
         // Methods
         ///////////////////////////////////////////////////////
 
-        _computeDirty: function (workingArray, toggleItem, value) {
+        _computeDirty: function (toggleItem, value) {
             if (toggleItem === undefined)
                 return undefined;
 
-            if (toggleItem.value.original.checked !== value) {
+            var originalValue = this.toggleItems.originalValue.value[toggleItem.value.key].checked;
+            if (originalValue !== value) {
                 // one goes dirty all is dirty.
                 if (this.dirty !== true) {
                     this.dirty = true;
@@ -95,9 +96,9 @@
                 if (this.dirty === true) {
                     var dirty = false;
                     // was dirty, set it to not dirty if all are not dirty.
-                    for (var i = 0; i < workingArray.length; i++) {
-                        var item = workingArray[i];
-                        if (item.value.original.checked !== item.value.workingData.checked) {
+                    for (var i = 0; i < this._workingArray.length; i++) {
+                        var item = this._workingArray[i];
+                        if (this.toggleItems.originalValue.value[item.value.key].checked !== item.value.workingData.checked) {
                             dirty = true;
                             break;
                         }
@@ -111,8 +112,7 @@
         },
         _toggleItemsChanged: function (newValue, oldValue) {
             if (this.toggleItems !== undefined) {
-                this._workingArray = this._toArray(this.toggleItems);
-
+                this._workingArray = this._toArray(this.toggleItems.currentValue.value);
             }
         },
         computeBooleanToString: function (a) {
@@ -125,6 +125,7 @@
                 var id = "item_" + index;
                 ++index;
                 var val = {};
+                val.key = key;
                 val.id = id;
                 val.original = JSON.parse(JSON.stringify(obj[key]))
                 val.workingData = obj[key];

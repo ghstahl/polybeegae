@@ -18,21 +18,21 @@
         <!-----------------------------------------------------------------
                 STRING Input
             -------------------------------------------------------------------->
-        <template is="dom-if" if="{{_isSame(item.value.type,'string')}}">
-            <pingo-input id="{{computedId(item)}}" label={{item.name}} value={{item.value}} allowed-pattern={{computeAllowedPattern(item.value)}} dirty={{dirty}}></pingo-input>
+        <template is="dom-if" if="{{_isSame(item.value.value.type,'string')}}">
+            <pingo-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} allowed-pattern={{computeAllowedPattern(item.value.value)}} dirty={{dirty}}></pingo-input>
         </template>
 
         <!-----------------------------------------------------------------
                 RADIO GROUP Input
         -------------------------------------------------------------------->
-        <template is="dom-if" if="{{_isSame(item.value.type,'radio')}}">
-            <pingo-radio-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} dirty={{dirty}}></pingo-radio-input>
+        <template is="dom-if" if="{{_isSame(item.value.value.type,'radio')}}">
+            <pingo-radio-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value.value}} dirty={{dirty}}></pingo-radio-input>
         </template>
         <!-----------------------------------------------------------------
                 Toggle GROUP Input
             -------------------------------------------------------------------->
-        <template is="dom-if" if="{{_isSame(item.value.type,'toggleGroup')}}">
-            <pingo-toggle-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} dirty={{dirty}}></pingo-toggle-input>
+        <template is="dom-if" if="{{_isSame(item.value.currentValue.type,'toggleGroup')}}">
+            <pingo-toggle-input id="{{computedId(item)}}" label={{item.name}} value={{item.value}} dirty={{dirty}}></pingo-toggle-input>
         </template>
         <div>{{dirty}}</div>
 
@@ -108,7 +108,7 @@
                  */
                 validate: function () {
                     var valid = true;
-                    switch (this.item.value.type) {
+                    switch (this.item.value.value.type) {
                     case "string":
                     case "radio":
                     case "toggleGroup":
@@ -130,8 +130,8 @@
                 _newItemObserved: function (newValue, oldValue) {
                     // move out of item to working set.
                     this._set_item_immutable(JSON.parse(JSON.stringify(newValue)));
-                    this.placeholder = this.item.value.required ? "required" : null;
-                    this.required = this.item.value.required;
+                    this.placeholder = this.item.value.currentValue.required ? "required" : null;
+                    this.required = this.item.value.currentValue.required;
                 },
                 reset: function () {
                     this.item = this._item_immutable;
@@ -159,7 +159,7 @@
                 // Utility Methods
                 /////////////////////////////////////////////////////////
                 _isDirtyValidation: function () {
-                    var dirty = this._item_immutable.value.value !== this.item.value.value;
+                    var dirty = this._item_immutable.value.value !== this.item.value.value.value.value;
                     return dirty;
                 },
                 _isSame: function (a, b) {

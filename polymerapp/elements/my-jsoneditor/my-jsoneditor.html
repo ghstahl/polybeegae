@@ -5,6 +5,7 @@
 <link rel="import" href="../../../bower_components/marked-element/marked-element.html">
 
 <link rel="import" href="./my-jsoneditor-item.html">
+<link rel="import" href="../pingo-group/pingo-dirty-behavior.html">
 
 <dom-module id="my-jsoneditor">
 
@@ -51,7 +52,8 @@
         (function () {
             Polymer({
                 is: 'my-jsoneditor',
-                behaviors: [GlobalDataBehavior],
+                behaviors: [GlobalDataBehavior, PingoDirtyBehavior],
+
                 properties: {
                     _isClean: {
                         type: Boolean,
@@ -85,6 +87,7 @@
                                 title: "",
                                 mdDescription: "### Question  \nCan you name the countries on which the United States of America has declared war pursuant to the US Constitution?",
                                 properties: {
+                                    /*
                                     Name: {
                                         template: "template1",
                                         type: "string",
@@ -104,7 +107,7 @@
                                             }
                                         }
                                     },
-
+*/
                                     ToggleGaGa: {
                                         type: "toggleGroup",
                                         value: {
@@ -132,7 +135,10 @@
                     return !S(val).isEmpty();
                 },
                 _newItemObserved: function (newValue, oldValue) {
-                    this._set_immutableJsonEditorData(JSON.parse(JSON.stringify(newValue)));
+                    if (newValue !== undefined) {
+                        this._set_immutableJsonEditorData(JSON.parse(JSON.stringify(newValue)));
+                        this.value = newValue;
+                    }
                 },
                 _dirtyEventEvaluator: function (e) {
                     e.stopImmediatePropagation();
@@ -187,10 +193,11 @@
                     var index = 0;
                     var thisElement = this;
                     this._arrayData = Object.keys(obj).map(function (key) {
-                        var id = "item_" + index;
+                        var val = {};
+                        val.id = "item_" + index;
+                        val.originalValue = JSON.parse(JSON.stringify(obj[key]));
+                        val.currentValue = obj[key];
                         ++index;
-                        var val = obj[key];
-                        val.id = id;
                         return {
                             name: key,
                             value: val
