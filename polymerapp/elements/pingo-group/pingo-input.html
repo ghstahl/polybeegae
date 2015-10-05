@@ -1,0 +1,76 @@
+<link rel="import" href="../../../bower_components/paper-input/all-imports.html">
+<link rel="import" href="./pingo-dirty-behavior.html">
+<dom-module id="pingo-input">
+    <style>
+
+    </style>
+    <template>
+
+        <paper-input id="_paperId" label={{label}} value={{value.value}} allowed-pattern={{allowedPattern}} required={{value.required}} prevent-invalid-input error-message="Invalid input!" placeholder="{{placeholder}}" always-float-label></paper-input>
+
+    </template>
+
+    <script>
+        (function () {
+            Polymer({
+                is: 'pingo-input',
+                behaviors: [PingoDirtyBehavior],
+                properties: {
+
+                    label: {
+                        type: String,
+                        notify: true
+                    },
+
+                    allowedPattern: {
+                        type: String,
+                        notify: true
+                    },
+                },
+                observers: ['_cloneChanged(_immutableClone)', '_inputChanged(value.value)'],
+                _cloneChanged: function (theClone) {
+                    this.placeholder = theClone.required ? "required" : null;
+                    // setup my state machine
+                    this.value._state = {};
+                    this.value._state.firstValidation = false;
+                    return this.$._paperId.invalid = false;
+
+                    // ... do work using dependent values
+                },
+                _inputChanged: function (input) {
+                    if (this.value.value !== this._immutableClone.value) {
+                        this.makeDirty();
+                    } else {
+                        this.makeClean();
+                    }
+                    if (this.value._state.firstValidation === false) {
+                        this.value._state.firstValidation = true;
+                    } else {
+                        this.validate();
+                    }
+                },
+                // Methods
+                /////////////////////////////////////////////////////////
+                /**
+                 * Validates the input element and sets an error style if needed.
+                 *
+                 * @return {boolean}
+                 */
+                validate: function () {
+                    return this.$._paperId.validate();
+                },
+                computeAllowedPattern: function (a) {
+                    var allowed = this.paperElementTemplates.paperInput[a.template].allowedPattern
+                    return allowed;
+                },
+                _valueChanged: function (newValue, oldValue) {
+                    if (this.value !== undefined) {
+                        this.placeholder = this.value.required ? "required" : null;
+                        this._originalValue = JSON.parse(JSON.stringify(this.value))
+                    }
+                }
+            });
+        })();
+    </script>
+
+</dom-module>

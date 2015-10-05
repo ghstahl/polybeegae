@@ -12,18 +12,31 @@
         
         paper-radio-button {
             display: block;
+            margin-bottom: 0px;
+        }
+        
+        paper-radio-group > * {
+            padding: 2px;
+        }
+        
+        .radioGroup {
+            margin-left: 40px;
+        }
+        
+        .line {
+            margin-bottom: 8px;
         }
     </style>
 
     <template>
-        <pingo-radio-group-validator value=[[value]] invalid={{invalid}}></pingo-radio-group-validator>
+        <pingo-radio-group-validator value={{_workingValue.selected}} invalid={{invalid}}></pingo-radio-group-validator>
 
-        <paper-radio-group selected={{value}}>
-            <template is="dom-repeat" items="{{_toArray(radioItems)}}" as="radioItem">
+        <paper-radio-group selected={{_workingValue.selected}}>
+            <template is="dom-repeat" items="{{_workingArray}}" as="radioItem">
                 <paper-radio-button name={{radioItem.name}}>{{radioItem.value}}</paper-radio-button>
             </template>
         </paper-radio-group>
-
+        <div _p={{_computeDirty(_workingValue.selected)}}></div>
     </template>
 </dom-module>
 
@@ -33,12 +46,28 @@
 
         behaviors: [Polymer.IronValidatableBehavior],
 
+        // properties
+        ///////////////////////////////////////////////////////
         properties: {
-            value: {
+            dirty: {
+                type: Boolean,
                 notify: true,
-                type: String
+                value: false
             },
-            radioItems: {
+            value: {
+                type: Object,
+                notify: true,
+                observer: '_valueChanged'
+            },
+            _workingValue: {
+                type: Object,
+                notify: true
+            },
+            _originalValue: {
+                type: String,
+                notify: true
+            },
+            _workingArray: {
                 type: Object,
                 notify: true
             },
@@ -56,7 +85,37 @@
                 value: 'pingo-radio-group-validator'
             }
         },
+        // Methods
+        ///////////////////////////////////////////////////////
+        _valueChanged: function (newValue, oldValue) {
+            if (this.value !== undefined) {
+                this._workingArray = this._toArray(this.value.items)
+                this._workingValue = this.value;
+                this._originalValue = JSON.parse(JSON.stringify(this.value))
+                this.invalid = false;
+            } else {
+                this._workingArray = undefined;
+                this._workingValue = undefined;
+                this._originalValue = undefined;
+            }
+        },
+        _computeDirty: function (newValue) {
+            if (this._originalValue === undefined)
+                return;
 
+            if (this._workingValue.selected === this._originalValue.selected) {
+                // this is now clean
+                if (this.dirty !== false) {
+                    this.dirty = false;
+                }
+            } else {
+                // this is now dirty
+                if (this.dirty !== true) {
+                    this.dirty = true;
+                }
+            }
+            this.validate();
+        },
         _toArray: function (obj) {
             var index = 0;
             var thisElement = this;

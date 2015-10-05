@@ -15,7 +15,7 @@
         }
         
         .line {
-            margin-bottom: 40px;
+            padding: 4px;
         }
         
         .line span {
@@ -25,13 +25,12 @@
 
     <template>
         <pingo-toggle-group-validator value=[[value]] invalid={{invalid}}></pingo-toggle-group-validator>
-
-        <template is="dom-repeat" items="{{_workingArray}}" as="toggleItem">
+        <template is="dom-repeat" items="{{_workingArray}}">
             <div class="line">
-                <paper-toggle-button checked={{toggleItem.value.checked}}></paper-toggle-button>
-                <span>{{toggleItem.name}}</span>
-                <span>{{computeBooleanToString(toggleItem.value.checked)}}</span>
-                <div _dirty={{_computeDirty(_workingArray,toggleItem,toggleItem.value.checked)}}></div>
+                <paper-toggle-button checked={{item.value.workingData.checked}}></paper-toggle-button>
+                <span>{{item.name}}</span>
+                <span>{{computeBooleanToString(item.value.workingData.checked)}}</span>
+                <div _dirty={{_computeDirty(_workingArray,item,item.value.workingData.checked)}}></div>
             </div>
         </template>
     </template>
@@ -55,6 +54,10 @@
                 type: Object,
                 notify: true,
                 observer: '_toggleItemsChanged'
+            },
+            _workingArray: {
+                type: Object,
+                notify: true
             },
             value: {
                 notify: true,
@@ -82,7 +85,7 @@
             if (toggleItem === undefined)
                 return undefined;
 
-            if (toggleItem.value.original !== value) {
+            if (toggleItem.value.original.checked !== value) {
                 // one goes dirty all is dirty.
                 if (this.dirty !== true) {
                     this.dirty = true;
@@ -94,7 +97,7 @@
                     // was dirty, set it to not dirty if all are not dirty.
                     for (var i = 0; i < workingArray.length; i++) {
                         var item = workingArray[i];
-                        if (item.value.original !== item.value.checked) {
+                        if (item.value.original.checked !== item.value.workingData.checked) {
                             dirty = true;
                             break;
                         }
@@ -124,7 +127,7 @@
                 var val = {};
                 val.id = id;
                 val.original = JSON.parse(JSON.stringify(obj[key]))
-                val.checked = obj[key];
+                val.workingData = obj[key];
                 return {
                     name: key,
                     value: val

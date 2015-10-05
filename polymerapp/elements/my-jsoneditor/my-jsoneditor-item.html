@@ -5,13 +5,13 @@
 <link rel="import" href="../pingo-group/pingo-radio-input.html">
 <link rel="import" href="../pingo-group/pingo-toggle-input.html">
 <link rel="import" href="../pingo-group/pingo-toggle.html">
+<link rel="import" href="../pingo-group/pingo-input.html">
+
 
 <dom-module id="my-jsoneditor-item">
 
     <style is="custom-style">
-        .radioGroup {
-            margin-left: 40px;
-        }
+
     </style>
     <template>
 
@@ -19,22 +19,22 @@
                 STRING Input
             -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.type,'string')}}">
-            <paper-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} allowed-pattern={{computeAllowedPattern(item.value)}} required={{item.value.required}} prevent-invalid-input auto-validate error-message="Invalid input!" placeholder="{{placeholder}}"></paper-input>
+            <pingo-input id="{{computedId(item)}}" label={{item.name}} value={{item.value}} allowed-pattern={{computeAllowedPattern(item.value)}} dirty={{dirty}}></pingo-input>
         </template>
 
         <!-----------------------------------------------------------------
                 RADIO GROUP Input
         -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.type,'radio')}}">
-            <pingo-radio-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} radio-items={{item.value.radioGroup}}></pingo-radio-input>
+            <pingo-radio-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} dirty={{dirty}}></pingo-radio-input>
         </template>
         <!-----------------------------------------------------------------
                 Toggle GROUP Input
             -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.type,'toggleGroup')}}">
             <pingo-toggle-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} dirty={{dirty}}></pingo-toggle-input>
-            <div>{{dirty}}</div>
         </template>
+        <div>{{dirty}}</div>
 
 
     </template>
@@ -70,12 +70,6 @@
 
                     },
 
-                    _item_dirty: {
-                        type: Boolean,
-                        readOnly: true,
-                        value: false
-                    },
-
                     readonly: {
                         type: Boolean,
                         value: true
@@ -97,7 +91,15 @@
                 /////////////////////////////////////////////////////////
 
                 _dirtyChanged: function (newValue, oldValue) {
-                    this._set_item_dirty(this.dirty);
+
+                    if (this.dirty === undefined)
+                        return;
+
+                    this.fire('item-dirty', {
+                        dirty: this.dirty,
+                        source: this
+                    });
+
                 },
                 /**
                  * Validates the input element and sets an error style if needed.
@@ -128,7 +130,6 @@
                 _newItemObserved: function (newValue, oldValue) {
                     // move out of item to working set.
                     this._set_item_immutable(JSON.parse(JSON.stringify(newValue)));
-                    this._set_item_dirty(false);
                     this.placeholder = this.item.value.required ? "required" : null;
                     this.required = this.item.value.required;
                 },
@@ -137,7 +138,7 @@
                 },
                 // Observers
                 /////////////////////////////////////////////////////////
-                observers: ['_valueChanged(item.*)', '_dirtyChanged(dirty.*)'],
+                //                observers: ['_valueChanged(item.*)', '_dirtyChanged(dirty.*)'],
                 // Smart check. only fire if we change state.
                 _valueChanged: function (changeRecord) {
                     var thisElement = this;

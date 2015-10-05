@@ -92,29 +92,31 @@
                                         required: true
 
                                     },
-                                    ImageUrl: {
-                                        template: "template1",
-                                        type: "string",
-                                        value: "",
-                                        required: true
-                                    },
-
                                     RadioGaGa: {
                                         type: "radio",
-                                        value: "",
                                         required: true,
-                                        radioGroup: {
-                                            small: "I am small",
-                                            medium: "I am medium",
-                                            large: "I am large"
+                                        value: {
+                                            selected: "",
+                                            items: {
+                                                small: "I am small",
+                                                medium: "I am medium",
+                                                large: "I am large"
+                                            }
                                         }
                                     },
+
                                     ToggleGaGa: {
                                         type: "toggleGroup",
                                         value: {
-                                            red: true,
-                                            blue: false,
-                                            green: true
+                                            red: {
+                                                checked: true
+                                            },
+                                            blue: {
+                                                checked: false
+                                            },
+                                            green: {
+                                                checked: true
+                                            }
                                         },
                                         required: true
                                     }

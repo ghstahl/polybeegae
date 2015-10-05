@@ -1,0 +1,43 @@
+<dom-module id="pingo-dirty-behavior">
+    <script>
+        PingoDirtyBehavior = {
+            properties: {
+
+                _immutableClone: {
+                    type: Object,
+                    notify: true,
+                    readOnly: true
+                },
+
+                value: {
+                    type: Object,
+                    notify: true,
+                    observer: '_PingoDirtyBehavior_valueChanged'
+                },
+
+                dirty: {
+                    type: Boolean,
+                    notify: true,
+                    value: false
+                },
+            },
+            _PingoDirtyBehavior_valueChanged: function (newValue, oldValue) {
+                if (this.value !== undefined) {
+                    this._set_immutableClone(JSON.parse(JSON.stringify(this.value)));
+                }
+            },
+            makeDirty() {
+                if (this.dirty !== undefined && this.dirty !== true) {
+                    this.dirty = true;
+                }
+            },
+            makeClean() {
+                if (this.dirty !== undefined && this.dirty !== false) {
+                    this.dirty = false;
+                }
+            }
+
+
+        };
+    </script>
+</dom-module>

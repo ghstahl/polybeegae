@@ -6,9 +6,9 @@
     </style>
     <template>
 
-        <paper-input-container always-float-label auto-validate attr-for-value="value" invalid="[[_invalid]]">
+        <paper-input-container always-float-label attr-for-value="value" invalid="[[_invalid]]">
             <label>{{label}}</label>
-            <pingo-radio-group class="paper-input-input" id="_radioGroup" value={{value}} radio-items={{radioItems}} invalid="{{_invalid}}"></pingo-radio-group>
+            <pingo-radio-group class="paper-input-input" id="_radioGroup" value={{value}} invalid="{{_invalid}}" dirty={{dirty}}></pingo-radio-group>
             <paper-input-error>invalid input!</paper-input-error>
         </paper-input-container>
     </template>
@@ -26,12 +26,12 @@
 
 
                     value: {
-                        type: String,
+                        type: Object,
                         notify: true
                     },
 
-                    radioItems: {
-                        type: Object,
+                    dirty: {
+                        type: Boolean,
                         notify: true
                     },
 
