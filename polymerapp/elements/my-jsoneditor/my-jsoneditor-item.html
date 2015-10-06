@@ -19,7 +19,7 @@
                 STRING Input
             -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.currentValue.type,'string')}}">
-            <pingo-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} allowed-pattern={{computeAllowedPattern(item.value.value)}} dirty={{dirty}}></pingo-input>
+            <pingo-input id="{{computedId(item)}}" label={{item.name}} value={{item.value}} allowed-pattern={{computeAllowedPattern(item.value.currentValue)}} dirty={{dirty}}></pingo-input>
         </template>
 
         <!-----------------------------------------------------------------

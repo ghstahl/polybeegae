@@ -6,7 +6,7 @@
     </style>
     <template>
 
-        <paper-input id="_paperId" label={{label}} value={{value.value}} allowed-pattern={{allowedPattern}} required={{value.required}} prevent-invalid-input error-message="Invalid input!" placeholder="{{placeholder}}" always-float-label></paper-input>
+        <paper-input id="_paperId" label={{label}} value={{_currentValue.value}} allowed-pattern={{allowedPattern}} required={{_currentValue.required}} prevent-invalid-input error-message="Invalid input!" placeholder="{{placeholder}}" always-float-label></paper-input>
 
     </template>
 
@@ -14,9 +14,26 @@
         (function () {
             Polymer({
                 is: 'pingo-input',
-                behaviors: [PingoPolymer.DirtyBehavior],
-                properties: {
 
+                // Behaviors
+                //////////////////////////////////////////////////////////////////////////
+                behaviors: [PingoPolymer.DirtyBehavior],
+
+                // Properties
+                //////////////////////////////////////////////////////////////////////////
+                properties: {
+                    value: {
+                        type: Object,
+                        notify: true,
+                        observer: '_valueChanged'
+                    },
+                    _currentValue: {
+                        type: Object,
+                        notify: true
+                    },
+                    _originalValue: {
+                        type: Object
+                    },
                     label: {
                         type: String,
                         notify: true
@@ -27,30 +44,40 @@
                         notify: true
                     },
                 },
-                observers: ['_cloneChanged(_immutableClone)', '_inputChanged(value.value)'],
-                _cloneChanged: function (theClone) {
-                    this.placeholder = theClone.required ? "required" : null;
-                    // setup my state machine
-                    this.value._state = {};
-                    this.value._state.firstValidation = false;
-                    return this.$._paperId.invalid = false;
 
-                    // ... do work using dependent values
+                // Observers
+                //////////////////////////////////////////////////////////////////////////
+                observers: ['_cloneChanged(_immutableClone)', '_inputChanged(_currentValue.value)'],
+
+                // Methods
+                //////////////////////////////////////////////////////////////////////////
+
+                _valueChanged: function (newValue, oldValue) {
+                    if (this.value !== undefined) {
+                        this._originalValue = this.value.originalValue; // set this first
+                        var tempCur = this.value.currentValue;
+                        // setup my state machine
+                        tempCur._state = {};
+                        tempCur._state.firstValidation = false;
+                        this.placeholder = tempCur.required ? "required" : null;
+                        this._currentValue = tempCur;
+                        return this.$._paperId.invalid = false;
+                    }
                 },
+
                 _inputChanged: function (input) {
-                    if (this.value.value !== this._immutableClone.value) {
+                    if (this._currentValue.value !== this._originalValue.value) {
                         this.makeDirty();
                     } else {
                         this.makeClean();
                     }
-                    if (this.value._state.firstValidation === false) {
-                        this.value._state.firstValidation = true;
+                    if (this._currentValue._state.firstValidation === false) {
+                        this._currentValue._state.firstValidation = true;
                     } else {
                         this.validate();
                     }
                 },
-                // Methods
-                /////////////////////////////////////////////////////////
+
                 /**
                  * Validates the input element and sets an error style if needed.
                  *
@@ -59,15 +86,10 @@
                 validate: function () {
                     return this.$._paperId.validate();
                 },
+
                 computeAllowedPattern: function (a) {
                     var allowed = this.paperElementTemplates.paperInput[a.template].allowedPattern
                     return allowed;
-                },
-                _valueChanged: function (newValue, oldValue) {
-                    if (this.value !== undefined) {
-                        this.placeholder = this.value.required ? "required" : null;
-                        this._originalValue = JSON.parse(JSON.stringify(this.value))
-                    }
                 }
             });
         })();
