@@ -1,0 +1,28 @@
+<link rel="import" href="../pingo-polymer/pingo-polymer.html">
+
+<dom-module id="pingo-value-clone-behavior">
+    <script>
+        PingoPolymer.PingoValueCloneBehavior = {
+            properties: {
+
+                _immutableClone: {
+                    type: Object,
+                    notify: true,
+                    readOnly: true
+                },
+
+                value: {
+                    type: Object,
+                    notify: true,
+                    observer: '_PingoDirtyBehavior_valueChanged'
+                },
+
+            },
+            _PingoDirtyBehavior_valueChanged: function (newValue, oldValue) {
+                if (this.value !== undefined) {
+                    this._set_immutableClone(JSON.parse(JSON.stringify(this.value)));
+                }
+            }
+        };
+    </script>
+</dom-module>

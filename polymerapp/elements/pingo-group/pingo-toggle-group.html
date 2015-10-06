@@ -2,7 +2,7 @@
 <link rel="import" href="../../../bower_components/iron-input/iron-input.html">
 <link rel="import" href="pingo-toggle-group-validator.html">
 <link rel="import" href="../../../bower_components/paper-toggle-button/paper-toggle-button.html">
-
+<link rel="import" href="pingo-dirty-behavior.html">
 
 <dom-module id="pingo-toggle-group">
     <style>
@@ -40,16 +40,12 @@
     Polymer({
         is: 'pingo-toggle-group',
 
-        behaviors: [Polymer.IronValidatableBehavior],
+        behaviors: [Polymer.IronValidatableBehavior, PingoPolymer.DirtyBehavior],
 
         // Properties
         ///////////////////////////////////////////////////////
         properties: {
 
-            dirty: {
-                type: Boolean,
-                notify: true
-            },
             toggleItems: {
                 type: Object,
                 notify: true,
@@ -87,10 +83,7 @@
 
             var originalValue = this.toggleItems.originalValue.value[toggleItem.value.key].checked;
             if (originalValue !== value) {
-                // one goes dirty all is dirty.
-                if (this.dirty !== true) {
-                    this.dirty = true;
-                }
+                this.makeDirty();
             } else {
                 // went clean, but all have to be clean to be clean.
                 if (this.dirty === true) {
@@ -104,7 +97,7 @@
                         }
                     }
                     if (dirty === false) {
-                        this.dirty = false;
+                        this.makeClean();
                     }
                 }
             }
@@ -127,7 +120,6 @@
                 var val = {};
                 val.key = key;
                 val.id = id;
-                val.original = JSON.parse(JSON.stringify(obj[key]))
                 val.workingData = obj[key];
                 return {
                     name: key,

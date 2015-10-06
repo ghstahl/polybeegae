@@ -3,6 +3,7 @@
 <link rel="import" href="pingo-radio-group-validator.html">
 <link rel="import" href="../../../bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="pingo-dirty-behavior.html">
 
 <dom-module id="pingo-radio-group">
     <style>
@@ -44,16 +45,12 @@
     Polymer({
         is: 'pingo-radio-group',
 
-        behaviors: [Polymer.IronValidatableBehavior],
+        behaviors: [Polymer.IronValidatableBehavior, PingoPolymer.DirtyBehavior],
 
         // properties
         ///////////////////////////////////////////////////////
         properties: {
-            dirty: {
-                type: Boolean,
-                notify: true,
-                value: false
-            },
+
             value: {
                 type: Object,
                 notify: true,
@@ -64,8 +61,7 @@
                 notify: true
             },
             _originalValue: {
-                type: String,
-                notify: true
+                type: Object
             },
             _workingArray: {
                 type: Object,
@@ -89,9 +85,10 @@
         ///////////////////////////////////////////////////////
         _valueChanged: function (newValue, oldValue) {
             if (this.value !== undefined) {
-                this._workingArray = this._toArray(this.value.items)
-                this._workingValue = this.value;
-                this._originalValue = JSON.parse(JSON.stringify(this.value))
+                // set original value first, as there are observers looking for the other stuff and depend on this.
+                this._originalValue = JSON.parse(JSON.stringify(this.value.originalValue.value))
+                this._workingValue = this.value.currentValue.value;
+                this._workingArray = this._toArray(this._workingValue.items)
                 this.invalid = false;
             } else {
                 this._workingArray = undefined;
@@ -105,15 +102,12 @@
 
             if (this._workingValue.selected === this._originalValue.selected) {
                 // this is now clean
-                if (this.dirty !== false) {
-                    this.dirty = false;
-                }
+                this.makeClean();
             } else {
                 // this is now dirty
-                if (this.dirty !== true) {
-                    this.dirty = true;
-                }
+                this.makeDirty();
             }
+
             this.validate();
         },
         _toArray: function (obj) {

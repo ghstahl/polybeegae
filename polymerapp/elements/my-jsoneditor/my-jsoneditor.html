@@ -52,7 +52,7 @@
         (function () {
             Polymer({
                 is: 'my-jsoneditor',
-                behaviors: [GlobalDataBehavior, PingoDirtyBehavior],
+                behaviors: [GlobalDataBehavior, PingoPolymer.DirtyBehavior],
 
                 properties: {
                     _isClean: {
@@ -95,6 +95,8 @@
                                         required: true
 
                                     },
+                                    */
+
                                     RadioGaGa: {
                                         type: "radio",
                                         required: true,
@@ -107,7 +109,6 @@
                                             }
                                         }
                                     },
-*/
                                     ToggleGaGa: {
                                         type: "toggleGroup",
                                         value: {

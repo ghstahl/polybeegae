@@ -18,15 +18,15 @@
         <!-----------------------------------------------------------------
                 STRING Input
             -------------------------------------------------------------------->
-        <template is="dom-if" if="{{_isSame(item.value.value.type,'string')}}">
+        <template is="dom-if" if="{{_isSame(item.value.currentValue.type,'string')}}">
             <pingo-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value}} allowed-pattern={{computeAllowedPattern(item.value.value)}} dirty={{dirty}}></pingo-input>
         </template>
 
         <!-----------------------------------------------------------------
                 RADIO GROUP Input
         -------------------------------------------------------------------->
-        <template is="dom-if" if="{{_isSame(item.value.value.type,'radio')}}">
-            <pingo-radio-input id="{{computedId(item)}}" label={{item.name}} value={{item.value.value.value}} dirty={{dirty}}></pingo-radio-input>
+        <template is="dom-if" if="{{_isSame(item.value.currentValue.type,'radio')}}">
+            <pingo-radio-input id="{{computedId(item)}}" label={{item.name}} value={{item.value}} dirty={{dirty}}></pingo-radio-input>
         </template>
         <!-----------------------------------------------------------------
                 Toggle GROUP Input
@@ -108,7 +108,7 @@
                  */
                 validate: function () {
                     var valid = true;
-                    switch (this.item.value.value.type) {
+                    switch (this.item.value.currentValue.value.type) {
                     case "string":
                     case "radio":
                     case "toggleGroup":
