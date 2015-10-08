@@ -52,7 +52,7 @@
         (function () {
             Polymer({
                 is: 'my-jsoneditor',
-                behaviors: [GlobalDataBehavior, PingoPolymer.DirtyBehavior],
+                behaviors: [PingoPolymer.GlobalDataBehavior, PingoPolymer.DirtyBehavior],
 
                 properties: {
                     _isClean: {
@@ -228,7 +228,7 @@
                 ready: function () {
                     var thisElement = this;
                     this.addEventListener('item-dirty', this._dirtyEventEvaluator);
-                    this.paperElementTemplates = this.globals.data.app_config.paperElementTemplates;
+                    this.paperElementTemplates = this.PingoGlobals.data.app_config.paperElementTemplates;
 
                     console.log("my-jsoneditor ready");
                 }

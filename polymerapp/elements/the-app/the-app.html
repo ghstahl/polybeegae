@@ -173,7 +173,7 @@
 <script>
     Polymer({
         is: "the-app",
-        behaviors: [GlobalDataBehavior],
+        behaviors: [PingoPolymer.GlobalDataBehavior],
         properties: {
             cacheBuster: {
                 type: String,
@@ -290,7 +290,7 @@
 
         /*---------------------------------------------------------------*/
         onRouteAjaxResonse: function (path) {
-            this.globals.data = path;
+            this.PingoGlobals.data = path;
             this.section_element_map["markdown-section"] = this.$.markdown_section_id;
             var thisElement = this;
             path.page_routes.forEach(function (record) {

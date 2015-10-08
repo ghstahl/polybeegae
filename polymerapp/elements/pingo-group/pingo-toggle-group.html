@@ -51,15 +51,21 @@
                 notify: true,
                 observer: '_toggleItemsChanged'
             },
+
             _workingArray: {
                 type: Object,
                 notify: true
             },
+
             value: {
                 notify: true,
                 type: Object
             },
-
+            mode: {
+                type: String,
+                default: 'toggle',
+                observer: '_enumMode'
+            },
             /**
              * Returns true if the value is invalid. Bind this to both the `<paper-input-container>`'s
              * and the input's `invalid` property.
@@ -77,6 +83,12 @@
         // Methods
         ///////////////////////////////////////////////////////
 
+        _enumMode: function (newValue, oldValue) {
+            var validModes = ['toggle', 'checked'];
+            if (validModes.indexOf(newValue) === -1) {
+                this.color = oldValue; // put old mode back
+            }
+        },
         _computeDirty: function (toggleItem, value) {
             if (toggleItem === undefined)
                 return undefined;
