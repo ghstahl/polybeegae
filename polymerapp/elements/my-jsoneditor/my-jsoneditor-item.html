@@ -7,6 +7,7 @@
 <link rel="import" href="../pingo-group/pingo-toggle-input.html">
 <link rel="import" href="../pingo-group/pingo-toggle.html">
 <link rel="import" href="../pingo-group/pingo-input.html">
+<link rel="import" href="../pingo-group/pingo-textarea.html">
 
 <link rel="import" href="../pingo-polymer/pingo-global-utils-behavior.html">
 
@@ -24,6 +25,14 @@
         <template is="dom-if" if="{{_isSame(item.value.currentValue.type,'string')}}">
             <pingo-input id="{{computedId(item)}}" label={{item.name}} value={{item.value}} allowed-pattern={{computeAllowedPattern(item.value.currentValue)}} dirty={{dirty}}></pingo-input>
         </template>
+
+        <!-----------------------------------------------------------------
+                TEXT AREA Input
+            -------------------------------------------------------------------->
+        <template is="dom-if" if="{{_isSame(item.value.currentValue.type,'textArea')}}">
+            <pingo-textarea id="{{computedId(item)}}" label={{item.name}} rows="3" value={{item.value}} allowed-pattern={{computeAllowedPattern(item.value.currentValue)}} dirty={{dirty}}></pingo-textarea>
+        </template>
+
 
         <!-----------------------------------------------------------------
                 RADIO GROUP Input

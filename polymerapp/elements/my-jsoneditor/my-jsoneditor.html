@@ -85,19 +85,28 @@
 
                                 type: "object",
                                 title: "",
-                                mdDescription: "### Question  \nCan you name the countries on which the United States of America has declared war pursuant to the US Constitution?",
+                                mdDescription: "### Question 1.  \n---\n  Can you name the countries on which the United States of America has declared war pursuant to the US Constitution?",
                                 properties: {
 
                                     Name: {
+                                        label: "The Name",
                                         template: "template1",
                                         type: "string",
                                         value: "",
                                         required: true
 
                                     },
+                                    NameMany: {
+                                        label: "Name Many",
+                                        template: "template1",
+                                        type: "textArea",
+                                        value: "Hi\nThere\n",
+                                        required: true
 
+                                    },
 
                                     RadioGaGa: {
+                                        label: "Radio Ga Ga",
                                         type: "radio",
                                         required: true,
                                         value: {
@@ -110,6 +119,7 @@
                                         }
                                     },
                                     ToggleGaGa: {
+                                        label: "Toggle Ga Ga",
                                         type: "toggleGroup",
                                         value: {
                                             red: {
