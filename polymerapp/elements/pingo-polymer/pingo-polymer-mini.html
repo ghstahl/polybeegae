@@ -1,7 +1,119 @@
 <link rel="import" href="pingo-polymer-micro.html">
 
 <script>
-    PingoPolymer.dUtils = {
+    // based upon //https://gist.github.com/srideepprasad/3890913
+    /*
+	AjaxHook.js - A simple utility library for intercepting Ajax calls.
+
+	This may be useful to inject simple interceptors to analyze pr capture Ajax traffic and may be even useful for automation tests to determine when an Ajax response returns.
+
+	To use :
+	1>Create a new AjaxHook object
+	var hook = new AjaxHook();
+
+	2>Install a hook
+	hook.installHook([URL string / RegEx], function callback(xhr){.......});
+
+	where xhr is the XMLHttpRequest Object
+
+	URL String/RegEx is an expression that matches one or more URLs. If a URL String is given, the http/https prefix may be omitted. Also, it will match all URLs having the given string as the start of the URL.
+	For example: "www.mywebsite.co" in the URL string will match https://wwww.mywebsite.co.in and also http://wwww.mywebsite.com/something
+
+
+	3>To remove a hook:
+	hook.removeHook([URL string/RegEx]);
+
+	4>To remove all hooks:
+	hook.removeAllHooks();
+
+
+	One or more hooks may be chained together using multiple instances of AjaxHook. Both instances may link a different interceptor callback to the same URL
+
+	NOTE: 
+	1>The interceptor callback fires after the application defined onreadystatechanged event fires
+*/
+    function AjaxHook() {
+
+        var hooks = {};
+        var initTime = new Date().getTime();
+        var self = this;
+
+        var trim = function (strdata) {
+            strdata.replace(/\s+/, '');
+        };
+
+        var oldOpen = XMLHttpRequest.prototype.open;
+        var oldSend = XMLHttpRequest.prototype.send;
+
+        var convertStrToRegExp = function (str) {
+            var targetExpr = str.substring(1, str.length - 1);
+            return new RegExp(targetExpr);
+        };
+
+        var getHookCallbackForUrl = function (url) {
+            var iter = 0;
+            var urlPats = Object.keys(hooks);
+            for (iter = 0; iter < urlPats.length; iter++) {
+                if (convertStrToRegExp(urlPats[iter]).test(url)) {
+                    return hooks[urlPats[iter]];
+                }
+            };
+
+        };
+
+        var adaptAsRegEx = function (urlPat) {
+            return new RegExp("^(http(s)?:\/\/)?" + urlPat + "(.)*$"); //For impicit regexp expressions
+        };
+
+
+        XMLHttpRequest.prototype.open = function () {
+            var currentUrl = arguments[1];
+            var callback = getHookCallbackForUrl(currentUrl);
+            if (callback) {
+                this[initTime] = {};
+                this[initTime].callback = callback;
+            } else if (this[initTime]) {
+                this.onreadystatechange = this[initTime].orgCallback;
+                delete this[initTime];
+            }
+            oldOpen.apply(this, arguments);
+        };
+
+
+        XMLHttpRequest.prototype.send = function () {
+            var xhrObj = this;
+            if (this[initTime] && this[initTime].callback) {
+                this[initTime].orgCallback = this.onreadystatechange;
+                var handler = function () {
+                    if (xhrObj[initTime].orgCallback) {
+                        xhrObj[initTime].orgCallback.apply(xhrObj, Array.prototype.slice.apply(arguments));
+                    }
+                    xhrObj[initTime].callback.call(xhrObj, xhrObj);
+                };
+                this.onreadystatechange = handler;
+            }
+            oldSend.apply(this, arguments);
+
+        };
+
+
+        this.installHook = function (url, callback) {
+            var targetUrl = (url instanceof RegExp) ? url : adaptAsRegEx(url);
+            hooks[targetUrl] = callback;
+        };
+
+        this.removeHook = function (url) {
+            var targetUrl = (url instanceof RegExp) ? url : adaptAsRegEx(url);
+            delete hooks[targetUrl];
+        };
+
+        this.removeAllHooks = function () {
+            hooks = {};
+        };
+    };
+
+    PingoPolymer.Utils = {
 
     };
+    PingoPolymer.Utils.AjaxHook = new AjaxHook();
 </script>
