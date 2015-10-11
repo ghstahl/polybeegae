@@ -74,7 +74,7 @@
     </style>
     <template>
 
-        <pingo-activity-tracker activity-interval="1" activity-callback-url="/json/sidebar-menu.json"></pingo-activity-tracker>
+        <pingo-activity-tracker activity-callback-url="/json/sidebar-menu.json"></pingo-activity-tracker>
         <pingo-iron-ajax-localstorage id="myIronAjax" params="{{routeParams}}" handle-as="json" last-Response="{{routeAjaxResponse}}">
         </pingo-iron-ajax-localstorage>
         <paper-drawer-panel id="paperDrawerPanel">

@@ -15,22 +15,46 @@
                 is: 'pingo-activity-tracker',
 
                 properties: {
-
+                    /*
+                    default: 1 minute
+                    
+                    interval in minutes.  If dirty activity is detected this will insure that a call is made to the host domain no later than this interval.  As a rule, keep it small .  Imagine you put this to 15 minutes.  dirty activity at t0 will cause a session bump 15 minutes in the future sliding that session out 20 minutes, even though no activity happens after the first dirty call.  A 15 minute setting has just cause 35 minutes of a session bump from t0 when that session would have died at t0+20.  Small keeps your damage small.
+                    */
                     activityInterval: {
-                        type: Number
+                        type: Number,
+                        value: function () {
+                            return 1;
+                        }
                     },
+
+                    /*
+                    the url to a session bump helper on the domain server. 
+                    i.e. '/slide/that/session'
+                    */
 
                     activityCallbackUrl: {
                         type: String
                     },
-
+                    /*
+                    private: dirty activity detected bit
+                    */
                     _dirtyActivity: {
                         type: Boolean
+                    },
+
+                    /*
+                    private: efficiency storage of string.  I didn't want to rebuild the string on every check.  Bad enough I have to do a string compare each time.
+                    */
+                    _originDomain: {
+                        type: String
                     }
+
                 },
+                /*
+                This gets called everytime an outbound ajax call is made
+                */
                 _ajaxCallback: function (xhr) {
-                    var origin = "//" + window.location.host;
-                    var n = xhr.responseURL.indexOf(origin);
+                    var n = xhr.responseURL.indexOf(this._originDomain);
                     if (n == -1) {
                         // not ours, so dirty as a call was made to some other domain than ours.
                         this._dirtyActivity = true;
@@ -41,6 +65,11 @@
                     }
 
                 },
+
+                /*
+                self triggering timer call
+                if we are in a dirty state this thing makes an outbound ajax call to the host.  Resets to clean every time.
+                */
                 _countDown: function () {
                     if (this._dirtyActivity) {
                         this.$.ironAjaxId.generateRequest();
@@ -48,18 +77,24 @@
                     this._dirtyActivity = false;
                     this.async(this._countDown, this.activityInterval * 1000 * 60)
                 },
+
+                /* play thing, not needed */
                 handleResponse: function (request) {
                     console.log(" ironAjaxId response recieved");
                     this.$._activityToast.show();
                 },
+
                 ready: function () {
                     var self = this;
-                    //[\s\S]*
+                    self._originDomain = "//" + window.location.host;
+                    self._dirtyActivity = false;
+                    self._countDown(); // initial call.  the rest will be async.
+
+                    // register a hook to get a callback on outbound ajax calls.
+                    //[\s\S]*  everything
                     PingoPolymer.Utils.AjaxHook.installHook("[\s\S]*", function callback(xhr) {
                         self._ajaxCallback(xhr);
                     });
-                    this._dirtyActivity = false;
-                    this._countDown(); // initial call.  the rest will be async.
                     console.log("pingo-activity-tracker ready");
                 }
             });
