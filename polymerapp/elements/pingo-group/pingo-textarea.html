@@ -22,27 +22,33 @@
                 // Properties
                 //////////////////////////////////////////////////////////////////////////
                 properties: {
+
                     value: {
                         type: Object,
                         notify: true,
                         observer: '_valueChanged'
                     },
+
                     _currentValue: {
                         type: Object,
                         notify: true
                     },
+
                     _originalValue: {
                         type: Object
                     },
+
                     label: {
                         type: String,
                         notify: true
                     },
 
+
                     allowedPattern: {
                         type: String,
                         notify: true
-                    },
+                    }
+
                 },
 
                 // Observers
@@ -61,7 +67,8 @@
                         tempCur._state.firstValidation = false;
                         this.placeholder = tempCur.required ? "required" : null;
                         this._currentValue = tempCur;
-                        return this.$._paperId.invalid = false;
+                        this.validate();
+                        this.$._paperId.invalid = false;
                     }
                 },
 

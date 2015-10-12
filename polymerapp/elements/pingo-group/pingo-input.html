@@ -61,7 +61,8 @@
                         tempCur._state.firstValidation = false;
                         this.placeholder = tempCur.required ? "required" : null;
                         this._currentValue = tempCur;
-                        return this.$._paperId.invalid = false;
+                        this.validate();
+                        this.$._paperId.invalid = false;
                     }
                 },
 
