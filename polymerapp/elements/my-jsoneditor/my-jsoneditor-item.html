@@ -23,14 +23,14 @@
                 STRING Input
             -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.currentValue.type,'string')}}">
-            <pingo-input id="{{computedId(item)}}" label={{item.name}} value={{item.value}} allowed-pattern={{computeAllowedPattern(item.value.currentValue)}} dirty={{dirty}}></pingo-input>
+            <pingo-input id="{{computedId(item)}}" label={{item.value.currentValue.label}} value={{item.value}} allowed-pattern={{computeAllowedPattern(item.value.currentValue)}} dirty={{dirty}}></pingo-input>
         </template>
 
         <!-----------------------------------------------------------------
                 TEXT AREA Input
             -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.currentValue.type,'textArea')}}">
-            <pingo-textarea id="{{computedId(item)}}" label={{item.name}} rows="3" value={{item.value}} allowed-pattern={{computeAllowedPattern(item.value.currentValue)}} dirty={{dirty}}></pingo-textarea>
+            <pingo-textarea id="{{computedId(item)}}" label={{item.value.currentValue.label}} rows="3" value={{item.value}} allowed-pattern={{computeAllowedPattern(item.value.currentValue)}} dirty={{dirty}}></pingo-textarea>
         </template>
 
 
@@ -38,13 +38,13 @@
                 RADIO GROUP Input
         -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.currentValue.type,'radio')}}">
-            <pingo-radio-input id="{{computedId(item)}}" label={{item.name}} value={{item.value}} dirty={{dirty}}></pingo-radio-input>
+            <pingo-radio-input id="{{computedId(item)}}" label={{item.value.currentValue.label}} value={{item.value}} dirty={{dirty}}></pingo-radio-input>
         </template>
         <!-----------------------------------------------------------------
                 Toggle GROUP Input
             -------------------------------------------------------------------->
         <template is="dom-if" if="{{_isSame(item.value.currentValue.type,'toggleGroup')}}">
-            <pingo-toggle-input id="{{computedId(item)}}" label={{item.name}} value={{item.value}} dirty={{dirty}}></pingo-toggle-input>
+            <pingo-toggle-input id="{{computedId(item)}}" label={{item.value.currentValue.label}} value={{item.value}} dirty={{dirty}}></pingo-toggle-input>
         </template>
         <div>{{dirty}}</div>
 

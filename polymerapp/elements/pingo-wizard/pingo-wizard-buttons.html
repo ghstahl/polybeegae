@@ -1,0 +1,82 @@
+<dom-module id="pingo-wizard-buttons">
+    <style>
+        :host {
+            display: inline;
+            margin-left: auto;
+            margin-right: 0;
+        }
+        
+        .button-container {
+            text-align: right;
+        }
+        
+        .button-container:after {
+            clear: both;
+        }
+    </style>
+    <template>
+        <mat-divider></mat-divider>
+        <div class="button-container">
+            <mat-raised-button label="Back" disabled={{backDisabled}} on-click="_handleBackClick"></mat-raised-button>
+            <mat-raised-button label="Next" disabled={{nextDisabled}} on-click="_handleNextClick"></mat-raised-button>
+            <mat-raised-button label="Finish" disabled={{finishDisabled}} on-click="_handleFinishClick"></mat-raised-button>
+            <mat-raised-button label="Reset" disabled={{resetDisabled}} on-click="_handleResetClick"></mat-raised-button>
+        </div>
+    </template>
+    <script>
+        (function () {
+            Polymer({
+                is: 'pingo-wizard-buttons',
+                properties: {
+                    backDisabled: {
+                        type: Boolean,
+                        notify: true,
+                        value: true
+                    },
+                    nextDisabled: {
+                        type: Boolean,
+                        notify: true,
+                        value: true
+                    },
+                    finishDisabled: {
+                        type: Boolean,
+                        notify: true,
+                        value: true
+                    },
+                    resetDisabled: {
+                        type: Boolean,
+                        notify: true,
+                        value: true
+                    },
+
+                },
+
+                _handleBackClick: function () {
+                    this.fire('back', {}, {
+                        bubbles: false
+                    });
+
+                },
+
+                _handleNextClick: function () {
+                    this.fire('next', {}, {
+                        bubbles: false
+                    });
+
+                },
+
+                _handleFinishClick: function () {
+                    this.fire('finish', {}, {
+                        bubbles: false
+                    });
+                },
+
+                _handleResetClick: function () {
+                    this.fire('reset', {}, {
+                        bubbles: false
+                    });
+                }
+            });
+        })();
+    </script>
+</dom-module>

@@ -7,6 +7,10 @@
 <link rel="import" href="./my-jsoneditor-item.html">
 <link rel="import" href="../pingo-group/pingo-dirty-behavior.html">
 
+<link rel="import" href="../../elements/pingo-wizard/pingo-wizard-buttons.html">
+
+
+
 <dom-module id="my-jsoneditor">
 
     <style>
@@ -24,7 +28,8 @@
         }
     </style>
     <template>
-        <paper-material>
+
+        <paper-material id="_jsonEditorMain">
             <mat-toast id="toast1" label="Invalid Data..."></mat-toast>
             <template is="dom-if" if="{{_stringExists(jsonEditorData.schema.title)}}">
                 <h1 class="paper-font-display1"><span>{{jsonEditorData.schema.title}}</span></h1>
@@ -40,13 +45,15 @@
                     <my-jsoneditor-item id={{item.value.id}} item={{item}} paper-element-templates={{paperElementTemplates}}></my-jsoneditor-item>
                 </template>
             </div>
-            <mat-raised-button disabled={{_isClean}} label="Click me!" on-click="handleClick"></mat-raised-button>
-            <mat-raised-button disabled={{_isClean}} label="Reset!" on-click="handleResetClick"></mat-raised-button>
+
+            <pingo-wizard-buttons id={{_pingoWizardButtons}} finish-disabled={{_isClean}} reset-disabled={{_isClean}} on-finish="_handleFinish" on-reset="_handleReset">
+            </pingo-wizard-buttons>
         </paper-material>
 
         <paper-material elevation="1">
             <x-json id="myjson" data={{jsonEditorData.value.schema.properties}}></x-json>
         </paper-material>
+
     </template>
     <script>
         (function () {
@@ -174,21 +181,25 @@
                 },
 
                 observers: ['_valueChanged(_arrayData.*)'],
-                _valueChanged: function (changeRecord) {
-                    console.log('_arrayData changed: ' + changeRecord.path);
+                _handleReset: function (a) {
+                    this._dirtyItems = {};
+                    this._set_isClean(true);
+                    this.set('jsonEditorData', this._immutableJsonEditorData);
+                    console.log('_handleReset changed: ' + a);
+
                 },
-                handleClick: function () {
+                _handleFinish: function () {
                     var valid = this.validate();
                     if (!valid) {
                         this.$.toast1.show();
                     }
                     this.$.myjson.data = this._toPostData(this._arrayData);
                 },
-                handleResetClick: function () {
-                    this._dirtyItems = {};
-                    this._set_isClean(true);
-                    this.set('jsonEditorData', this._immutableJsonEditorData);
+
+                _valueChanged: function (changeRecord) {
+                    console.log('_arrayData changed: ' + changeRecord.path);
                 },
+
                 _toPostData: function (obj) {
 
                     var rv = {};
