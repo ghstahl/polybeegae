@@ -1,16 +1,17 @@
 <link rel="import" href="pingo-radio-group.html">
 <link rel="import" href="../../../bower_components/paper-input/all-imports.html">
+<link rel="import" href="pingo-input-container.html">
 <dom-module id="pingo-radio-input">
     <style>
 
     </style>
     <template>
 
-        <paper-input-container always-float-label attr-for-value="value" invalid="[[_invalid]]">
+        <pingo-input-container always-float-label attr-for-value="value" invalid="[[_invalid]]">
             <label>{{label}}</label>
             <pingo-radio-group class="paper-input-input" id="_radioGroup" value={{value}} invalid="{{_invalid}}" dirty={{dirty}}></pingo-radio-group>
             <paper-input-error>invalid input!</paper-input-error>
-        </paper-input-container>
+        </pingo-input-container>
     </template>
 
     <script>
